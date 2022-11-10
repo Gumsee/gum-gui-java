@@ -110,6 +110,16 @@
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <outputDirectory>${basedir}/target/classes</outputDirectory>
+            <includeEmptyDirs>true</includeEmptyDirs>
+            <resources>
+              <resource>
+                <directory>${basedir}/src/resources</directory>
+                <filtering>false</filtering>
+              </resource>
+            </resources>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>

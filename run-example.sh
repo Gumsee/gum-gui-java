@@ -1,3 +1,6 @@
 #!/bin/sh
 
-mvn exec:java -pl example -Dexec.mainClass=com.gumse.Example -Dexec.args="$*"
+EXAMPLE_NAME=$1
+shift
+
+mvn exec:java -pl example -Dexec.mainClass=com.gumse.$EXAMPLE_NAME -Dexec.args="$*"
