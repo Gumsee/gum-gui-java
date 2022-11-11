@@ -78,11 +78,11 @@ public class RenderGUI
         this.vChildren = new ArrayList<>();
         this.mTransformationMatrix = new mat4();
         this.mAttributes = new HashMap<String, String>();
-        this.sizeInPercent = new bvec2();
-        this.posInPercent = new bvec2();
-        this.originInPercent = new bvec2();
-        this.maxSizeInPercent = new bvec2();
-        this.minSizeInPercent = new bvec2();
+        this.sizeInPercent    = new bvec2(false, false);
+        this.posInPercent     = new bvec2(false, false);
+        this.originInPercent  = new bvec2(false, false);
+        this.maxSizeInPercent = new bvec2(false, false);
+        this.minSizeInPercent = new bvec2(false, false);
     }
 
     public void clear() 
@@ -129,7 +129,7 @@ public class RenderGUI
 
     public void reposition()
     {
-        vActualPos = vPos;
+        vActualPos.set(vPos);
         if(pParent != null)
         {
             vActualPos = ivec2.add(pParent.getPosition(), vPos);
@@ -152,11 +152,11 @@ public class RenderGUI
 
     public void resize()
     {
-        vActualSize = vSize;
+        vActualSize.set(vSize);
         if(pParent != null)
         {
-            if(sizeInPercent.x) { vActualSize.x = (int)(pParent.getSize().x * ((float)vSize.x / 100.0f)); }
-            if(sizeInPercent.y) { vActualSize.y = (int)(pParent.getSize().y * ((float)vSize.y / 100.0f)); }
+            if(sizeInPercent.x) { vActualSize.x = (int)((float)(pParent.getSize().x) * ((float)vSize.x / 100.0f)); }
+            if(sizeInPercent.y) { vActualSize.y = (int)((float)(pParent.getSize().y) * ((float)vSize.y / 100.0f)); }
 
             if(vMinSize.x != 0)
             {

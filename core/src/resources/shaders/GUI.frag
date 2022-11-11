@@ -88,5 +88,5 @@ void main(void)
     float smoothedAlpha = 1.0f - smoothstep(0.0f, 2.0f, dist);
     gl_FragColor.a *= smoothedAlpha;
 
-    gl_FragColor = vec4(1,0,0,1);
+    gl_FragColor = vec4(1,1,1, texture2D(textureSampler, Texcoord).r);
 }

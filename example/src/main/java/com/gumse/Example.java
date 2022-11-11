@@ -3,15 +3,14 @@ package com.gumse;
 import static org.lwjgl.opengl.GL11.*;
 
 import com.gumse.gui.GUI;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.maths.*;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
 import com.gumse.system.io.Mouse;
-import com.gumse.system.io.Mouse.*;
-import com.gumse.system.io.Keyboard;
-import com.gumse.system.io.Keyboard.*;
+import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 
 
@@ -26,8 +25,12 @@ public class Example {
 
         GUI testGUI = new GUI(pMainWindow);
 
-        Box testBox = new Box(new ivec2(30, 30), new ivec2(100, 100));
-        testBox.setColor(new vec4(1.0f,0.0f,0.0f,1.0f));
+        Box testBox = new Box(new ivec2(30, 30), new ivec2(50, 50));
+        testBox.setSizeInPercent(true, true);
+        testBox.setColor(new vec4(1.0f,1.0f,0.0f,1.0f));
+        /*Texture hehe = new Texture();
+        hehe.load("hehe.jpg");
+        testBox.setTexture(hehe);*/
         testGUI.addGUI(testBox);
         
 		pMainWindow.onResized(new WindowResizePosCallback() {
@@ -37,11 +40,17 @@ public class Example {
             }
         });
 
+        FontManager fonts = FontManager.getInstance();
+
+        int index = 0;
+
         while(pMainWindow.isOpen())
         {
             Mouse.update();
             Display.pollEvents();
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
+
+            testBox.setTexture(fonts.getDefaultFont().getCharacter(20 + index % 100).texture);
 
             testGUI.render();
             testGUI.update();
@@ -51,6 +60,15 @@ public class Example {
 
             //pMainWindow.update();
             //FPS.update();
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            index++;
 		}
     }
 }

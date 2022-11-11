@@ -90,6 +90,7 @@ public class Box extends RenderGUI
 			{
 				//GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
 				pTexture.bind(0);
+				System.out.println(pTexture.getName());
 			}
 
 			GUIShader.getShaderProgram().LoadUniform("rightgradient", bRightgradient);

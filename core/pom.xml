@@ -22,6 +22,13 @@
     <platform>linux</platform>
   </properties>
 
+  <repositories>
+        <repository>
+            <id>clojars</id>
+            <url>https://clojars.org/repo/</url>
+        </repository>     
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -92,10 +99,10 @@
     </dependency>
     
     <dependency>
-      <groupId>net.java.dev.jna</groupId>
-      <artifactId>jna</artifactId>
-      <version>5.5.0</version>
-    </dependency>
+      <groupId>clojure-interop</groupId>
+      <artifactId>java.awt</artifactId>
+      <version>1.0.2</version>
+  </dependency>
   </dependencies>
 
   <build>

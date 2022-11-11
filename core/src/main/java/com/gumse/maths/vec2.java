@@ -76,9 +76,13 @@ public class vec2
     public static float length(vec2 a)           { return (float)Math.sqrt(a.x * a.x + a.y * a.y); }
     public static float distance(vec2 a, vec2 b) { return vec2.length(vec2.sub(a, b)); }
 
+    public String toString()
+    {
+        return "vec2(" + Float.toString(this.x) + ", " + Float.toString(this.y) + ")";
+    }
+
     public void print()
     {
-        String vecstr = "vec2(" + Float.toString(this.x) + ", " + Float.toString(this.y) + ")";
-        Debug.info(vecstr);
+        Debug.info(toString());
     }
 }
