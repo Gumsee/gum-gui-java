@@ -142,8 +142,8 @@ public class Mouse
         lastClickTimeLeft += 0.01; //FPS::get();
         lastClickTimeRight += 0.01; //FPS::get();
         
-        if(LeftReleased)
-            v2LeftClickPosition.set(new ivec2(-1, -1));
+        //if(LeftReleased)
+        //    v2LeftClickPosition.set(new ivec2(-1, -1));
 		LeftReleased = false;
 		RightReleased = false;
         LeftDoubleClick = false;

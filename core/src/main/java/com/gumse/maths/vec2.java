@@ -72,6 +72,7 @@ public class vec2
     public static vec2 add(vec2 a, vec2 b)   { return new vec2(a.x + b.x, a.y + b.y); }
     public static vec2 sub(vec2 a, vec2 b)   { return new vec2(a.x - b.x, a.y - b.y); }
     public static vec2 div(vec2 a, vec2 b)   { return new vec2(a.x / b.x, a.y / b.y); }
+    public static vec2 div(vec2 a, float f)  { return new vec2(a.x / f, a.y / f); }
 
     public static float length(vec2 a)           { return (float)Math.sqrt(a.x * a.x + a.y * a.y); }
     public static float distance(vec2 a, vec2 b) { return vec2.length(vec2.sub(a, b)); }

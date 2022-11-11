@@ -11,8 +11,10 @@ public class bbox2i
 
     public bbox2i(ivec2 pos, ivec2 size)
     {
-        this.pos = pos;
-        this.size = size;
+        this.pos = new ivec2(0);
+        this.size = new ivec2(0,0);
+        this.pos.set(pos);
+        this.size.set(size);
     }
 
     public ivec2 getPos()  { return pos; }

@@ -17,6 +17,7 @@ public class Font
     private String sPath;
     private String sName;
     private float fHighestGlyph;
+    private String sKnownAlphabet;
 
     public Font(String name, String path) 
     {
@@ -28,7 +29,7 @@ public class Font
     }
 
 
-	public static com.gumse.gui.Font.Font loadFontFromResource(String name)
+	public static com.gumse.gui.Font.Font loadFontFromResource(String name, String charactersToLoad)
 	{
 		com.gumse.gui.Font.Font font = new com.gumse.gui.Font.Font(name, "resource");
 		//genTextures(font, face);
@@ -48,20 +49,18 @@ public class Font
 		if(someFont == null)
 			return null;
 		
-		for(int i = 0; i < 256; i++) 
+		for(int i = 0; i < charactersToLoad.length(); i++) 
 		{
-			char ch = (char)i;
-			//System.out.println(fontImage.limit());
+            String ch = charactersToLoad.substring(i, i + 1);
+            int codepoint = ch.codePointAt(0);
 
-
-			Character character = FontLoader.getFontChar(someFont, String.valueOf(ch));
-            font.setCharacter(i, character);
-
-			//fontImage = null;
+			Character character = FontLoader.getFontChar(someFont, ch);
+            font.setCharacter(codepoint, character);
 		}
 		
-
+        font.setCharacter(127, new Character());
 		font.calcHighestGlyph();
+        font.sKnownAlphabet = charactersToLoad;
 		
 		return font;
 	}
@@ -78,23 +77,32 @@ public class Font
     public void calcHighestGlyph()
     {
         for(Character ch : vCharacters)
+        {
+            if(ch == null) continue;
+            if(ch.texture == null) continue;
             if(ch.texture.getSize().y > fHighestGlyph)
                 fHighestGlyph = ch.texture.getSize().y;
+        }
     }
 
 
     //Setter
     public void setCharacter(int codepoint, Character charStruct)  
     {
-        if(codepoint >= this.vCharacters.size() - 1)
-            this.vCharacters.ensureCapacity(codepoint + 1);
-        this.vCharacters.add(codepoint, charStruct);
+        if(codepoint >= vCharacters.size())
+        {
+            for(int i = vCharacters.size(); i <= codepoint; i++)
+                vCharacters.add(i, null);
+        }
+        this.vCharacters.ensureCapacity(codepoint + 1);
+        this.vCharacters.set(codepoint, charStruct);
     }
 
     //Getter
-    public String getPath()                                       { return this.sPath; }
-    public String getName()                                       { return this.sName; }
-    public float getHighestGlyphSize()                                 { return this.fHighestGlyph; }
+    public String getPath()                                     { return this.sPath; }
+    public String getName()                                     { return this.sName; }
+    public String getKnownAlphabet()                            { return this.sKnownAlphabet; }
+    public float getHighestGlyphSize()                          { return this.fHighestGlyph; }
     public Character getCharacter(int codepoint)               
     { 
         if(codepoint >= 0 && codepoint < vCharacters.size())

@@ -109,20 +109,6 @@ public class Texture {
             case 2: Debug.error("Texture: 2 components not supported"); break;
             case 1: format = GL11.GL_RED; break;
         }
-
-        for(int j = 0; j < res.x; j++)
-        {
-            for(int k = 0; k < res.y; k++)
-            {
-                byte aByte = imageBuffer.get(j * res.y + k);
-                
-                int number = aByte & 0xff;
-                System.out.print(number);
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-        System.out.println("");
         
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, iTextureID);
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);

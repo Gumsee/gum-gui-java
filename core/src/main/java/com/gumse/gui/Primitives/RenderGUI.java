@@ -369,12 +369,12 @@ public class RenderGUI
     //
     // Setter
     //
-    public void setOrigin(ivec2 orig)                           { this.vOrigin = orig; reposition(); }
-    public void setPosition(ivec2 pos)                          { this.vPos = pos; reposition(); }
-    public void setSize(ivec2 size)                             { this.vSize = size; resize(); }
-    public void setMaxSize(ivec2 size)                          { this.vMaxSize = size; resize(); }
-    public void setMinSize(ivec2 size)                          { this.vMinSize = size; resize(); }
-    public void setMargin(ivec2 margin)                         { this.vMargin = margin; resize(); }
+    public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
+    public void setPosition(ivec2 pos)                          { this.vPos.set(pos); reposition(); }
+    public void setSize(ivec2 size)                             { this.vSize.set(size); resize(); }
+    public void setMaxSize(ivec2 size)                          { this.vMaxSize.set(size); resize(); }
+    public void setMinSize(ivec2 size)                          { this.vMinSize.set(size); resize(); }
+    public void setMargin(ivec2 margin)                         { this.vMargin.set(margin); resize(); }
     public void setPositionInPercent(boolean x, boolean y)      { this.posInPercent = new bvec2(x, y); reposition(); }
     public void setOriginInPercent(boolean x, boolean y)        { this.originInPercent = new bvec2(x, y); reposition(); }
     public void setSizeInPercent(boolean x, boolean y)          { this.sizeInPercent = new bvec2(x, y); resize(); }
@@ -424,38 +424,38 @@ public class RenderGUI
     public boolean areChildrenHidden()                        { return this.bChildrenHidden; }
     public boolean hasChild(RenderGUI gui)                    { for(RenderGUI child : vChildren) { if(child == gui) return true; } return false;}
 
-    /*boolean isClicked()                                   
+    public boolean isClicked()                                   
     { 
         if(bHasClickedSomething)
             return false;
-        boolean isclicked = Gum::Window::CurrentlyBoundWindow.getMouse().hasLeftRelease() && 
-                                Toolbox.checkPointInBox(Gum::Window::CurrentlyBoundWindow.getMouse().getLeftClickPosition(), bbox2i(getPosition(), getSize())); ;
+        boolean isclicked = Window.CurrentlyBoundWindow.getMouse().hasLeftRelease() && 
+                                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getLeftClickPosition(), new bbox2i(getPosition(), getSize())); ;
         if(isclicked)
             bHasClickedSomething = true;
         return isclicked;
     }
 
-    boolean hasClickedInside()                            
+    public boolean hasClickedInside()                            
     { 
         if(bHasClickedSomething)
             return false;
-        boolean isclicked = Gum::Window::CurrentlyBoundWindow.getMouse().hasLeftClickStart() && 
-                                Toolbox.checkPointInBox(Gum::Window::CurrentlyBoundWindow.getMouse().getLeftClickPosition(), bbox2i(getPosition(), getSize())); 
+        boolean isclicked = Window.CurrentlyBoundWindow.getMouse().hasLeftClickStart() && 
+                                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getLeftClickPosition(), new bbox2i(getPosition(), getSize())); 
         if(isclicked)
             bHasClickedSomething = true;
         return isclicked;
     }
 
-    boolean isHoldingLeftClick()
+    public boolean isHoldingLeftClick()
     {
         if(bHasClickedSomething)
             return false;
-        boolean isclicked = Gum::Window::CurrentlyBoundWindow.getMouse().hasLeftClick() && 
-                                Toolbox.checkPointInBox(Gum::Window::CurrentlyBoundWindow.getMouse().getLeftClickPosition(), bbox2i(getPosition(), getSize())); 
+        boolean isclicked = Window.CurrentlyBoundWindow.getMouse().hasLeftClick() && 
+                                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getLeftClickPosition(), new bbox2i(getPosition(), getSize())); 
         if(isclicked)
             bHasClickedSomething = true;
         return isclicked;
-    }*/
+    }
 
     public boolean somethingHasBeenClicked()                           { return bHasClickedSomething; }
 

@@ -4,7 +4,7 @@ import com.gumse.basics.Globals;
 
 public class Debug 
 {
-    private static String sPrefix = "Game1:";
+    private static String sPrefix = "GumGUI:";
     private static long lStartTime;
 
     public static void init()

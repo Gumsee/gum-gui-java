@@ -68,6 +68,8 @@ public class ivec2
     public static ivec2 sub(ivec2 a, ivec2 b)      { return new ivec2(a.x - b.x, a.y - b.y); }
     public static ivec2 mul(ivec2 a, int f)        { return new ivec2(a.x * f, a.y * f); }
     public static ivec2 mul(ivec2 a, float f)      { return new ivec2((int)(a.x * f), (int)(a.y * f)); }
+    public static ivec2 mul(ivec2 a, vec2 b)       { return new ivec2((int)(a.x * b.x), (int)(a.y * b.y)); }
+    public static ivec2 div(ivec2 a, float f)      { return new ivec2((int)((float)a.x / f), (int)((float)a.y / f)); }
 
     public static float length(ivec2 a)            { return (float)Math.sqrt(a.x * a.x + a.y * a.y); }
     public static float distance(ivec2 a, ivec2 b) { return ivec2.length(ivec2.sub(a, b)); }
