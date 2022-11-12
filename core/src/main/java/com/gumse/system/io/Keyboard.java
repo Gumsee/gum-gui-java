@@ -187,7 +187,6 @@ public class Keyboard
 
 	public static String key2string(int key)
 	{
-		String ret = "";
 		if     (key == GUM_KEY_A) 					return "A";
 		else if(key == GUM_KEY_B) 					return "B";
 		else if(key == GUM_KEY_C) 					return "C";

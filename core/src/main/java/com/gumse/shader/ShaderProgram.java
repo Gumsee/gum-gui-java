@@ -8,7 +8,6 @@ import java.util.Map;
 import org.lwjgl.opengl.GL30;
 
 import com.gumse.maths.*;
-import com.gumse.shader.Shader;
 import com.gumse.tools.Debug;
 import com.gumse.tools.Toolbox;
 

@@ -24,6 +24,7 @@ public class Texture {
     private ByteBuffer bImageData;
     private int iComponents;
     private String sName = "unnamed";
+    private boolean bCreateOpenGLTexture = true;
 
     private void create()
     {
@@ -93,7 +94,7 @@ public class Texture {
             Debug.error("Failed to load Texture file " + sName + ": " + stbi_failure_reason());
 
         loadDirectly(bImageData, channels.get(0), new ivec2(x.get(0), y.get(0)), GL11.GL_UNSIGNED_BYTE);
-        stbi_image_free(bImageData);
+        //stbi_image_free(bImageData);
     }
 
     public void loadDirectly(ByteBuffer imageBuffer, int numcomps, ivec2 res, int datatype)
@@ -101,26 +102,44 @@ public class Texture {
         vTextureSize = res;
         iComponents = numcomps;
         bImageData = imageBuffer;
-        int format = GL11.GL_RGBA;
-        switch(iComponents)
+        if(bCreateOpenGLTexture)
         {
-            case 4: format = GL11.GL_RGBA; break;
-            case 3: format = GL11.GL_RGB; break;
-            case 2: Debug.error("Texture: 2 components not supported"); break;
-            case 1: format = GL11.GL_RED; break;
+            int format = GL11.GL_RGBA;
+            switch(iComponents)
+            {
+                case 4: format = GL11.GL_RGBA; break;
+                case 3: format = GL11.GL_RGB; break;
+                case 2: Debug.error("Texture: 2 components not supported"); break;
+                case 1: format = GL11.GL_RED; break;
+            }
+            
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, iTextureID);
+            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, format, (int)vTextureSize.x, (int)vTextureSize.y, 0, format, datatype, bImageData);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+            deleteData();
         }
-        
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, iTextureID);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, format, (int)vTextureSize.x, (int)vTextureSize.y, 0, format, datatype, bImageData);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
         String msg = "Loaded Image " + sName;
         msg += " (" + Integer.toString((int)vTextureSize.x) + "x" + Integer.toString((int)vTextureSize.y) + ")";
         msg += " with " + Integer.toString(iComponents) + " compontents,";
         //msg += " has HDR = " + (stbi_is_hdr_from_memory(bImageData) ? "true" : "false");
 
-        Debug.info(msg);
+        Debug.debug(msg);
+    }
+
+    public ByteBuffer getData()
+    {
+        return bImageData;
+    }
+
+    public void deleteData()
+    {
+        if(bImageData != null)
+        {
+            stbi_image_free(bImageData);
+            bImageData = null;
+        }
     }
 
     public ivec2 getSize()
@@ -149,13 +168,9 @@ public class Texture {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
-    public int getID()
-    {
-        return this.iTextureID;
-    }
+    public void dontCreateGLTexture() { this.bCreateOpenGLTexture = false; }
 
-    public String getName()
-    {
-        return this.sName;
-    }
+    public int getID() { return this.iTextureID; }
+    public String getName() { return this.sName; }
+    public int numComponents() { return this.iComponents; }
 }

@@ -2,18 +2,13 @@ package com.gumse.gui.Primitives;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.lwjgl.opengl.GL30;
 
-import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.maths.*;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Debug;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
-import com.gumse.shader.ShaderProgram;
 import com.gumse.system.Window;
 
 public class Box extends RenderGUI
@@ -90,7 +85,6 @@ public class Box extends RenderGUI
 			{
 				//GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
 				pTexture.bind(0);
-				System.out.println(pTexture.getName());
 			}
 
 			GUIShader.getShaderProgram().LoadUniform("rightgradient", bRightgradient);

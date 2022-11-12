@@ -2,11 +2,6 @@ package com.gumse.gui.Font;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
-import com.gumse.maths.ivec2;
-import com.gumse.textures.Texture;
 import java.awt.FontFormatException;
 import java.io.IOException;
 

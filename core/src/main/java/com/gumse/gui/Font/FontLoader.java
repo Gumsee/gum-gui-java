@@ -1,46 +1,21 @@
 package com.gumse.gui.Font;
 
-import java.awt.color.ColorSpace;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.WritableRaster;
-import java.awt.image.Raster;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DataBufferShort;
-import java.awt.image.DataBufferUShort;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-import java.util.Hashtable;
-
-import javax.swing.JLabel;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
 import com.gumse.textures.Texture;
 
 import com.gumse.maths.ivec2;
 
 import java.awt.Graphics2D;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.RenderingHints;
 
 
 public class FontLoader 
 {
-    private static ColorModel glAlphaColorModel;
-	private static ColorModel glColorModel;
-	private static int fontsize = 64;
+    private static int fontsize = 64;
 
     public static Character getFontChar(java.awt.Font font, String ch) 
 	{
@@ -114,18 +89,5 @@ public class FontLoader
 
     public static void init()
     {
-        glAlphaColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-				new int[] {8,8,8,8},
-				true,
-				false,
-				ComponentColorModel.TRANSLUCENT,
-				DataBuffer.TYPE_BYTE);
-		
-		glColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-				new int[] {8,8,8,0},
-				false,
-				false,
-				ComponentColorModel.OPAQUE,
-				DataBuffer.TYPE_BYTE);
     }
 }

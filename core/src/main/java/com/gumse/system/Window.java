@@ -4,14 +4,19 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
+import com.gumse.textures.Texture;
 import com.gumse.tools.Toolbox;
 import com.gumse.maths.*;
 
@@ -119,8 +124,28 @@ public class Window
 		makeFloating   ((properties & GUM_WINDOW_FLOATING) > 0);
 		makeFullscreen ((properties & GUM_WINDOW_FULLSCREEN) > 0);
 		maximize       ((properties & GUM_WINDOW_MAXIMIZED) > 0);
+
+		Texture icon22 = new Texture("icon22");
+		icon22.dontCreateGLTexture();
+		icon22.load("icons/icon22.png");
+
+		Texture icon32 = new Texture("icon32");
+		icon32.dontCreateGLTexture();
+		icon32.load("icons/icon32.png");
+
+		Texture icon48 = new Texture("icon48");
+		icon48.dontCreateGLTexture();
+		icon48.load("icons/icon48.png");
+
+		Texture icon64 = new Texture("icon64");
+		icon64.dontCreateGLTexture();
+		icon64.load("icons/icon64.png");
+
+		Texture icon128 = new Texture("icon128");
+		icon128.dontCreateGLTexture();
+		icon128.load("icons/icon128.png");
 		
-		//setIcon({ icon22, icon32, icon48, icon64, icon128 }, true, vec4(0.61, 0.53, 1, 1));
+		setIcon(new ArrayList<Texture>(Arrays.asList(new Texture[] { icon22, icon32, icon48, icon64, icon128 })), true, new vec4(0.61f, 0.53f, 1.0f, 1.0f));
 
 		if(MainWindow== null)
 			MainWindow = this;
@@ -294,43 +319,52 @@ public class Window
 
 
 
-    /*void setIcon(std::vector<IconImageData> images, bool isgrayscale, vec4 color)
-    {
-        GLFWimage glfwimages[images.size()];
-        size_t k = 0;
-        for(size_t i = 0; i < images.size(); i++)
-        {
-            IconImageData &image = images[i];
-            glfwimages[i].pixels = (unsigned char*)Gum::_malloc(image.res.x * image.res.y * sizeof(unsigned char) * 4);
-            glfwimages[i].width = image.res.x;
-            glfwimages[i].height = image.res.y;
+    public void setIcon(ArrayList<Texture> images, boolean isgrayscale, vec4 color)
+    {			
+		try(GLFWImage.Buffer icons = GLFWImage.malloc(images.size()))
+		{
+			for(int i = 0; i < images.size(); i++)
+			{
+				Texture image = images.get(i);
 
-            unsigned char* icondata = glfwimages[i].pixels;
+				ByteBuffer newBuffer;
+				if(isgrayscale)
+				{
+					int size = image.getSize().x * image.getSize().y;
+					newBuffer = ByteBuffer.allocateDirect(size * 4);
+					int comps = image.numComponents();
 
-            short comps = image.numComps;
-            if(!isgrayscale)
-            {
-                for(unsigned int j = 0; j < image.res.x * image.res.y * 4; j++)
-                    icondata[j] = (unsigned char)image.data[j];
-            }
-            else
-            {
-                for(unsigned int j = 0; j < image.res.x * image.res.y; j++)
-                {
-                    ivec4 col = vec4(vec3(image.data[j * comps + 0]), image.data[j * comps + 1]) * color;
+					for(int j = 0; j < size; j++)
+					{
+						vec4 col = vec4.mul(new vec4(new vec3(image.getData().get(j * comps + 0) & 0xFF), image.getData().get(j * comps + 1) & 0xFF), color);
+						col.print();
+	
+						newBuffer.put(j * 4 + 0, (byte)col.x); // R
+						newBuffer.put(j * 4 + 1, (byte)col.y); // G
+						newBuffer.put(j * 4 + 2, (byte)col.z); // B
+						newBuffer.put(j * 4 + 3, (byte)col.w); // A
+					}
+					newBuffer.flip();
+				}
+				else
+				{
+					newBuffer = image.getData();
+				}
 
-                    icondata[j * 4 + 0] = (unsigned char)col.r; // R
-                    icondata[j * 4 + 1] = (unsigned char)col.g; // G
-                    icondata[j * 4 + 2] = (unsigned char)col.b; // B
-                    icondata[j * 4 + 3] = (unsigned char)col.a; // A
-                }
-            }
-        }
+				icons
+					.position(i)
+					.width(image.getSize().x)
+					.height(image.getSize().y)
+					.pixels(newBuffer);
+			}
+			icons.position(0);
+			glfwSetWindowIcon(lWindowID, icons);
 
 
-
-        glfwSetWindowIcon(lWindowID, images.size(), glfwimages);
-    }*/
+			for(int i = 0; i < images.size(); i++)
+				images.get(i).deleteData();
+		}
+    }
 
 
 

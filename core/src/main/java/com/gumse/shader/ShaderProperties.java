@@ -1,9 +1,5 @@
 package com.gumse.shader;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import com.gumse.tools.*;

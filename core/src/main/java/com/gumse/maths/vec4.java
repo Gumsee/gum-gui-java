@@ -1,5 +1,7 @@
 package com.gumse.maths;
 
+import com.gumse.tools.Debug;
+
 public class vec4 {
     public float x;
     public float y;
@@ -38,6 +40,9 @@ public class vec4 {
         this.w = x;
     }
 
+
+    public static vec4 mul(vec4 a, vec4 b)  { return new vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w); }
+
     float valueByIndex(int index)
     {
         switch(index)
@@ -48,5 +53,15 @@ public class vec4 {
             case 3: return w;
             default: return 1;
         }
+    }
+
+    public String toString()
+    {
+        return "vec4(" + Float.toString(this.x) + ", " + Float.toString(this.y) + ", " + Float.toString(this.z) + ", " + Float.toString(this.w) + ")";
+    }
+
+    public void print()
+    {
+        Debug.info(toString());
     }
 }

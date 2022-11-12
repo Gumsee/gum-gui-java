@@ -7,16 +7,13 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;
-import com.gumse.gui.Basics.TextBox;
-import com.gumse.gui.Font.FontManager;
-import com.gumse.gui.Primitives.Box;
-import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.*;
+import com.gumse.pages.LoginPage;
+import com.gumse.pages.MainPage;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
 import com.gumse.system.io.Mouse;
-import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 
 
@@ -31,20 +28,16 @@ public class Example {
         pMainWindow.setClearColor(new vec4(0.5f, 0.0f, 0.0f, 0.0f)); // Set the clear color);
 
         GUI testGUI = new GUI(pMainWindow);
+		pMainWindow.onResized(new WindowResizePosCallback() {
+            @Override public void run(ivec2 val) {
+                testGUI.setSize(val);
+            }
+        });
 
-        Box testBox = new Box(new ivec2(30, 30), new ivec2(50, 50));
-        testBox.setSizeInPercent(true, true);
-        testBox.setColor(new vec4(1.0f,1.0f,0.0f,1.0f));
-        /*Texture hehe = new Texture();
-        hehe.load("hehe.jpg");
-        testBox.setTexture(hehe);*/
-        testGUI.addGUI(testBox);
 
-        String testStr = "Test Text with unicode characters: öäüß \n";
-        for(int i = 64; i < 128; i++)
-            testStr += Character.toString((char)i);
-
-        FontManager fonts = FontManager.getInstance();
+        MainPage mainPage = new MainPage();
+        LoginPage loginPage = new LoginPage();
+        loginPage.hide(true);
 
         AltMenu altMenu = new AltMenu(new ivec2(0,0), new ivec2(100, 100));
         altMenu.setSizeInPercent(true, true);
@@ -77,17 +70,26 @@ public class Example {
             @Override public void run() { Debug.info("Settings"); }
         }));
 
-        
-		pMainWindow.onResized(new WindowResizePosCallback() {
-            @Override
-            public void run(ivec2 val) {
-                testGUI.setSize(val);
+        AltMenuEntry viewEntry = new AltMenuEntry("View", null);
+        altMenu.addEntry(viewEntry);
+        viewEntry.addEntry(new AltMenuEntry("Login", new AltMenuEntryCallback() {
+            @Override public void run() { 
+                loginPage.hide(false);
+                mainPage.hide(true);
             }
-        });
+        }));
+        viewEntry.addEntry(new AltMenuEntry("Main", new AltMenuEntryCallback() {
+            @Override public void run() 
+            { 
+                loginPage.hide(true);
+                mainPage.hide(false);
+            }
+        }));
 
-        TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 100), new ivec2(200, 40));
-        altMenu.addGUI(textBox);
         
+        
+        altMenu.addGUI(mainPage);
+        altMenu.addGUI(loginPage);
 
         while(pMainWindow.isOpen())
         {

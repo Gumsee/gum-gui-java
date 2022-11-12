@@ -1,14 +1,8 @@
 package com.gumse.gui.Font;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL30;
-
-import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 
 

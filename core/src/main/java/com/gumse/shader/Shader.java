@@ -46,21 +46,24 @@ public class Shader
 
     public boolean compile()
     {
-        Debug.debug("Shader: Compiling " + sTypeName);
-        GL30.glShaderSource(iShaderID, sSource); //Pass sourceCode to OpenGL
-        GL30.glCompileShader(iShaderID); //compile the shader
-
-        //Error checking
-        if (GL30.glGetShaderi(iShaderID, GL30.GL_COMPILE_STATUS) == GL30.GL_FALSE)
+        if(!bIsCompiled)
         {
-            //The maxLength includes the NULL character
-            String errorLog = GL30.glGetShaderInfoLog(iShaderID, 1024);
-            GL30.glDeleteShader(iShaderID); //Don't leak the shader.
-            Debug.error("Shader Failed to compile: " + errorLog);
+            Debug.debug("Shader: Compiling " + sTypeName);
+            GL30.glShaderSource(iShaderID, sSource); //Pass sourceCode to OpenGL
+            GL30.glCompileShader(iShaderID); //compile the shader
 
-            return false;
+            //Error checking
+            if (GL30.glGetShaderi(iShaderID, GL30.GL_COMPILE_STATUS) == GL30.GL_FALSE)
+            {
+                //The maxLength includes the NULL character
+                String errorLog = GL30.glGetShaderInfoLog(iShaderID, 1024);
+                GL30.glDeleteShader(iShaderID); //Don't leak the shader.
+                Debug.error("Shader Failed to compile: " + errorLog);
+
+                return false;
+            }
+            bIsCompiled = true;
         }
-        bIsCompiled = true;
         return true;
     }
 
