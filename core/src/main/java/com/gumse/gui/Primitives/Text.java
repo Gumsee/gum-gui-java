@@ -223,7 +223,7 @@ public class Text extends RenderGUI
     // Getter
     //
     public ivec2 getStringSize(String str)        { return getTextSize(str, 0, str.length()); }
-    public ivec2 getSize()                        { return getStringSize(sRenderText); }
+    @Override public ivec2 getSize()                        { return getStringSize(sRenderText); }
     public ivec2 getFullTextSize()                { return getStringSize(sText); }
     public String getString()                     { return this.sText; }
     public bbox2i getRenderBox()                  { return this.bRenderBox; }

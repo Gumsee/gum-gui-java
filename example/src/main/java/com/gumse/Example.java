@@ -8,6 +8,7 @@ import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;
 import com.gumse.maths.*;
+import com.gumse.pages.ListsPage;
 import com.gumse.pages.LoginPage;
 import com.gumse.pages.MainPage;
 import com.gumse.system.Display;
@@ -37,8 +38,13 @@ public class Example {
 
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
-        loginPage.hide(true);
+        ListsPage listsPage = new ListsPage();
+        mainPage.hide(true);
+        listsPage.hide(true);
 
+        //
+        // ALWAYS ADD ENTRIES BEFORE ANYTHING ELSE
+        //
         AltMenu altMenu = new AltMenu(new ivec2(0,0), new ivec2(100, 100));
         altMenu.setSizeInPercent(true, true);
         testGUI.addGUI(altMenu);
@@ -76,6 +82,7 @@ public class Example {
             @Override public void run() { 
                 loginPage.hide(false);
                 mainPage.hide(true);
+                listsPage.hide(true);
             }
         }));
         viewEntry.addEntry(new AltMenuEntry("Main", new AltMenuEntryCallback() {
@@ -83,6 +90,15 @@ public class Example {
             { 
                 loginPage.hide(true);
                 mainPage.hide(false);
+                listsPage.hide(true);
+            }
+        }));
+        viewEntry.addEntry(new AltMenuEntry("Lists", new AltMenuEntryCallback() {
+            @Override public void run() 
+            { 
+                loginPage.hide(true);
+                mainPage.hide(true);
+                listsPage.hide(false);
             }
         }));
 
@@ -90,6 +106,7 @@ public class Example {
         
         altMenu.addGUI(mainPage);
         altMenu.addGUI(loginPage);
+        altMenu.addGUI(listsPage);
 
         while(pMainWindow.isOpen())
         {
@@ -101,6 +118,7 @@ public class Example {
 
             pMainWindow.finishRender();
             pMainWindow.getMouse().reset();
+            pMainWindow.getKeyboard().reset();
 
             //pMainWindow.update();
             //FPS.update();

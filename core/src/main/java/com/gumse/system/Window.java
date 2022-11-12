@@ -337,7 +337,6 @@ public class Window
 					for(int j = 0; j < size; j++)
 					{
 						vec4 col = vec4.mul(new vec4(new vec3(image.getData().get(j * comps + 0) & 0xFF), image.getData().get(j * comps + 1) & 0xFF), color);
-						col.print();
 	
 						newBuffer.put(j * 4 + 0, (byte)col.x); // R
 						newBuffer.put(j * 4 + 1, (byte)col.y); // G

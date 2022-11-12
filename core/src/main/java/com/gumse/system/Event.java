@@ -38,7 +38,7 @@ public class Event {
         public ivec2 windowpos, windowsize;
         public ivec2 mousepos, mousescroll;
         public int mousebutton;
-        public int keyboardkey;
+        public int keyboardkey, keyboardmod;
 
         EventData()
         {
@@ -157,8 +157,9 @@ public class Event {
             public void invoke(long window, int key, int scancode, int action, int mods) 
             {
                 Event evnt = new Event();
-                evnt.type = action == GLFW_PRESS ? Event.GUM_EVENT_KEYBOARD_PRESSED : Event.GUM_EVENT_KEYBOARD_RELEASED;
+                evnt.type = (action == GLFW_PRESS || action == GLFW_REPEAT) ? Event.GUM_EVENT_KEYBOARD_PRESSED : Event.GUM_EVENT_KEYBOARD_RELEASED;
                 evnt.data.keyboardkey = key;
+                evnt.data.keyboardmod = mods;
 
                 win.getKeyboard().handleEvent(evnt);
             }

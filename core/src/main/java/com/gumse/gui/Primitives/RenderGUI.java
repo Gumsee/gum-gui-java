@@ -457,6 +457,6 @@ public class RenderGUI
         return isclicked;
     }
 
-    public boolean somethingHasBeenClicked()                           { return bHasClickedSomething; }
+    public static boolean somethingHasBeenClicked()                           { return bHasClickedSomething; }
 
 }

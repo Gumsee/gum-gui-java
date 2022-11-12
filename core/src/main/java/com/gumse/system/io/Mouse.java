@@ -1,5 +1,7 @@
 package com.gumse.system.io;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.gumse.maths.*;
 import com.gumse.system.Event;
 import com.gumse.system.Window;
@@ -23,7 +25,7 @@ public class Mouse
     public static final int GUM_CURSOR_ALL_SIDES_RESIZE = 				0x08;
     public static final int GUM_CURSOR_NOT_ALLOWED = 					0x09;
 
-
+    private static boolean bActiveHovering = false;
     private ivec2 v2Position, v2PreviousPosition, v2LeftClickPosition;
     private int iMouseWheelState;
     private int frameSize;
@@ -72,7 +74,9 @@ public class Mouse
     static boolean bIsBusy = false, bIsSnapped = false;
     static ivec2 v2PositionDelta = new ivec2(), v2ScreenPosition = new ivec2(), v2PreviousScreenPosition = new ivec2(), v2SnapPoint = new ivec2();
 
-    
+    static private long lDefaultCursor, lHandCursor, lHorizontalCursor, lVerticalCursor, lCrosshairCursor, lIBeamCursor, lTopLeftBottomRightCursor, lTopRightButtomLeftCursor, lAllSidesCursor, lNotAllowedCursor;
+
+
     public Mouse(Window context)
     {
         this.v2Position = new ivec2(0,0);
@@ -89,6 +93,17 @@ public class Mouse
         rayDir = new vec3(0);
         //DragAndDropInfo = "";
         mouseOnID = -1;
+
+        lDefaultCursor            = GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR);
+        lHandCursor               = GLFW.glfwCreateStandardCursor(GLFW.GLFW_POINTING_HAND_CURSOR);
+        lHorizontalCursor         = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_EW_CURSOR);
+        lVerticalCursor           = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_NS_CURSOR);
+        lCrosshairCursor          = GLFW.glfwCreateStandardCursor(GLFW.GLFW_CROSSHAIR_CURSOR);
+        lIBeamCursor              = GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR);
+        lTopLeftBottomRightCursor = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_NWSE_CURSOR);
+        lTopRightButtomLeftCursor = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_NESW_CURSOR);
+        lAllSidesCursor           = GLFW.glfwCreateStandardCursor(GLFW.GLFW_RESIZE_ALL_CURSOR);
+        lNotAllowedCursor         = GLFW.glfwCreateStandardCursor(GLFW.GLFW_NOT_ALLOWED_CURSOR);
         
         //glfwSetInputMode(pContextWindow.getRenderWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         
@@ -99,8 +114,34 @@ public class Mouse
     
     public void cleanup()
     {
+        GLFW.glfwDestroyCursor(lDefaultCursor);
+        GLFW.glfwDestroyCursor(lHandCursor);
+        GLFW.glfwDestroyCursor(lHorizontalCursor);
+        GLFW.glfwDestroyCursor(lVerticalCursor);
+        GLFW.glfwDestroyCursor(lCrosshairCursor);
+        GLFW.glfwDestroyCursor(lIBeamCursor);
+        GLFW.glfwDestroyCursor(lTopLeftBottomRightCursor);
+        GLFW.glfwDestroyCursor(lTopRightButtomLeftCursor);
+        GLFW.glfwDestroyCursor(lAllSidesCursor);
+        GLFW.glfwDestroyCursor(lNotAllowedCursor);
     }
 
+    public void setCursor(int type)
+    {
+        switch(type)
+        {
+            case GUM_CURSOR_DEFAULT:                        GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lDefaultCursor); break;
+            case GUM_CURSOR_HORIZONTAL_RESIZE:              GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lHorizontalCursor); break;
+            case GUM_CURSOR_VERTICAL_RESIZE:                GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lVerticalCursor); break;
+            case GUM_CURSOR_HAND:                           GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lHandCursor); break;
+            case GUM_CURSOR_CROSSHAIR:                      GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lCrosshairCursor); break;
+            case GUM_CURSOR_IBEAM:                          GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lIBeamCursor); break;
+            case GUM_CURSOR_TOPLEFT_TO_BOTTOMRIGHT_RESIZE:  GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lTopLeftBottomRightCursor); break;
+            case GUM_CURSOR_TOPRIGHT_TO_BOTTOMLEFT_RESIZE:  GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lTopRightButtomLeftCursor); break;
+            case GUM_CURSOR_ALL_SIDES_RESIZE:               GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lAllSidesCursor); break;
+            case GUM_CURSOR_NOT_ALLOWED:                    GLFW.glfwSetCursor(pContextWindow.getNativeWindow(), lNotAllowedCursor); break;
+        }
+    }
 
 
 	public float getDeltaDistanceNorm()
@@ -155,7 +196,10 @@ public class Mouse
         CursorType = 0;
         frameSize = 0;
 
-        //setCursor(GUM_CURSOR_DEFAULT);
+        if(!bActiveHovering)
+            setCursor(GUM_CURSOR_DEFAULT);
+
+        bActiveHovering = false;
 
 
         //if(bIsTrapped) { setPosition(pContextWindow.getSize() / 2); }
@@ -166,6 +210,7 @@ public class Mouse
 	public void updateOnClick(boolean bln)    	 { this.updateonclick = bln; }
 	public void trap(boolean doTrap) 			 { this.bIsTrapped = doTrap; }
     public void setInstanceIDUnderMouse(int id)  { this.mouseOnID = id; }
+    static public void setActiveHovering(boolean hover) { bActiveHovering = hover; }
 
 
     //Getter

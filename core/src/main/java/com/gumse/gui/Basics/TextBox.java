@@ -42,6 +42,7 @@ public class TextBox extends RenderGUI
 		pText.setPositionInPercent(true, true);
 		pText.setOrigin(ivec2.div(pText.getSize(), 2.0f));
 		pText.setCharacterHeight(size.y - 5);
+		pText.setColor(new vec4(0.9f, 0.9f, 0.9f, 1.0f));
 		addElement(pText);
 
 		resize();
@@ -75,25 +76,29 @@ public class TextBox extends RenderGUI
 
 	protected void updateOnSizeChange()
 	{
+		ivec2 textSize = pText.getSize();
 		switch(iAlignment)
 		{
 			case LEFT:
-				pText.setOrigin(ivec2.add(new ivec2(0, (int)(pText.getSize().y / 2.0f)), v2TextOffset));
+				pText.setOrigin(ivec2.add(new ivec2(0, (int)(textSize.y / 2.0f)), v2TextOffset));
 				pText.setPosition(new ivec2(0,50));
 				break;
 
 			case CENTER:
-				pText.setOrigin(ivec2.add(ivec2.div(pText.getSize(), 2.0f), v2TextOffset));
+				pText.setOrigin(ivec2.add(ivec2.div(textSize, 2.0f), v2TextOffset));
 				pText.setPosition(new ivec2(50,50));
 				break;
 
 			case RIGHT:
-				pText.setOrigin(ivec2.add(ivec2.mul(pText.getSize(), new vec2(1.0f, 0.5f)), v2TextOffset));
+				pText.setOrigin(ivec2.add(ivec2.mul(textSize, new vec2(1.0f, 0.5f)), v2TextOffset));
 				pText.setPosition(new ivec2(100,50));
 				break;
 		};
+		//pText.setOrigin(new ivec2(0, 0));
+		//pText.getOrigin().print();
 		pText.setRenderBox(new bbox2i(vActualPos, vActualSize));
 		pText.reposition();
+		//ivec2.sub(getPosition(), pText.getPosition()).print();
 	}
 
 	protected void updateOnColorChange()
@@ -108,17 +113,18 @@ public class TextBox extends RenderGUI
 	}
 
 	public void setAlignment(Alignment alignment) { this.iAlignment = alignment; updateOnSizeChange(); }
-	public void setTextOffset(ivec2 offset)		{ this.v2TextOffset = offset; updateOnSizeChange(); }
-	public void setTexture(Texture tex) 			{ this.pBackgroundBox.setTexture(tex); }
-	public void setTextColor(vec4 color)      	{ this.pText.setColor(color); }
-	public void setTextSize(int size)				{ this.pText.setCharacterHeight(size); }
-	public void setMaxTextlength(int length)		{ this.pText.setMaxLength(length); }
+	public void setTextOffset(ivec2 offset)		  { this.v2TextOffset = offset; updateOnSizeChange(); }
+	public void setTexture(Texture tex) 		  { this.pBackgroundBox.setTexture(tex); }
+	public void setTextColor(vec4 color)      	  { this.pText.setColor(color); }
+	public void setTextSize(int size)			  { this.pText.setCharacterHeight(size); }
+	public void setMaxTextlength(int length)	  { this.pText.setMaxLength(length); }
+	public void setCornerRadius(vec4 radius)	  { this.pBackgroundBox.setCornerRadius(radius); }
 
-	public ivec2 getTextSize()					{ return this.pText.getSize(); }
-	public boolean isMouseInside() 					{ return this.pBackgroundBox.isMouseInside(); }
-	public Texture getTexture() 					{ return this.pBackgroundBox.getTexture(); }
-	public Text getText()						{ return this.pText; }
-	public ivec2 getTextOffset()					{ return this.v2TextOffset; }
-	public Box getBox()							{ return this.pBackgroundBox; }
-	public String getString()				{ return this.pText.getString(); }
+	public ivec2 getTextSize()					  { return this.pText.getSize(); }
+	public boolean isMouseInside() 				  { return this.pBackgroundBox.isMouseInside(); }
+	public Texture getTexture() 				  { return this.pBackgroundBox.getTexture(); }
+	public Text getText()						  { return this.pText; }
+	public ivec2 getTextOffset()				  { return this.v2TextOffset; }
+	public Box getBox()							  { return this.pBackgroundBox; }
+	public String getString()				      { return this.pText.getString(); }
 };

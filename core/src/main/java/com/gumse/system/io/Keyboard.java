@@ -133,13 +133,13 @@ public class Keyboard
 
 
 
-    public static final long GUM_MOD_SHIFT =              GLFW_MOD_SHIFT;
-    public static final long GUM_MOD_CONTROL =            GLFW_MOD_CONTROL;
-    public static final long GUM_MOD_ALT =                GLFW_MOD_ALT;
-    public static final long GUM_MOD_SUPER =              GLFW_MOD_SUPER;
-    public static final long GUM_MOD_CAPS_LOCK =          GLFW_MOD_CAPS_LOCK;
-    public static final long GUM_MOD_NUM_LOCK =           GLFW_MOD_NUM_LOCK;
-    public static final long GUM_MOD_ESCAPE =             0;
+    public static final int GUM_MOD_SHIFT =              GLFW_MOD_SHIFT;
+    public static final int GUM_MOD_CONTROL =            GLFW_MOD_CONTROL;
+    public static final int GUM_MOD_ALT =                GLFW_MOD_ALT;
+    public static final int GUM_MOD_SUPER =              GLFW_MOD_SUPER;
+    public static final int GUM_MOD_CAPS_LOCK =          GLFW_MOD_CAPS_LOCK;
+    public static final int GUM_MOD_NUM_LOCK =           GLFW_MOD_NUM_LOCK;
+    public static final int GUM_MOD_ESCAPE =             0;
 
 
     private boolean busy;
@@ -182,6 +182,8 @@ public class Keyboard
 		this.u8TextInput = "";
 		this.iLastPressedKey = 0;
 		this.iLastReleasedKey = 0;
+		this.iLastPressedModKey = 0;
+		this.iLastReleasedModKey = 0;
 	}
 
 
@@ -303,14 +305,17 @@ public class Keyboard
 		return "";
 	}
 
+	public boolean checkLastPressedKey(int key) { return checkLastPressedKey(key, 0); }
 	public boolean checkLastPressedKey(int key, int modkey)
 	{ 
 		return iLastPressedKey == key && iLastPressedModKey == modkey; 
 	}
 
+	public boolean checkLastReleasedKey(int key) { return checkLastReleasedKey(key, 0); }
 	public boolean checkLastReleasedKey(int key, int modkey)
 	{ 
-		return iLastReleasedKey == key && iLastReleasedModKey == modkey; 
+		System.out.println(iLastReleasedModKey & modkey);
+		return iLastReleasedKey == key && iLastReleasedModKey == modkey;
 	}
 
 	public boolean checkKeyPressed(int key)
@@ -333,11 +338,11 @@ public class Keyboard
         switch(event.type)
         {
             case Event.GUM_EVENT_KEYBOARD_PRESSED:
-                keyboardPressCallback(event.data.keyboardkey, 0);
+                keyboardPressCallback(event.data.keyboardkey, event.data.keyboardmod);
                 break;
                 
             case Event.GUM_EVENT_KEYBOARD_RELEASED:
-                keyboardReleaseCallback(event.data.keyboardkey, 0);
+                keyboardReleaseCallback(event.data.keyboardkey, event.data.keyboardmod);
                 break;
 				
 			case Event.GUM_EVENT_KEYBOARD_TEXT_ENTERED:
