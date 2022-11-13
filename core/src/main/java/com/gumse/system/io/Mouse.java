@@ -221,6 +221,7 @@ public class Mouse
 	public int getMouseWheelState() 			 { return this.iMouseWheelState; }
     public int getCursorType()                   { return this.CursorType; }
     public int getInstanceIDUnderMouse()         { return this.mouseOnID; }
+    static public boolean isActiveHovering()     { return bActiveHovering; }
     
     public boolean hasLeftClick()                { return this.LeftDown; }
     public boolean hasRightClick()               { return this.RightDown; }

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
+import com.gumse.tools.Debug;
 import com.gumse.tools.Toolbox;
 
 public class RenderGUI
@@ -40,7 +41,7 @@ public class RenderGUI
 
     protected vec4 v4Color;
     protected vec4 v4CornerRadius;
-    protected String sType;
+    protected String sType = "unset";
     protected String sID;
     protected String sTitle;
     protected String value;
@@ -52,7 +53,6 @@ public class RenderGUI
         this.v4Color = new vec4(1,1,1,1);
         this.v4CornerRadius = new vec4(0,0,0,0);
         this.pParent = null;
-        this.sType = "unset";
         this.sTitle = "";
         this.sID = "";
         this.fRotation = 0.0f;
@@ -264,6 +264,7 @@ public class RenderGUI
                 RenderGUI child = vElements.get(i);
                 child.updateBoundingBox(true);
                 bbox2i childBbox = child.getBoundingBox();
+
                 if(child.getRelativePosition().x + child.getSize().x > bbox.size.x) { bbox.size.x = child.getRelativePosition().x + child.getSize().x; }
                 if(child.getRelativePosition().y + child.getSize().y > bbox.size.y) { bbox.size.y = child.getRelativePosition().y + child.getSize().y; }
                 if(childBbox.size.x > bbox.size.x) { bbox.size.x = childBbox.size.x; }
@@ -340,11 +341,11 @@ public class RenderGUI
 
     public ivec2 getRelativePosition()
     {
-        ivec2 retPos = vPos;
+        ivec2 retPos = new ivec2(vPos);
         if(pParent != null)
         {
             if(posInPercent.x) { retPos.x = (int)(pParent.getSize().x * ((float)vPos.x / 100.0f)); }
-            if(posInPercent.y) { retPos.y = (int) (pParent.getSize().y * ((float)vPos.y / 100.0f)); }
+            if(posInPercent.y) { retPos.y = (int)(pParent.getSize().y * ((float)vPos.y / 100.0f)); }
         }
         retPos.sub(vOrigin);
         return retPos;
@@ -371,6 +372,8 @@ public class RenderGUI
     //
     public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
     public void setPosition(ivec2 pos)                          { this.vPos.set(pos); reposition(); }
+    public void setPositionX(int pos)                           { this.vPos.x = pos; reposition(); }
+    public void setPositionY(int pos)                           { this.vPos.y = pos; reposition(); }
     public void setSize(ivec2 size)                             { this.vSize.set(size); resize(); }
     public void setMaxSize(ivec2 size)                          { this.vMaxSize.set(size); resize(); }
     public void setMinSize(ivec2 size)                          { this.vMinSize.set(size); resize(); }

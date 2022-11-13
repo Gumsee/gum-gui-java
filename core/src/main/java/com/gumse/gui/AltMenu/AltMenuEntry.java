@@ -5,13 +5,14 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
+import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
 
 public class AltMenuEntry extends RenderGUI
 {
     private TextBox pTextBox;
     private Box pChildBorderBox;
-    private boolean bIsClicked;
+    private boolean bIsOpen;
     private int iWidestChild;
 
     public interface AltMenuEntryCallback {
@@ -24,7 +25,7 @@ public class AltMenuEntry extends RenderGUI
     {
         this.vPos = new ivec2(0,0);
         this.sType = "AltMenuEntry";
-        this.bIsClicked = false;
+        this.bIsOpen = false;
         this.iWidestChild = 0;
         this.pCallback = callback;
 
@@ -56,36 +57,54 @@ public class AltMenuEntry extends RenderGUI
         Gum::_delete(pChildBorderBox);*/
     }
 
+    private void close()
+    {
+        pTextBox.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
+        //pTextBox.setColor(vec4(0.26f, 0.26f, 0.26f, 1.0f));
+        if(bIsOpen)
+        {
+            bIsOpen = false;
+            if(pParent.getType().equals("AltMenu"))
+                Mouse.setBusiness(false);
+        }
+        hideChildren(true);
+    }
+
     public void update()
     {
         updatechildren();
         if(isMouseInside())
         {
-            if(!bIsClicked && isHoldingLeftClick())
+            Mouse.setActiveHovering(true);
+            if(isClicked())
             {
-                bIsClicked = true;
-                if(pCallback != null)
-                    pCallback.run();
+                if(!bIsOpen)
+                {
+                    bIsOpen = true;
+                    if(pCallback != null)
+                        pCallback.run();
 
-                pChildBorderBox.setSize(new ivec2(iWidestChild, numChildren() * getSize().y));
+                    pChildBorderBox.setSize(new ivec2(iWidestChild, numChildren() * getSize().y));
 
-                if(pParent.getType() == "AltMenu") { pChildBorderBox.setPosition(new ivec2(0, getSize().y)); }
-                else                                { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
+                    if(pParent.getType() == "AltMenu") { pChildBorderBox.setPosition(new ivec2(0, getSize().y)); }
+                    else                                { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
+
+                    if(pParent.getType().equals("AltMenu"))
+                        Mouse.setBusiness(true);
+                    hideChildren(false);
+                    RenderGUI.clickedSomething(true);
+                }
+                else
+                {
+                    close();
+                }
             }
-            
-            if(bIsClicked)
-            {
-                hideChildren(false);
-                RenderGUI.clickedSomething(true);
-            }
+        
             pTextBox.setColor(new vec4(0.2f, 0.2f, 0.2f, 1.0f));
         }
         else
         {
-            pTextBox.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
-            //pTextBox.setColor(vec4(0.26f, 0.26f, 0.26f, 1.0f));
-            bIsClicked = false;
-            hideChildren(true);
+            close();
         }
     }
 

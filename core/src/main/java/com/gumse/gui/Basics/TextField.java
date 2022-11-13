@@ -124,8 +124,6 @@ public class TextField extends RenderGUI
 		
 		if(isMouseInside())
 		{
-			Mouse.setActiveHovering(true);
-			mouse.setCursor(uiCursorShape);
 			if(bIsEditing)
 			{
 				mouse.setCursor(uiCursorShape);
@@ -152,6 +150,8 @@ public class TextField extends RenderGUI
 			
 			if(!Mouse.isBusy())
 			{
+				Mouse.setActiveHovering(true);
+				mouse.setCursor(uiCursorShape);
 				if((!bActivateOnDoubleclick && isClicked()) || 
 				   ( bActivateOnDoubleclick && mouse.hasLeftDoubleClick()))
 				{
@@ -168,6 +168,8 @@ public class TextField extends RenderGUI
 		{
 			if(bIsEditing && Mouse.isBusy() && mouse.hasLeftClick())
 			{
+				Mouse.setActiveHovering(true);
+				mouse.setCursor(uiCursorShape);
 				int dir = 0;
 				if(mouse.getPosition().x < pBackgroundBox.getPosition().x)
 					dir = -1;

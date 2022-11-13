@@ -31,12 +31,13 @@ public class LoginPage extends RenderGUI
 		rememberText.setColor(new vec4(0.9f, 0.9f, 0.9f, 1.0f));
         addElement(rememberText);
 
-        Switch rememberSwitch = new Switch(new ivec2(430, 250), new ivec2(20, 20), cornerradius);
+        Switch rememberSwitch = new Switch(new ivec2(430, 250), new ivec2(20, 20), 12);
         addElement(rememberSwitch);
 
 
         Button registerButton = new Button(new ivec2(50, 400), new ivec2(190, 60), "Register", fonts.getDefaultFont());
         registerButton.setCornerRadius(new vec4(cornerradius));
+        registerButton.setColor(new vec4(0.2f, 0.2f, 0.4f, 1.0f));
         addElement(registerButton);
 
         Button loginButton = new Button(new ivec2(260, 400), new ivec2(190, 60), "Login", fonts.getDefaultFont());

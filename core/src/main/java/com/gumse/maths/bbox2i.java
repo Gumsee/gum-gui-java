@@ -5,13 +5,13 @@ public class bbox2i
     public ivec2 pos, size;
     public bbox2i()
     {
-        this.pos = new ivec2(0);
+        this.pos = new ivec2(0,0);
         this.size = new ivec2(0,0);
     }
 
     public bbox2i(ivec2 pos, ivec2 size)
     {
-        this.pos = new ivec2(0);
+        this.pos = new ivec2(0,0);
         this.size = new ivec2(0,0);
         this.pos.set(pos);
         this.size.set(size);

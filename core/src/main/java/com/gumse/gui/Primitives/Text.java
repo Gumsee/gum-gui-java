@@ -55,14 +55,16 @@ public class Text extends RenderGUI
         
     public Text(String text, Font font, ivec2 position, int maxlength)
     {
-        this.vPos = position;
+        super.vPos.set(position);
+        super.v4Color = new vec4(0.19f, 0.2f, 0.42f, 1.0f);
+        //super.sType = "Text";
+        setType("Text");
+
         this.pFont = font;
         this.sText = text;
         this.iMaxLength = maxlength;
         this.uiPointSize = 0;
         this.fScale = 1.0f;
-        this.v4Color = new vec4(0.19f, 0.2f, 0.42f, 1.0f);
-        this.sType = "Text";
         this.bRenderBox = new bbox2i(new ivec2(0,0), new ivec2(Integer.MAX_VALUE));
         this.vChars = new ArrayList<>();
         this.bFadeOut = false;

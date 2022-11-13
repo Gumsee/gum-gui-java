@@ -64,8 +64,7 @@ public class TextBox extends RenderGUI
 	public void updateText()
 	{
 		pText.applyStringChanges();
-		pText.setOrigin(ivec2.div(pText.getSize(), 2.0f));
-		pText.reposition();
+		updateOnSizeChange();
 	}
 
 

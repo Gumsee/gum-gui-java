@@ -16,6 +16,7 @@ import com.gumse.system.Window;
 import com.gumse.system.Window.*;
 import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
+import com.gumse.tools.FPS;
 
 
 public class Example {
@@ -39,7 +40,8 @@ public class Example {
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
         ListsPage listsPage = new ListsPage();
-        mainPage.hide(true);
+        mainPage.hide(false);
+        loginPage.hide(true);
         listsPage.hide(true);
 
         //
@@ -61,7 +63,7 @@ public class Example {
             @Override public void run() { Debug.info("File should be saved as"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Exit", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Exit.."); }
+            @Override public void run() { Debug.info("Exit.."); pMainWindow.close(); }
         }));
 
         AltMenuEntry editEntry = new AltMenuEntry("Edit", null);
@@ -108,6 +110,9 @@ public class Example {
         altMenu.addGUI(loginPage);
         altMenu.addGUI(listsPage);
 
+        altMenu.resize();
+        altMenu.reposition();
+
         while(pMainWindow.isOpen())
         {
             Mouse.update();
@@ -116,12 +121,14 @@ public class Example {
             testGUI.render();
             testGUI.update();
 
+            //System.out.println("Mouse is: " + (Mouse.isBusy() ? "Busy" : "Available"));
+
             pMainWindow.finishRender();
             pMainWindow.getMouse().reset();
             pMainWindow.getKeyboard().reset();
 
             //pMainWindow.update();
-            //FPS.update();
+            FPS.update();
 		}
     }
 }

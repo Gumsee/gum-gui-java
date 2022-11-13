@@ -25,9 +25,10 @@ public class Switch extends RenderGUI
 
 
         pTickbox = new Box(new ivec2(10,10), new ivec2(80, 80));
-        pTickbox.setCornerRadius(new vec4(radius));
+        pTickbox.setCornerRadius(new vec4(radius * 0.8f));
         pTickbox.setPositionInPercent(true, true);
         pTickbox.setSizeInPercent(true, true);
+        pTickbox.setColor(new vec4(0.3f,0.6f,0.3f,1.0f));
         //pTickbox.setColor(vec4(Gum::Maths::HSVToRGB(vec3(rand() % 360, 100, 70)),1.0));
         addElement(pTickbox);
 
