@@ -11,6 +11,7 @@ import com.gumse.system.io.Mouse.*;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Keyboard.*;
 import com.gumse.tools.Debug;
+import com.gumse.tools.FPS;
 
 
 public class Events {
@@ -117,16 +118,14 @@ public class Events {
 
 
         while(pMainWindow.isOpen())
-        {
-            Mouse.update();
-            
+        {            
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
             pMainWindow.finishRender();
             pMainWindow.getMouse().reset();
             Display.pollEvents();
 
             //pMainWindow.update();
-            //FPS.update();
+            FPS.update();
 		}
     }
 }

@@ -8,7 +8,6 @@ import com.gumse.tools.Debug;
 
 public class FontManager
 {
-	private String FONT_PATH;
 	private com.gumse.gui.Font.Font pDefaultFont;
 	private Map<String, com.gumse.gui.Font.Font> mFonts;
 	private static FontManager pInstance = null;

@@ -18,8 +18,7 @@ public class TextBox extends RenderGUI
 	
     private Box	pBackgroundBox;
 	private Text pText;
-    
-	private String CurrentText;
+	
 	private Alignment iAlignment;
 	private ivec2 v2TextOffset;
 

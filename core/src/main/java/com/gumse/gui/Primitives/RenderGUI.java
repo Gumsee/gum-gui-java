@@ -426,6 +426,7 @@ public class RenderGUI
     public boolean isHidden()                                 { return this.bIsHidden; }
     public boolean areChildrenHidden()                        { return this.bChildrenHidden; }
     public boolean hasChild(RenderGUI gui)                    { for(RenderGUI child : vChildren) { if(child == gui) return true; } return false;}
+    public ArrayList<RenderGUI> getChildren()                 { return vChildren; }
 
     public boolean isClicked()                                   
     { 

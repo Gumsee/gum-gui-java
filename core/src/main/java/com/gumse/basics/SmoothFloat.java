@@ -30,7 +30,7 @@ public class SmoothFloat
 		if(reachedEnd)
 			actual = target;
 
-        return !reachedEnd;
+        return actual != target;
 	}
 	
 	public void setTarget(float target) 			

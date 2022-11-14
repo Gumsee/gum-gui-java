@@ -1,15 +1,20 @@
 package com.gumse.pages;
 
+import com.gumse.gui.Basics.Dropdown;
+import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
 import com.gumse.gui.Basics.Scroller;
+import com.gumse.gui.Basics.Slider;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
+
 
 public class MainPage extends RenderGUI
 {
@@ -42,6 +47,35 @@ public class MainPage extends RenderGUI
         fpsBox.setAlignment(TextBox.Alignment.LEFT);
         mainScroller.addGUI(fpsBox);
 
+        Slider testSlider = new Slider(new ivec2(30, 200), 200, "Slider1", 0);
+        testSlider.setViewMultiplier(666);
+        mainScroller.addGUI(testSlider);
+
+        Slider testInfSlider = new Slider(new ivec2(30, 240), 200, "Infinite", 2);
+        testInfSlider.setInfinite(true);
+        testInfSlider.setUnit("cm");
+        mainScroller.addGUI(testInfSlider);
+
+        Text sliderInfoText = new Text("Shift: Slow down\nLControl: Speed up", fonts.getDefaultFont(), new ivec2(30, 270), 0);
+        sliderInfoText.setCharacterHeight(20);
+        sliderInfoText.setColor(new vec4(0.8f, 0.8f, 0.8f, 1.0f));
+        mainScroller.addGUI(sliderInfoText);
+
+
+        Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);
+        DropdownEntryCallback dropdowncallback = new DropdownEntryCallback() { 
+            @Override public void run(String str) { 
+                Debug.info(str); 
+            } 
+        };
+        testDropdown.addEntry("Entry1", dropdowncallback, false);
+        testDropdown.addEntry("Entry2", dropdowncallback, false);
+        testDropdown.addEntry("Entry3", dropdowncallback, false);
+        testDropdown.addEntry("Entry4", dropdowncallback, false);
+        mainScroller.addGUI(testDropdown);
+
+
+
         TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
         mainScroller.addGUI(textBox);
 
@@ -52,7 +86,7 @@ public class MainPage extends RenderGUI
 
     public void update()
     {
-        fpsBox.setString("FPS: " + FPS.getFPS());
+        fpsBox.setString("FPS: " + (int)FPS.getFPS());
         updatechildren();
     }
 }

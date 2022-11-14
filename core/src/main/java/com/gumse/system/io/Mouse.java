@@ -26,7 +26,7 @@ public class Mouse
     public static final int GUM_CURSOR_NOT_ALLOWED = 					0x09;
 
     private static boolean bActiveHovering = false;
-    private ivec2 v2Position, v2PreviousPosition, v2LeftClickPosition;
+    private ivec2 v2Position, v2PreviousPosition, v2LeftClickPosition, v2PositionDelta;
     private int iMouseWheelState;
     private int frameSize;
     private int CursorType;
@@ -71,8 +71,7 @@ public class Mouse
     private MouseEnteredLeftCallback enteredCallback = null, leftCallback = null;
 
     
-    static boolean bIsBusy = false, bIsSnapped = false;
-    static ivec2 v2PositionDelta = new ivec2(), v2ScreenPosition = new ivec2(), v2PreviousScreenPosition = new ivec2(), v2SnapPoint = new ivec2();
+    static boolean bIsBusy = false;
 
     static private long lDefaultCursor, lHandCursor, lHorizontalCursor, lVerticalCursor, lCrosshairCursor, lIBeamCursor, lTopLeftBottomRightCursor, lTopRightButtomLeftCursor, lAllSidesCursor, lNotAllowedCursor;
 
@@ -81,6 +80,7 @@ public class Mouse
     {
         this.v2Position = new ivec2(0,0);
         this.v2PreviousPosition = new ivec2(0,0);
+        this.v2PositionDelta = new ivec2(0,0);
         this.pContextWindow = context;
         this.v2LeftClickPosition = new ivec2(-1, -1);
 
@@ -183,8 +183,6 @@ public class Mouse
         lastClickTimeLeft += 0.01; //FPS::get();
         lastClickTimeRight += 0.01; //FPS::get();
         
-        //if(LeftReleased)
-        //    v2LeftClickPosition.set(new ivec2(-1, -1));
 		LeftReleased = false;
 		RightReleased = false;
         LeftDoubleClick = false;
@@ -200,9 +198,12 @@ public class Mouse
             setCursor(GUM_CURSOR_DEFAULT);
 
         bActiveHovering = false;
+        this.v2PositionDelta = new ivec2(0,0);
+    }
 
-
-        //if(bIsTrapped) { setPosition(pContextWindow.getSize() / 2); }
+    public void lock(boolean dolock)
+    {
+        GLFW.glfwSetInputMode(pContextWindow.getNativeWindow(), GLFW.GLFW_CURSOR, dolock ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
     }
 
     //Setter
@@ -216,6 +217,7 @@ public class Mouse
     //Getter
 	public vec3 getRayDirection() 			     { return this.rayDir; }
 	public ivec2 getPosition() 				     { return this.v2Position; }
+	public ivec2 getPositionDelta()  		     { return this.v2PositionDelta; }
     public ivec2 getLeftClickPosition()          { return this.v2LeftClickPosition; }
 	public int getCurrentPickedObjectID() 		 { return this.mouseOnID; }
 	public int getMouseWheelState() 			 { return this.iMouseWheelState; }
@@ -323,7 +325,7 @@ public class Mouse
         v2PreviousPosition = v2Position;
         v2Position = pos;
 
-        //v2PositionDelta = v2Position - v2PreviousPosition;
+        v2PositionDelta = ivec2.sub(v2Position, v2PreviousPosition);
         calcRay();
 
         if(movedCallback != null)
@@ -354,37 +356,7 @@ public class Mouse
     //
     // Global static methods
     //
-    public static void update()
-    {
-        /*int x, y, winx, winy;
-        unsigned int mask = 0;
-        unsigned long childWin, rootWin;
-        XQueryPointer(Display::getSystemHandle(), XRootWindow(Display::getSystemHandle(), XDefaultScreen(Display::getSystemHandle())), &childWin, &rootWin, &x, &y, &winx, &winy, &mask);*/
-        
-        v2ScreenPosition = getScreenPosition();
-        v2PositionDelta = ivec2.sub(v2ScreenPosition, v2PreviousScreenPosition);
-        v2PreviousScreenPosition = v2ScreenPosition;
-
-        /*if(bIsSnapped) 
-        {
-            setGlobalPosition(v2SnapPoint);
-            v2PreviousScreenPosition = v2SnapPoint;
-        }*/
-    }
-
-    public static void freeze(boolean state)
-    {
-        if(bIsSnapped != state)
-        {
-            v2SnapPoint = v2ScreenPosition;
-            bIsSnapped = state;
-        }
-    }
-
-    public static ivec2 getScreenPosition() 	     { return v2ScreenPosition; }
-    public static ivec2 getDelta() 			         { return v2PositionDelta; }
     public static boolean isBusy()                   { return bIsBusy; }
 
-    public static void setBusiness(boolean val)      { bIsBusy = val; }
-    public static void setSnapPoint(ivec2 snappoint) { v2SnapPoint = snappoint; }    
+    public static void setBusiness(boolean val)      { bIsBusy = val; }  
 }

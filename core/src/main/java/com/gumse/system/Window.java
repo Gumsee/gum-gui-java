@@ -199,7 +199,7 @@ public class Window
 
 			if(bHasScalingSnapped)
 			{
-				setSize(ivec2.add(getSize(), Mouse.getDelta()));
+				setSize(ivec2.add(getSize(), pMouse.getPositionDelta()));
 				if(getSize().x < 100) { setSize(new ivec2(100, v2Size.y)); }
 				if(getSize().y < 100) { setSize(new ivec2(v2Size.x, 100)); }
 

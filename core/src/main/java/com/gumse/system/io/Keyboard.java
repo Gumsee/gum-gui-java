@@ -2,6 +2,8 @@ package com.gumse.system.io;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.gumse.system.Event;
 import com.gumse.system.Window;
 
@@ -320,14 +322,14 @@ public class Keyboard
 
 	public boolean checkKeyPressed(int key)
 	{ 
-		//return glfwGetKey(pContextWindow->getRenderWindow(), key) == GLFW_PRESS; 
-		return false;
+		return GLFW.glfwGetKey(pContextWindow.getNativeWindow(), key) == GLFW_PRESS; 
+		//return iLastPressedKey == key;
 	}
 
 	public boolean checkKeyReleased(int key)
 	{ 
-		//return glfwGetKey(pContextWindow->getRenderWindow(), key) == GLFW_RELEASE; 
-		return false;
+		return GLFW.glfwGetKey(pContextWindow.getNativeWindow(), key) == GLFW_RELEASE; 
+		//return iLastReleasedKey == key;
 	}
 
 	public void setBusiness(boolean val)  { busy = val; }

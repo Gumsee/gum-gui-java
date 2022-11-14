@@ -115,7 +115,6 @@ public class Example {
 
         while(pMainWindow.isOpen())
         {
-            Mouse.update();
             Display.pollEvents();
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
             testGUI.render();
