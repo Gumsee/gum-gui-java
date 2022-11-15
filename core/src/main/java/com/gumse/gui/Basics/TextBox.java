@@ -40,7 +40,7 @@ public class TextBox extends RenderGUI
 		pText = new Text(str, font, new ivec2(50, 50), 0);
 		pText.setPositionInPercent(true, true);
 		pText.setOrigin(ivec2.div(pText.getSize(), 2.0f));
-		pText.setCharacterHeight(size.y - 5);
+		pText.setCharacterHeight((int)(size.y * 0.9));
 		pText.setColor(new vec4(0.9f, 0.9f, 0.9f, 1.0f));
 		addElement(pText);
 

@@ -21,8 +21,8 @@ public class AltMenu extends RenderGUI
         this.setType("AltMenu");
         this.vEntries = new ArrayList<>();
     
-        pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
-        pBackground.setSizeInPercent(true, true);
+        pBackground = new Box(new ivec2(0, 0), new ivec2(100, 30));
+        pBackground.setSizeInPercent(true, false);
         pBackground.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
         addElement(pBackground);
     }

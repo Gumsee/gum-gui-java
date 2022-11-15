@@ -66,7 +66,7 @@ public class List extends RenderGUI
         pTitleBox = new TextBox(title, FontManager.getInstance().getDefaultFont(), new ivec2(0,0), new ivec2(100, 30));
         pTitleBox.setAlignment(TextBox.Alignment.LEFT);
         pTitleBox.setTextSize(20);
-        pTitleBox.setTextOffset(new ivec2(-10, 5));
+        pTitleBox.setTextOffset(new ivec2(-10, 0));
         pTitleBox.setSizeInPercent(true, false);
         pTitleBox.setColor(new vec4(0.1f, 0.1f, 0.1f, 1.0f));
         pTitleBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));

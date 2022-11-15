@@ -86,6 +86,9 @@ public class MainPage extends RenderGUI
 
     public void update()
     {
+        if(bIsHidden)
+            return;
+            
         fpsBox.setString("FPS: " + (int)FPS.getFPS());
         updatechildren();
     }

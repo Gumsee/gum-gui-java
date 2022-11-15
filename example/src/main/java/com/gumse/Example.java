@@ -27,8 +27,8 @@ public class Example {
         
         //Window Options
         Window pMainWindow = new Window("Example App", new ivec2(500, 500), Window.GUM_WINDOW_RESIZABLE, null);
-        pMainWindow.setClearColor(new vec4(0.5f, 0.0f, 0.0f, 0.0f)); // Set the clear color);
-
+        pMainWindow.setClearColor(new vec4(0.09f, 0.1f, 0.11f, 1.0f)); // Set the clear color);
+        
         GUI testGUI = new GUI(pMainWindow);
 		pMainWindow.onResized(new WindowResizePosCallback() {
             @Override public void run(ivec2 val) {
