@@ -1,6 +1,7 @@
 package com.gumse.pages;
 
 import com.gumse.gui.Basics.Dropdown;
+import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.Slider;
@@ -19,6 +20,7 @@ import com.gumse.tools.FPS;
 public class MainPage extends RenderGUI
 {
     private TextBox fpsBox;
+    private Graph testGraph;
 
     public MainPage()
     {
@@ -75,6 +77,10 @@ public class MainPage extends RenderGUI
         mainScroller.addGUI(testDropdown);
 
 
+        testGraph = new Graph("Some Graph", new ivec2(30, 500), new ivec2(90, 150));
+        testGraph.setSizeInPercent(true, false);
+        mainScroller.addGUI(testGraph);
+
 
         TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
         mainScroller.addGUI(textBox);
@@ -84,12 +90,16 @@ public class MainPage extends RenderGUI
         resize();
     }
 
+    private float f = 0.0f;
+
     public void update()
     {
         if(bIsHidden)
             return;
             
         fpsBox.setString("FPS: " + (int)FPS.getFPS());
+        //testGraph.addData((float)Math.cos(f += 0.1f));
+        testGraph.addData(FPS.getFPS());
         updatechildren();
     }
 }
