@@ -117,8 +117,8 @@ public class Example {
         {
             Display.pollEvents();
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
-            testGUI.render();
-            testGUI.update();
+            /*testGUI.render();
+            testGUI.update();*/
 
             //System.out.println("Mouse is: " + (Mouse.isBusy() ? "Busy" : "Available"));
 
@@ -129,5 +129,7 @@ public class Example {
             //pMainWindow.update();
             FPS.update();
 		}
+
+        pMainWindow.cleanup();
     }
 }
