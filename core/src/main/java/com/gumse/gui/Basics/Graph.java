@@ -200,7 +200,7 @@ public class Graph extends RenderGUI
             calculateScale();
         }
 
-        Debug.info(data + " " + fBiggestNum + " " + fSmallestNum);
+        ///Debug.info(data + " " + fBiggestNum + " " + fSmallestNum);
 
 
         for(int i = 0; i < vData.size(); i++)

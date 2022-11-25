@@ -90,6 +90,13 @@ public class Window
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        System.out.println(System.getProperty("os.name"));
+        if(System.getProperty("os.name") == "MacOS")
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Apple bullshit
 
         //Create the window
         lWindowID = glfwCreateWindow(v2Size.x, v2Size.y, title, 0, 0);
