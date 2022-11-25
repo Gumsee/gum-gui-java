@@ -66,10 +66,11 @@ public class Graph extends RenderGUI
             Shader fragShader = new Shader(Shader.SHADER_VERSION_STR + "\n" +
                 "in vec2 Texcoord;\n" +
                 "uniform vec4 color;\n" +
+                "out vec4 fragColor;\n" +
     
                 "void main(void)\n" +
                 "{\n" +
-                    "gl_FragColor = color;\n" +
+                    "fragColor = color;\n" +
                 "}"
                 , Shader.TYPES.FRAGMENT_SHADER);
     
