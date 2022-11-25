@@ -23,6 +23,8 @@ public class Example {
     public static void main(String[] args) 
     {
         Globals.DEBUG_BUILD = true;
+        System.setProperty("java.awt.headless", "true");
+
         Display.init();
         
         //Window Options
@@ -117,8 +119,8 @@ public class Example {
         {
             Display.pollEvents();
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
-            /*testGUI.render();
-            testGUI.update();*/
+            testGUI.render();
+            testGUI.update();
 
             //System.out.println("Mouse is: " + (Mouse.isBusy() ? "Busy" : "Available"));
 
