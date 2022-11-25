@@ -15,11 +15,48 @@
   <!-- FIXME change it to the project's website -->
   <url>https://github.com/Gumsee/gum-gui-java</url>
 
+    <profiles>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os> 
+                <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <platform>macos</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                <family>unix</family>
+                <name>Linux</name>
+                </os>
+            </activation>
+            <properties>
+                <platform>linux</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <platform>windows</platform>
+            </properties>
+        </profile>
+    </profiles>
+
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
-    <platform>linux</platform>
   </properties>
 
   <repositories>
