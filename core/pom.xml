@@ -24,7 +24,8 @@
                 </os>
             </activation>
             <properties>
-                <platform>macos</platform>
+                <!--<platform>macos</platform>-->
+                <platform>macos-arm64</platform>
             </properties>
         </profile>
         <profile>
