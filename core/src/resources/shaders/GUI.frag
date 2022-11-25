@@ -12,6 +12,8 @@ uniform bool isTextureGrayscale;
 uniform vec4 radius;
 uniform float borderThickness;
 
+out vec4 fragColor;
+
 float roundedBoxSDF(vec2 CenterPosition, vec2 Size, float Radius) 
 {
     float r = max(Radius, 0.0f);
@@ -21,7 +23,7 @@ float roundedBoxSDF(vec2 CenterPosition, vec2 Size, float Radius)
 void main(void)
 {
     vec4 TextureColor, color;
-    TextureColor = texture2D(textureSampler, Texcoord);
+    TextureColor = texture(textureSampler, Texcoord);
     if(gradient)
     {
         float mixValue;
@@ -33,13 +35,13 @@ void main(void)
     if(hasTexture)  
     { 
         if(isTextureGrayscale)
-            gl_FragColor = vec4(TextureColor.r, TextureColor.r, TextureColor.r, TextureColor.g) * color; 
+            fragColor = vec4(TextureColor.r, TextureColor.r, TextureColor.r, TextureColor.g) * color; 
         else
-            gl_FragColor = TextureColor * color; 
+            fragColor = TextureColor * color; 
     }
     else            
     { 
-        gl_FragColor = color; 
+        fragColor = color; 
     }
 
 
@@ -83,8 +85,8 @@ void main(void)
     }
 
     if(borderThickness > 0)
-        gl_FragColor = mix(gl_FragColor, borderColor, clamp(distBorder, 0.0f, 1.0f));
+        fragColor = mix(fragColor, borderColor, clamp(distBorder, 0.0f, 1.0f));
         
     float smoothedAlpha = 1.0f - smoothstep(0.0f, 2.0f, dist);
-    gl_FragColor.a *= smoothedAlpha;
+    fragColor.a *= smoothedAlpha;
 }

@@ -6,6 +6,8 @@ uniform vec2 bboxsize;
 uniform bool fadestart;
 uniform bool fade;
 
+out vec4 fragColor;
+
 void main()
 {
     float fac = 1.0f;
@@ -23,7 +25,7 @@ void main()
         fac *= 2.0f;
     }
 
-    vec4 sample = vec4(1, 1, 1, texture2D(textureSampler, Texcoord).r);
-    gl_FragColor = color * sample;
-    gl_FragColor.a *= fac;
+    vec4 sample = vec4(1, 1, 1, texture(textureSampler, Texcoord).r);
+    fragColor = color * sample;
+    fragColor.a *= fac;
 }
