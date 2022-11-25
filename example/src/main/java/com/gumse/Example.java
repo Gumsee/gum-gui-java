@@ -22,7 +22,7 @@ import com.gumse.tools.FPS;
 public class Example {
     public static void main(String[] args) 
     {
-        Globals.DEBUG_BUILD = false;
+        Globals.DEBUG_BUILD = true;
         Display.init();
         
         //Window Options
