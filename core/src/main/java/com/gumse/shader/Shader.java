@@ -21,7 +21,7 @@ public class Shader
         public static final int GEOMETRY_SHADER                = GL40.GL_GEOMETRY_SHADER;
     };
 
-    public static final String SHADER_VERSION_STR = "#version 330 core \n";
+    public static final String SHADER_VERSION_STR = "#version 320 core \n";
 
     public Shader(String sourcecode, int shadertype)
     {
