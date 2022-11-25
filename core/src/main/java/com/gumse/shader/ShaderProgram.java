@@ -49,13 +49,13 @@ public class ShaderProgram
 		
 
 		//Validate program
-		GL30.glValidateProgram(iProgramID);
+		/*GL30.glValidateProgram(iProgramID);
 		if(GL30.glGetProgrami(this.iProgramID, GL30.GL_VALIDATE_STATUS) == GL30.GL_FALSE)
 		{
 			String errorLog = GL30.glGetProgramInfoLog(iProgramID, 1024);
 			GL30.glDeleteProgram(this.iProgramID); //We don't need the program anymore.
 			Debug.error("ShaderProgram: Validation Error: " + this.sName + ": " + errorLog);
-		}
+		}*/
 		
 
 		//Always detach shaders after a successful link.
