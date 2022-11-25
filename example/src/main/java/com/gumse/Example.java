@@ -23,7 +23,7 @@ public class Example {
     public static void main(String[] args) 
     {
         Globals.DEBUG_BUILD = true;
-        System.setProperty("java.awt.headless", "true");
+        System.setProperty("java.awt.headless", "true"); //for iCrap support
 
         Display.init();
         
