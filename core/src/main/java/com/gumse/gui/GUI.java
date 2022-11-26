@@ -81,6 +81,12 @@ public class GUI
 		RenderGUI.clickedSomething(false);
 	}
 
+    void updateCanvas()
+    {
+        WindowCanvas.resize();
+        WindowCanvas.reposition();
+    }
+
 
 	/*public void showToolTip(String tooltip)
 	{
