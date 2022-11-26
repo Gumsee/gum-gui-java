@@ -81,7 +81,7 @@ public class GUI
 		RenderGUI.clickedSomething(false);
 	}
 
-    void updateCanvas()
+    public void updateCanvas()
     {
         WindowCanvas.resize();
         WindowCanvas.reposition();
