@@ -167,6 +167,9 @@ public class Text extends RenderGUI
 
     public void render()
     {
+        if(bIsHidden)
+            return;
+        
         GUIShader.getTextShaderProgram().use();
         GUIShader.getTextShaderProgram().LoadUniform("color", v4Color);
         GUIShader.getTextShaderProgram().LoadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
