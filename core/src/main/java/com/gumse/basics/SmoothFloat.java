@@ -25,12 +25,14 @@ public class SmoothFloat
 		float offset = target - actual;
 		float change = offset * FPS.getFrametime() * speed;
 		actual += change;
+
+        boolean ret = actual != target;
 		
 		boolean reachedEnd = offset < 0.01 && offset > -0.01;
 		if(reachedEnd)
 			actual = target;
 
-        return actual != target;
+        return ret;
 	}
 	
 	public void setTarget(float target) 			
