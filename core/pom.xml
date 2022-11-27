@@ -17,15 +17,29 @@
 
     <profiles>
         <profile>
-            <id>mac</id>
+            <id>macarm</id>
             <activation>
                 <os> 
                 <family>mac</family>
+                <arch>arm64</arch>
                 </os>
             </activation>
             <properties>
                 <!--<platform>macos</platform>-->
                 <platform>macos-arm64</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os> 
+                <family>mac</family>
+                <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <!--<platform>macos</platform>-->
+                <platform>macos</platform>
             </properties>
         </profile>
         <profile>
