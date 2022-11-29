@@ -89,9 +89,10 @@ public class Button extends RenderGUI
         String fontName = node.getAttribute("font");
         Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-        int fontsize     = node.getIntAttribute("fontsize", 12);
+        int fontsize     = node.getIntAttribute("fontsize", 0);
         Button retbutton = new Button(new ivec2(0,0), new ivec2(1,1), "", font);
-        retbutton.getBox().setTextSize(fontsize);
+        if(fontsize > 0)
+            retbutton.getBox().setTextSize(fontsize);
         
 
         return retbutton;
