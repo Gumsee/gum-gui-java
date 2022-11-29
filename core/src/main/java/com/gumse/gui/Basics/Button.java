@@ -42,16 +42,22 @@ public class Button extends RenderGUI
         //Gum::_delete(backgroundBox);
     }
 
+    @Override
+    protected void updateOnTitleChange() 
+    {
+        backgroundBox.setString(sTitle);
+    }
+
     public void update()
     {
         if(backgroundBox.isMouseInside())
         {
             Mouse.setActiveHovering(true);
             Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-            backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.01f)));
+            backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.02f)));
             if(isHoldingLeftClick())
             {
-                backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.03f)));
+                backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.05f)));
             }
             if(!Mouse.isBusy() && isClicked())
             {
