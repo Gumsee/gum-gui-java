@@ -8,11 +8,13 @@ import org.lwjgl.opengl.GL30;
 
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Font.Character;
 import com.gumse.maths.*;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.tools.Debug;
 
 public class Text extends RenderGUI
@@ -55,10 +57,11 @@ public class Text extends RenderGUI
         
     public Text(String text, Font font, ivec2 position, int maxlength)
     {
-        super.vPos.set(position);
-        super.v4Color = new vec4(0.19f, 0.2f, 0.42f, 1.0f);
+        this.vPos.set(position);
+        //super.v4Color = new vec4(0.19f, 0.2f, 0.42f, 1.0f);
+        this.v4Color = new vec4(0.9f, 0.9f, 0.9f, 1.0f);
         //super.sType = "Text";
-        setType("Text");
+        this.sType = "Text";
 
         this.pFont = font;
         this.sText = text;
@@ -278,4 +281,17 @@ public class Text extends RenderGUI
 
         return closest;
     }
+
+	public static Text createFromXMLNode(XMLNode node)
+	{
+        String fontName = node.getAttribute("font");
+        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+
+        int fontsize  = node.getIntAttribute("fontsize", 12);
+        int maxlength = node.getIntAttribute("maxlength", 0);
+        
+		Text textgui = new Text(node.content, font, new ivec2(0,0), maxlength);
+        textgui.setCharacterHeight(fontsize);
+		return textgui;
+	}
 };

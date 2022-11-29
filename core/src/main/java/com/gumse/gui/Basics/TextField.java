@@ -3,10 +3,12 @@ package com.gumse.gui.Basics;
 import org.lwjgl.opengl.GL11;
 
 import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
 
@@ -343,4 +345,19 @@ public class TextField extends RenderGUI
 	//
 	public TextBox getBox()    { return this.pBackgroundBox; }
 	public boolean isEditing() { return this.bIsEditing; }
+
+	public static TextField createFromXMLNode(XMLNode node)
+	{
+        String fontName = node.getAttribute("font");
+        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+
+        int fontsize  = node.getIntAttribute("fontsize", 0);
+        int maxlength = node.getIntAttribute("maxlength", 0);
+        
+		TextField textfieldgui = new TextField(node.content, font, new ivec2(0,0), new ivec2(0,0));
+        if(fontsize > 0)
+            textfieldgui.getBox().setTextSize(fontsize);
+                
+		return textfieldgui;
+	}
 };

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.gumse.gui.Basics.*;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.Color;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec3;
@@ -74,6 +75,9 @@ public class XMLLoader
                 else if(type == "scroller") { gui = Scroller.createFromXMLNode(node); }
                 else if(type == "slider")   { gui = Slider.createFromXMLNode(node); }
                 else if(type == "switch")   { gui = Switch.createFromXMLNode(node); }
+                else if(type == "text")     { gui = Text.createFromXMLNode(node); }
+                else if(type == "textfield"){ gui = TextField.createFromXMLNode(node); }
+                else if(type == "textbox")  { gui = TextBox.createFromXMLNode(node); }
 
                 if(gui != null)
                 {
