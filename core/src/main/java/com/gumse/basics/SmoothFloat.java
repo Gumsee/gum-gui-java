@@ -21,7 +21,8 @@ public class SmoothFloat
 		this.speed = speed;
 	}
 
-	public boolean update() {
+	public boolean update() 
+    {
 		float offset = target - actual;
 		float change = offset * FPS.getFrametime() * speed;
 		actual += change;
