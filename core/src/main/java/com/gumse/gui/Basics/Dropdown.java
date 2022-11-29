@@ -2,11 +2,14 @@ package com.gumse.gui.Basics;
 
 import com.gumse.basics.SmoothFloat;
 import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
+import com.gumse.tools.Toolbox;
 
 public class Dropdown extends RenderGUI
 {
@@ -202,10 +205,11 @@ public class Dropdown extends RenderGUI
 	public void open() 				  { bIsOpen = true;     pSmoothFloat.setTarget(1); }
 	public void Switch() 			  { bIsOpen = !bIsOpen; pSmoothFloat.setTarget(bIsOpen ? 1 : 0); }
 	
-	/*public static Dropdown createFromXMLNode(XMLNode node)
+	public static Dropdown createFromXMLNode(XMLNode node)
 	{
-		Font font = FontManager.getInstance().getDefaultFont();
-		float fontsize     = node.mAttributes["fontsize"] != "" ? Tools::StringToFloat(node.mAttributes["fontsize"]) : 12.0f;
+        String fontName = node.getAttribute("font");
+        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+		int fontsize     = node.getIntAttribute("fontsize", 12);
 		return new Dropdown("", font, new ivec2(0,0), new ivec2(0,0), fontsize);
-	}*/
+	}
 };

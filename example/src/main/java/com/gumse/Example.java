@@ -7,6 +7,8 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;
+import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI;
 import com.gumse.maths.*;
 import com.gumse.pages.ListsPage;
 import com.gumse.pages.LoginPage;
@@ -14,12 +16,14 @@ import com.gumse.pages.MainPage;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
-import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
 
+import clojure.main;
 
-public class Example {
+
+public class Example
+{
     public static void main(String[] args) 
     {
         Globals.DEBUG_BUILD = true;
@@ -111,6 +115,9 @@ public class Example {
         altMenu.addGUI(mainPage);
         altMenu.addGUI(loginPage);
         altMenu.addGUI(listsPage);
+
+        RenderGUI xmlTest = XMLGUI.loadFile("guis/examplegui.xml");
+        mainPage.addGUI(xmlTest);
 
         altMenu.resize();
         altMenu.reposition();

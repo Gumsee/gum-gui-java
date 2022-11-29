@@ -1,10 +1,13 @@
 package com.gumse.gui.Basics;
 
 import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Toolbox;
 
 public class Button extends RenderGUI
 {
@@ -75,25 +78,16 @@ public class Button extends RenderGUI
     public vec4 getSecondColor()                         { return this.backgroundBox.getBox().getSecondColor(); }
     public TextBox getBox()                              { return this.backgroundBox; }
 
-    /*public static Button* createFromXMLNode(XMLNode* node)
+    public static Button createFromXMLNode(XMLNode node)
     {
-        Gum::GUI::Font *font = Gum::GUI::Fonts.getDefaultFont();
-        float borderRadius = node.mAttributes["radius"]   != "" ? Tools::StringToFloat(node.mAttributes["radius"])   : 0.0f;
-        float fontsize     = node.mAttributes["fontsize"] != "" ? Tools::StringToFloat(node.mAttributes["fontsize"]) : 12.0f;
-        std::string onclick = "";
-        Button *retbutton = new Button(ivec2(0,0), ivec2(1,1), "", font);
-        if(onclick != "")
-        {
-            /*script *currentScript = scripts[onclick];
-            if(currentScript == nullptr)
-            {
-                Gum::Output::error("XMLGUILoader: script '" + onclick + "' does not exist!");
-                return retbutton;
-            }
-            std::function<void()> scriptfunc = std::bind(&script::run, currentScript);
-            retbutton.setCallbackFunction(scriptfunc);
-        }
+        String fontName = node.getAttribute("font");
+        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+
+        int fontsize     = node.getIntAttribute("fontsize", 12);
+        Button retbutton = new Button(new ivec2(0,0), new ivec2(1,1), "", font);
+        retbutton.getBox().setTextSize(fontsize);
+        
 
         return retbutton;
-    }*/
+    }
 };

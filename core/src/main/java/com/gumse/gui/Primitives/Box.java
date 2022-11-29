@@ -10,6 +10,7 @@ import com.gumse.textures.Texture;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 
 public class Box extends RenderGUI
 {
@@ -131,16 +132,20 @@ public class Box extends RenderGUI
 	public vec4 getSecondColor()                      { return this.color2; }
 
 
-	/*public static Box createFromXMLNode(XMLNode node)
+	public static Box createFromXMLNode(XMLNode node)
 	{
-		boolean invert = node.mAttributes["invert"] == "true";
-		String texture = node.mAttributes["texture"];
-		Box boxgui = new Box(ivec2(0,0), ivec2(100,100));
+		boolean invert = node.hasAttribute("invert");
+		String texture = node.getAttribute("texture");
+		Box boxgui = new Box(new ivec2(0,0), new ivec2(100,100));
 		boxgui.invertTexcoordY(invert);
-		//if(texture != "")
-		//    boxgui.setTexture(GumEngine::Textures.getTexture(texture));
+		if(!texture.equals(""))
+        {
+            Texture tex = new Texture();
+            tex.load(texture);
+		    boxgui.setTexture(tex);
+        }
 		return boxgui;
-	}*/
+	}
 
 	static void cleanup()
 	{

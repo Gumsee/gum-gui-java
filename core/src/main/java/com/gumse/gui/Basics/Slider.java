@@ -8,8 +8,11 @@ import com.gumse.maths.GumMath;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Debug;
+import com.gumse.tools.Toolbox;
 
 public class Slider extends RenderGUI
 {
@@ -193,20 +196,20 @@ public class Slider extends RenderGUI
 
 
 
-	/*static Slider createFromXMLNode(XMLNode node)
+	public static Slider createFromXMLNode(XMLNode node)
 	{
-		float length        = node.mAttributes["length"]        != "" ? Tools::StringToFloat(Tools::strExtractNumbers(node.mAttributes["length"]))     : 10.0f;
-		int precision       = node.mAttributes["precision"]     != "" ? Tools::StringToInt(Tools::strExtractNumbers(node.mAttributes["precision"]))    : 1;
-		float multiplier    = node.mAttributes["multiplier"]    != "" ? Tools::StringToFloat(Tools::strExtractNumbers(node.mAttributes["multiplier"])) : 1.0f;
-		bool infiniteslider = node.mAttributes["infinite"] == "true";
-		String unit    = node.mAttributes["unit"];
-		String name    = node.mAttributes["title"];
+		int length             = node.getIntAttribute("length", 100);
+		int precision          = node.getIntAttribute("precision", 1);
+		float multiplier       = node.getFloatAttribute("multiplier", 1.0f);
+		boolean infiniteslider = node.hasAttribute("infinite");
+		String unit            = node.getAttribute("unit");
+		String name            = node.getAttribute("title");
 
-		Slider slidergui = new Slider(ivec2(0,0), length, name, precision);
-		slidergui.setSizeInPercent(Tools.strContains(node.mAttributes["length"], "%"), false);
+		Slider slidergui = new Slider(new ivec2(0,0), length, name, precision);
+		slidergui.setSizeInPercent(node.getAttribute("length").contains("%"), false);
 		slidergui.setViewMultiplier(multiplier);
 		slidergui.setInfinite(infiniteslider);
 		slidergui.setUnit(unit);
 		return slidergui;
-	}*/
+	}
 };

@@ -25,4 +25,19 @@ public class Color {
     
         return new vec3(r, g, b);
     }
+
+
+    public static vec4 HEXToRGBA(String hex)
+    {
+        float alpha = 255.0f;
+        if(hex.length() >= 9)
+            alpha = Integer.valueOf(hex.substring(7, 9), 16);
+
+        return new vec4(
+            Integer.valueOf(hex.substring(1, 3), 16),
+            Integer.valueOf(hex.substring(3, 5), 16),
+            Integer.valueOf(hex.substring(5, 7), 16),
+            alpha
+        );
+    }
 }

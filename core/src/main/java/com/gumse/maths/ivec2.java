@@ -31,6 +31,12 @@ public class ivec2
         this.y = vec.y;
     }
 
+    public ivec2(vec2 vec)
+    {
+        this.x = (int)vec.x;
+        this.y = (int)vec.y;
+    }
+
     public void add(ivec2 vec)
     {
         this.x += vec.x;

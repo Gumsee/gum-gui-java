@@ -10,6 +10,7 @@ import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.tools.Toolbox;
 
 public class Tabs extends RenderGUI
@@ -58,36 +59,39 @@ public class Tabs extends RenderGUI
 
     public void update()
     {
-        for(int i = 0; i < vTabs.size(); i++)
+        if(vTabs.size() > 0)
         {
-            if(vTabs.get(i).isClicked())
+            for(int i = 0; i < vTabs.size(); i++)
             {
-                if(pActiveTab != null)
+                if(vTabs.get(i).isClicked())
                 {
-                    pActiveTab.setColor(v4InactiveColor);
-                    pActiveTab.hideChildren(true);
+                    if(pActiveTab != null)
+                    {
+                        pActiveTab.setColor(v4InactiveColor);
+                        pActiveTab.hideChildren(true);
+                    }
+                    vTabs.get(i).setColor(v4ActiveColor);
+                    vTabs.get(i).hideChildren(false);
+                    pActiveTab = vTabs.get(i);
                 }
-                vTabs.get(i).setColor(v4ActiveColor);
-                vTabs.get(i).hideChildren(false);
-                pActiveTab = vTabs.get(i);
             }
-        }
 
-        TextBox lastTab = vTabs.get(vTabs.size() - 1);
-        if(lastTab.getPosition().x + lastTab.getSize().x > vActualSize.x &&
-            Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(ivec2.sub(vActualPos, new ivec2(0, vTabSize.y)), new ivec2(vActualSize.x, vTabSize.y))))
-        {
-            sfOffset.setMax(lastTab.getRelativePosition().x + lastTab.getSize().x - vActualSize.x + lastTab.getOrigin().x);
-            sfOffset.increaseTarget(-50 * Window.CurrentlyBoundWindow.getMouse().getMouseWheelState());
-        }
-
-        if(sfOffset.update())
-        {
-            for(int i = 0; i < pBackground.numChildren(); i++)
+            TextBox lastTab = vTabs.get(vTabs.size() - 1);
+            if(lastTab.getPosition().x + lastTab.getSize().x > vActualSize.x &&
+                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(ivec2.sub(vActualPos, new ivec2(0, vTabSize.y)), new ivec2(vActualSize.x, vTabSize.y))))
             {
-                RenderGUI elem = pBackground.getChild(i);
-                elem.setOrigin(new ivec2((int)sfOffset.get(), 0));
+                sfOffset.setMax(lastTab.getRelativePosition().x + lastTab.getSize().x - vActualSize.x + lastTab.getOrigin().x);
+                sfOffset.increaseTarget(-50 * Window.CurrentlyBoundWindow.getMouse().getMouseWheelState());
             }
+
+            if(sfOffset.update())
+            {
+                for(int i = 0; i < pBackground.numChildren(); i++)
+                {
+                    RenderGUI elem = pBackground.getChild(i);
+                    elem.setOrigin(new ivec2((int)sfOffset.get(), 0));
+                }
+            }   
         }
         updatechildren();
     }
@@ -182,9 +186,9 @@ public class Tabs extends RenderGUI
     public TextBox getActiveTab()    { return pActiveTab; }
     public int numTabs()             { return vTabs.size(); }
 
-    /*public static Tabs createFromXMLNode(XMLNode node)
+    public static Tabs createFromXMLNode(XMLNode node)
     {
-        ivec2 tabSize = node.mAttributes["tabsize"] != "" ? (ivec2)Tools::StringToVec2(node.mAttributes["tabsize"]) : ivec2(100, 30);
-        return new Tabs(ivec2(0,0), ivec2(1,1), tabSize);
-    }*/
+        ivec2 tabSize = node.getIvec2Attribute("tabsize", new ivec2(100, 30));
+        return new Tabs(new ivec2(0,0), new ivec2(1,1), tabSize);
+    }
 };

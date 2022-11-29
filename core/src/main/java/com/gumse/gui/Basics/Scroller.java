@@ -7,6 +7,7 @@ import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 
 public class Scroller extends RenderGUI
@@ -215,8 +216,8 @@ public class Scroller extends RenderGUI
 		return this.pContent.getRelativePosition().y;
 	}
 
-	/*public static Scroller createFromXMLNode(XMLNode* node)
+	public static Scroller createFromXMLNode(XMLNode node)
 	{
 		return new Scroller(new ivec2(0,0), new ivec2(1,1));
-	}*/
+	}
 };

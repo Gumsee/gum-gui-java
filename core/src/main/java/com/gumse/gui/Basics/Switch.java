@@ -4,7 +4,9 @@ import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Toolbox;
 
 public class Switch extends RenderGUI
 {
@@ -58,9 +60,9 @@ public class Switch extends RenderGUI
 
     public void tick(boolean state) { pTickbox.hide(state); }
 
-    /*public static Switch createFromXMLNode(XMLNode* node)
+    public static Switch createFromXMLNode(XMLNode node)
     {
-        float borderRadius = node.mAttributes["border-radius"] != "" ? Tools::StringToFloat(node.mAttributes["border-radius"]) : 0.0f;
-        return new Switch(ivec2(0,0), ivec2(1,1), borderRadius);
-    }*/
+        float borderRadius = node.getFloatAttribute("border-radius", 0.0f);
+        return new Switch(new ivec2(0,0), new ivec2(1,1), borderRadius);
+    }
 };

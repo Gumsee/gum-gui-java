@@ -5,6 +5,7 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
+import com.gumse.system.filesystem.XML.XMLNode;
 
 public class Group extends RenderGUI
 {
@@ -69,9 +70,9 @@ public class Group extends RenderGUI
     }
 
 
-    /*public static Group createFromXMLNode(XMLNode* node)
+    public static Group createFromXMLNode(XMLNode node)
     {
-        Group groupgui = new Group(ivec2(0,0), ivec2(1,1));
+        Group groupgui = new Group(new ivec2(0,0), new ivec2(1,1));
         return groupgui;
-    }*/
+    }
 };

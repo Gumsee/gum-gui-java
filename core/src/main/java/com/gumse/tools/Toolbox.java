@@ -8,10 +8,73 @@ import java.util.Scanner;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryUtil;
 
-import com.gumse.maths.bbox2i;
-import com.gumse.maths.ivec2;
+import com.gumse.maths.*;
 
-public class Toolbox {
+public class Toolbox 
+{
+    public static int StringToInt(String str)        { int ret = 0;      try { ret = Integer.parseInt(str);   } catch(NumberFormatException e) { Debug.error("StringToInt: couldn't convert string, invalid argument!");    } return ret; }
+    public static float StringToFloat(String str)    { float ret = 0.0f; try { ret = Float.parseFloat(str);   } catch(NumberFormatException e) { Debug.error("StringToFloat: couldn't convert string, invalid argument!");  } return ret; }
+    public static double StringToDouble(String str)  { double ret = 0.0; try { ret = Double.parseDouble(str); } catch(NumberFormatException e) { Debug.error("StringToDouble: couldn't convert string, invalid argument!"); } return ret; }
+
+    public static vec2 StringToVec2(String str)
+    {
+        String[] numsStr = str.split(",");
+
+        if(numsStr.length == 0) return new vec2(0.0f);
+        if(numsStr.length == 1) return new vec2(StringToFloat(strExtractNumbers(numsStr[0])));
+
+        return new vec2(
+            StringToFloat(strExtractNumbers(numsStr[0])),
+            StringToFloat(strExtractNumbers(numsStr[1]))
+        );
+    }
+
+    public static vec3 StringToVec3(String str)
+    {
+        String[] numsStr = str.split(",");
+
+        if(numsStr.length == 0) return new vec3(0.0f);
+        if(numsStr.length == 1) return new vec3(StringToFloat(strExtractNumbers(numsStr[0])));
+
+        return new vec3(
+            StringToFloat(strExtractNumbers(numsStr[0])),
+            StringToFloat(strExtractNumbers(numsStr[1])),
+            StringToFloat(strExtractNumbers(numsStr[2]))
+        );
+    }
+
+    public static vec4 StringToVec4(String str)
+    {
+        String[] numsStr = str.split(",");
+
+        if(numsStr.length == 0) return new vec4(0.0f);
+        if(numsStr.length == 1) return new vec4(StringToFloat(strExtractNumbers(numsStr[0])));
+
+        return new vec4(
+            StringToFloat(strExtractNumbers(numsStr[0])),
+            StringToFloat(strExtractNumbers(numsStr[1])),
+            StringToFloat(strExtractNumbers(numsStr[2])),
+            StringToFloat(strExtractNumbers(numsStr[3]))
+        );
+    }
+
+    public static String strExtractNumbers(String str)
+    {
+        String numStr = "";
+        if(str == null)
+            return "0";
+        
+        for(int i = 0; i < str.length(); i++)
+        {
+            if((str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-')
+            {
+                numStr += str.charAt(i);
+            }
+        }
+        return numStr;
+    }
+
+
     public static FloatBuffer arrayList2FloatBuffer(ArrayList<Float> arrList)
     {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(arrList.size());

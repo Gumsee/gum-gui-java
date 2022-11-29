@@ -222,7 +222,7 @@ public class Graph extends RenderGUI
         fScale = 1 / span;
         fScale *= 2.0f;
 
-        Debug.info(fScale);
+        //Debug.info(fScale);
     }
     
     public void setPrecision(int precision)    { this.precision = precision; }
