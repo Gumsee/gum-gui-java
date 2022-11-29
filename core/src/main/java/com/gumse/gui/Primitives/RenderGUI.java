@@ -136,10 +136,10 @@ public class RenderGUI
             if(posInPercent.x) { vActualPos.x = (int)(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
             if(posInPercent.y) { vActualPos.y = (int)(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
         }
-        if(originInPercent.x)  { vActualPos.x -= vActualSize.x * ((float)vOrigin.x / 100.0f); }
+        if(originInPercent.x)  { vActualPos.x -= (vActualSize.x * vOrigin.x) / 100; }
         else                   { vActualPos.x -= vOrigin.x; }
 
-        if(originInPercent.y)  { vActualPos.y -= vActualSize.y * ((float)vOrigin.y / 100.0f); }
+        if(originInPercent.y)  { vActualPos.y -= (vActualSize.y * vOrigin.y) / 100; }
         else                   { vActualPos.y -= vOrigin.y; }
         
 
