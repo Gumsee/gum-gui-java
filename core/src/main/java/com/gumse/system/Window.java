@@ -323,6 +323,7 @@ public class Window
     public void makeFullscreen(boolean fullscreen) { bIsFullscreen = fullscreen; }
     public void makeFloating(boolean isfloating)   { glfwSetWindowAttrib(lWindowID, GLFW_FLOATING, isfloating ? 1 : 0); this.bIsFloating = isfloating; }
     public void showBorder(boolean show)           { glfwSetWindowAttrib(lWindowID, GLFW_DECORATED, show ? 1 : 0); bHasBorder = show; }
+    public void setMinimumSize(ivec2 size)         { glfwSetWindowSizeLimits(lWindowID, size.x, size.y, GLFW_DONT_CARE, GLFW_DONT_CARE); }
 
 
 
