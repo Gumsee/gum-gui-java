@@ -27,6 +27,7 @@ public class Example
         Globals.DEBUG_BUILD = true;
         System.setProperty("java.awt.headless", "true"); //for iCrap support
 
+        Debug.init();
         Display.init();
         
         //Window Options
