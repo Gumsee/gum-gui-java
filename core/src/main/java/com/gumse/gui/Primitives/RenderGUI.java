@@ -365,6 +365,8 @@ public class RenderGUI
                 return child;
                 
             res = child.findChildByID(id);
+            if(res != null)
+                break;
         }
 
         return res;
