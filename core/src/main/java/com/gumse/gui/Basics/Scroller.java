@@ -160,7 +160,8 @@ public class Scroller extends RenderGUI
 				pScrollIndicator.setPositionX(10);
 			}
 
-			updatechildren();
+			//updatechildren();
+            pContent.update();
 		}
 	}
 
@@ -168,7 +169,7 @@ public class Scroller extends RenderGUI
 	protected void updateOnAddGUI(RenderGUI gui)
 	{
 		pContent.addGUI(gui);
-		vChildren.clear();
+		//vChildren.clear();
 		moveContent();
 	}
 

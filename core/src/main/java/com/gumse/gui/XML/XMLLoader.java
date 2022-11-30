@@ -8,7 +8,6 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.Color;
 import com.gumse.maths.ivec2;
-import com.gumse.maths.vec3;
 import com.gumse.maths.vec4;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.filesystem.XML.XMLReader;
@@ -22,6 +21,7 @@ public class XMLLoader
     public XMLLoader(String filename)
     {
         pRootGUI = new RenderGUI();
+        pRootGUI.setType("XMLRoot");
         
         new XMLReader(filename, XMLNode.NODE_TYPES.ELEMENT, new NodeCallback() {
             @Override public void run(XMLNode node, int depth) 
@@ -33,28 +33,7 @@ public class XMLLoader
                 if(node.parent != null)
                     parentGUI = (RenderGUI)node.parent.userptr;
 
-                if(type == "tab")
-                {
-                    /*if(parentGUI.getType() == "Tabs")
-                    {
-                        RenderGUI tabHandle = new RenderGUI();
-                        tabHandle.setSize(new ivec2(100, 100));
-                        tabHandle.setSizeInPercent(true, true);
-                        tabHandle.setType("tab");
-                        xmlFileRecursiveFunc(node.children, tabHandle);
-                        String tabName = attrs["name"] != "" 
-                                                ? attrs["name"] 
-                                                : std.to_string(((Tabs*)parentGUI).numTabs());
-                        bool active = attrs["active"] == "true";
-                        ((Tabs*)parentGUI).addTab(tabName, active);
-                        ((Tabs*)parentGUI).addGUIToTab(tabHandle, tabName);
-                    }
-                    else
-                    {
-                        Gum.Output.error("Tab tag added outside of tabs tag");
-                    }*/
-                }
-                else if(type == "item")
+                if(type.equals("item"))
                 {
                     /*if(parentGUI.getType() == "Dropdown")
                     {
@@ -66,19 +45,19 @@ public class XMLLoader
                         Gum.Output.error("item tag added outside of dropdown tag");
                     }*/
                 }
-                else if(type == "gui-root") { gui = pRootGUI; }
-                else if(type == "gui")      { gui = new RenderGUI(); }
-                else if(type == "box")      { gui = Box.createFromXMLNode(node); }
-                else if(type == "button")   { gui = Button.createFromXMLNode(node); }
-                else if(type == "tabs")     { gui = Tabs.createFromXMLNode(node); }
-                else if(type == "group")    { gui = Group.createFromXMLNode(node); }
-                else if(type == "dropdown") { gui = Dropdown.createFromXMLNode(node); }
-                else if(type == "scroller") { gui = Scroller.createFromXMLNode(node); }
-                else if(type == "slider")   { gui = Slider.createFromXMLNode(node); }
-                else if(type == "switch")   { gui = Switch.createFromXMLNode(node); }
-                else if(type == "text")     { gui = Text.createFromXMLNode(node); }
-                else if(type == "textfield"){ gui = TextField.createFromXMLNode(node); }
-                else if(type == "textbox")  { gui = TextBox.createFromXMLNode(node); }
+                else if(type.equals("gui-root")) { gui = pRootGUI; }
+                else if(type.equals("gui"))      { gui = new RenderGUI(); }
+                else if(type.equals("box"))      { gui = Box.createFromXMLNode(node); }
+                else if(type.equals("button"))   { gui = Button.createFromXMLNode(node); }
+                else if(type.equals("tabs"))     { gui = Tabs.createFromXMLNode(node); }
+                else if(type.equals("group"))    { gui = Group.createFromXMLNode(node); }
+                else if(type.equals("dropdown")) { gui = Dropdown.createFromXMLNode(node); }
+                else if(type.equals("scroller")) { gui = Scroller.createFromXMLNode(node); }
+                else if(type.equals("slider"))   { gui = Slider.createFromXMLNode(node); }
+                else if(type.equals("switch"))   { gui = Switch.createFromXMLNode(node); }
+                else if(type.equals("text"))     { gui = Text.createFromXMLNode(node); }
+                else if(type.equals("textfield")){ gui = TextField.createFromXMLNode(node); }
+                else if(type.equals("textbox"))  { gui = TextBox.createFromXMLNode(node); }
 
                 if(gui != null)
                 {
@@ -102,45 +81,45 @@ public class XMLLoader
             String valueStr = arg.getValue();
             String[] values = valueStr.split(",");
             
-            if (name == "title")
+            if (name.equals("title"))
             {
                 gui.setTitle(values[0]);
             }
             
-            else if(name == "pos")
+            else if(name.equals("pos"))
             {
                 gui.setPositionInPercent(values[0].contains("%"), values[1].contains("%"));
                 gui.setPosition(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "size")
+            else if(name.equals("size"))
             {
                 gui.setSizeInPercent(values[0].contains("%"), values[1].contains("%"));
                 gui.setSize(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "origin")
+            else if(name.equals("origin"))
             {
                 gui.setOriginInPercent(values[0].contains("%"), values[1].contains("%"));
                 gui.setOrigin(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "margin")
+            else if(name.equals("margin"))
             {
                 gui.setMargin(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "max-size")
+            else if(name.equals("max-size"))
             {
                 gui.setMaxSizeInPercent(values[0].contains("%"), values[1].contains("%"));
                 gui.setMaxSize(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "min-size")
+            else if(name.equals("min-size"))
             {
                 gui.setMinSizeInPercent(values[0].contains("%"), values[1].contains("%"));
                 gui.setMinSize(new ivec2(Toolbox.StringToVec2(valueStr)));
             }
-            else if(name == "color")         { gui.setColor(vec4.div(Color.HEXToRGBA(valueStr), 255.0f)); }
-            else if(name == "id")            { gui.setID(values[0]); }
-            else if(name == "border-radius") { gui.setCornerRadius(Toolbox.StringToVec4(valueStr)); }
-            else if(name == "tooltip")       { gui.setToolTip(values[0]); }
-            else                             { gui.addAttribute(name, valueStr); }
+            else if(name.equals("color"))         { gui.setColor(vec4.div(Color.HEXToRGBA(valueStr), 255.0f)); }
+            else if(name.equals("id"))            { gui.setID(new String(values[0])); }
+            else if(name.equals("border-radius")) { gui.setCornerRadius(Toolbox.StringToVec4(valueStr)); }
+            else if(name.equals("tooltip"))       { gui.setToolTip(values[0]); }
+            else                                  { gui.addAttribute(name, valueStr); }
         }
     }
 

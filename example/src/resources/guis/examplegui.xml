@@ -10,6 +10,7 @@
             <switch pos="10, 1000" size="20, 20" border-radius="10" />
 
             <box pos="25%, 350" size="50%, 50%" border-radius="0" texture="textures/hehe.jpg" id="stupid">
+                <gui id="testID" />
             </box>
         </scroller>
     </box>

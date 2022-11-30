@@ -358,18 +358,17 @@ public class RenderGUI
 
     public RenderGUI findChildByID(String id)
     {
-        RenderGUI res = null;
+        if(getID().equals(id))
+            return this;
+        
         for(RenderGUI child : vChildren)
         {
-            if(child.getID() == id)
-                return child;
-                
-            res = child.findChildByID(id);
+            RenderGUI res = child.findChildByID(id);
             if(res != null)
-                break;
+                return res;
         }
 
-        return res;
+        return null;
     }
 
     //

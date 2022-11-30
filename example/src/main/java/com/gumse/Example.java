@@ -19,8 +19,6 @@ import com.gumse.system.Window.*;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
 
-import clojure.main;
-
 
 public class Example
 {
@@ -118,6 +116,10 @@ public class Example
 
         RenderGUI xmlTest = XMLGUI.loadFile("guis/examplegui.xml");
         mainPage.addGUI(xmlTest);
+
+        RenderGUI findgui = xmlTest.findChildByID("testID");
+        if(findgui != null)
+            Debug.info(findgui.getID());
 
         altMenu.resize();
         altMenu.reposition();
