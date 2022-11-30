@@ -67,6 +67,7 @@ public class XMLLoader
                     }*/
                 }
                 else if(type == "gui-root") { gui = pRootGUI; }
+                else if(type == "gui")      { gui = new RenderGUI(); }
                 else if(type == "box")      { gui = Box.createFromXMLNode(node); }
                 else if(type == "button")   { gui = Button.createFromXMLNode(node); }
                 else if(type == "tabs")     { gui = Tabs.createFromXMLNode(node); }
