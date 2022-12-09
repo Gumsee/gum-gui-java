@@ -265,6 +265,9 @@ public class Text extends RenderGUI
 
     public int getClosestCharacterIndex(ivec2 point)
     {
+        if(vChars.size() == 0)
+            return 0;
+        
         int closest = 0;
         int closestDist = Integer.MAX_VALUE;
         for(int i = 0; i < vChars.size(); i++)
