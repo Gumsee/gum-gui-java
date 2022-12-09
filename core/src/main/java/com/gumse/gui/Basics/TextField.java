@@ -342,7 +342,7 @@ public class TextField extends RenderGUI
 	//
 	public void setString(String utf8)
 	{
-		pBackgroundBox.setString(utf8);
+		sCurrentText = utf8;
 		updateText();
 	}
 	
