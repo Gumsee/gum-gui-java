@@ -437,7 +437,8 @@ public class RenderGUI
         if(bHasClickedSomething)
             return false;
         boolean isclicked = Window.CurrentlyBoundWindow.getMouse().hasLeftRelease() && 
-                                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getLeftClickPosition(), new bbox2i(getPosition(), getSize())); ;
+                            Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getLeftClickPosition(), new bbox2i(getPosition(), getSize())) &&
+                            Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(getPosition(), getSize()));
         if(isclicked)
             bHasClickedSomething = true;
         return isclicked;
