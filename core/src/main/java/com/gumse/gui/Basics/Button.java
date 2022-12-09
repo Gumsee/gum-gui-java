@@ -50,6 +50,9 @@ public class Button extends RenderGUI
 
     public void update()
     {
+        if(bIsHidden)
+            return;
+        
         if(backgroundBox.isMouseInside())
         {
             Mouse.setActiveHovering(true);
