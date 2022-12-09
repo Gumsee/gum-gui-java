@@ -20,10 +20,12 @@ public class LoginPage extends RenderGUI
 
         TextField usernameField = new TextField("Username", fonts.getDefaultFont(), new ivec2(50, 100), new ivec2(400, 60));
         usernameField.setCornerRadius(new vec4(cornerradius));
+        usernameField.setHint("Username");
         addElement(usernameField);
 
         TextField passwordField = new TextField("Password", fonts.getDefaultFont(), new ivec2(50, 180), new ivec2(400, 60));
         passwordField.setCornerRadius(new vec4(cornerradius));
+        passwordField.setHint("Password");
         addElement(passwordField);
 
         Text rememberText = new Text("Remember me", fonts.getDefaultFont(), new ivec2(50, 250), 0);

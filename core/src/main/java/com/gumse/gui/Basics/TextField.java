@@ -26,6 +26,8 @@ public class TextField extends RenderGUI
 	private int uiCursorShape;
 	
 	private String sOrigString;
+    private String sHint;
+    private String sCurrentText;
 	public interface TextFieldFinishedInputCallback {
 		void run(String str);
 	}
@@ -37,6 +39,8 @@ public class TextField extends RenderGUI
 		this.vPos.set(pos);
 		this.vSize.set(size);;
 		this.sType = "TextField";
+        this.sHint = "";
+        this.sCurrentText = "";
 		this.bIsEditing = false;
 		this.bActivateOnDoubleclick = false;
 		this.iIndicatorCharIndex = 0;
@@ -128,6 +132,7 @@ public class TextField extends RenderGUI
 		{
 			if(bIsEditing)
 			{
+				Mouse.setActiveHovering(true);
 				mouse.setCursor(uiCursorShape);
 				if(mouse.hasLeftDoubleClick())
 				{
@@ -160,7 +165,7 @@ public class TextField extends RenderGUI
 					if(!bIsEditing)
 					{
 						bIsEditing = true;
-						sOrigString = pBackgroundBox.getString();
+						sOrigString = sCurrentText;
 						selectAll();
 					}
 				}
@@ -194,15 +199,15 @@ public class TextField extends RenderGUI
 			//pClock.update();
 			if     (keyboard.checkLastPressedKey(Keyboard.GUM_KEY_BACKSPACE))            { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : 1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_DELETE))               { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : -1); }
-			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ENTER)) 	             { finishEditing(); if(pReturnFunc != null) pReturnFunc.run(pBackgroundBox.getString()); }
+			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ENTER)) 	             { finishEditing(); if(pReturnFunc != null) pReturnFunc.run(sCurrentText); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ESCAPE)) 	             { finishEditing(); setString(sOrigString); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_LEFT)) 	             { moveIndicator(-1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_RIGHT)) 	             { moveIndicator(1); }
-			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END)) 	             { setIndicator(pBackgroundBox.getString().length()); }
+			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END)) 	             { setIndicator(sCurrentText.length()); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_HOME)) 	             { setIndicator(0); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_LEFT, Keyboard.GUM_MOD_SHIFT))  { setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex - 1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_RIGHT, Keyboard.GUM_MOD_SHIFT)) { setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex + 1); }
-			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END, Keyboard.GUM_MOD_SHIFT)) 	 { setSelection(iSelectorStartCharIndex, pBackgroundBox.getString().length()); }
+			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END, Keyboard.GUM_MOD_SHIFT)) 	 { setSelection(iSelectorStartCharIndex, sCurrentText.length()); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_HOME, Keyboard.GUM_MOD_SHIFT))  { setSelection(iSelectorStartCharIndex, 0); }
 			else if(keyboard.getTextInput() != "") 				   		     { appendString(keyboard.getTextInput()); }
 		}
@@ -212,6 +217,16 @@ public class TextField extends RenderGUI
 	
 	private void updateText()
 	{
+        if(sCurrentText.equals(""))
+        {
+		    pBackgroundBox.getText().setString(sHint);
+            pBackgroundBox.setTextColor(new vec4(0.26f, 0.26f, 0.26f, 1.0f));
+        }
+        else
+        {
+		    pBackgroundBox.getText().setString(sCurrentText);
+            pBackgroundBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+        }
 		pBackgroundBox.updateText();
 		//pBackgroundBox.setTextSize(getSize().y * 0.9f);
 		pBackgroundBox.setTextOffset(new ivec2(0, pBackgroundBox.getTextOffset().y));
@@ -225,7 +240,7 @@ public class TextField extends RenderGUI
 	public void setIndicator(int pos)
 	{
 		iIndicatorCharIndex = pos;
-		iIndicatorCharIndex = GumMath.clamp(iIndicatorCharIndex, 0, (int)pBackgroundBox.getString().length());
+		iIndicatorCharIndex = GumMath.clamp(iIndicatorCharIndex, 0, (int)sCurrentText.length());
 	
 		//Selector reset
 		pSelectionBox.hide(true);
@@ -233,7 +248,7 @@ public class TextField extends RenderGUI
 		iSelectorEndCharIndex = iIndicatorCharIndex;
 	
 		//Indicator part
-		int boxpos = pBackgroundBox.getText().getTextSize(pBackgroundBox.getString(), 0, iIndicatorCharIndex).x;
+		int boxpos = pBackgroundBox.getText().getTextSize(sCurrentText, 0, iIndicatorCharIndex).x;
 		pIndicatorBox.setPosition(new ivec2(boxpos - pBackgroundBox.getText().getOrigin().x, 0)); 
 		pIndicatorBox.hide(false);
 	
@@ -256,12 +271,12 @@ public class TextField extends RenderGUI
 	
 	public void appendString(String utf8)
 	{
-		iIndicatorCharIndex = GumMath.clamp(iIndicatorCharIndex, 0, (int)pBackgroundBox.getString().length());
+		iIndicatorCharIndex = GumMath.clamp(iIndicatorCharIndex, 0, (int)sCurrentText.length());
 		backspaceString(Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex));
 		
-		StringBuilder sb = new StringBuilder(pBackgroundBox.getText().getString());
+		StringBuilder sb = new StringBuilder(sCurrentText);
 		sb.insert(iIndicatorCharIndex, utf8);
-		pBackgroundBox.getText().setString(sb.toString());
+        sCurrentText = sb.toString();
 		updateText();
 		setIndicator(iIndicatorCharIndex + 1);
 	}
@@ -281,9 +296,9 @@ public class TextField extends RenderGUI
 		if(backspaces > (int)startingpoint)
 			return;
 	
-		StringBuilder sb = new StringBuilder(pBackgroundBox.getText().getString());
+		StringBuilder sb = new StringBuilder(sCurrentText);
 		sb.delete(startingpoint - backspaces, startingpoint);
-		pBackgroundBox.getText().setString(sb.toString());
+		sCurrentText = sb.toString();
 		updateText();
 		setIndicator(startingpoint - backspaces);
 	}
@@ -300,18 +315,18 @@ public class TextField extends RenderGUI
 			to = tmp;
 		}
 	
-		iSelectorStartCharIndex = GumMath.clamp(iSelectorStartCharIndex, 0, (int)pBackgroundBox.getString().length());
-		iSelectorEndCharIndex = GumMath.clamp(iSelectorEndCharIndex, 0, (int)pBackgroundBox.getString().length());
-		from = GumMath.clamp(from, 0, (int)pBackgroundBox.getString().length());
-		to = GumMath.clamp(to, 0, (int)pBackgroundBox.getString().length());
+		iSelectorStartCharIndex = GumMath.clamp(iSelectorStartCharIndex, 0, (int)sCurrentText.length());
+		iSelectorEndCharIndex = GumMath.clamp(iSelectorEndCharIndex, 0, (int)sCurrentText.length());
+		from = GumMath.clamp(from, 0, (int)sCurrentText.length());
+		to = GumMath.clamp(to, 0, (int)sCurrentText.length());
 		pSelectionBox.hide(false);
-		pSelectionBox.setPosition(new ivec2(pBackgroundBox.getText().getTextSize(pBackgroundBox.getString(), 0, from).x - pBackgroundBox.getTextOffset().x, 0));
-		pSelectionBox.setSize(new ivec2(pBackgroundBox.getText().getTextSize(pBackgroundBox.getString(), from, to).x, 100));
+		pSelectionBox.setPosition(new ivec2(pBackgroundBox.getText().getTextSize(sCurrentText, 0, from).x - pBackgroundBox.getTextOffset().x, 0));
+		pSelectionBox.setSize(new ivec2(pBackgroundBox.getText().getTextSize(sCurrentText, from, to).x, 100));
 	}
 	
 	public void selectAll()
 	{
-		setSelection(0, pBackgroundBox.getString().length());
+		setSelection(0, sCurrentText.length());
 	}
 	
 	public void finishEditing()
@@ -338,7 +353,7 @@ public class TextField extends RenderGUI
 	public void setTextColor(vec4 color) 	  						   { this.pBackgroundBox.setTextColor(color); }
 	public void setReturnCallback(TextFieldFinishedInputCallback func) { this.pReturnFunc = func; }
 	public void setCornerRadius(vec4 radius)						   { this.pBackgroundBox.setCornerRadius(radius); }
-	
+    public void setHint(String hint)                                   { this.sHint = hint; }	
 	
 	//
 	// Getter
@@ -351,10 +366,12 @@ public class TextField extends RenderGUI
         String fontName = node.getAttribute("font");
         Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
+        String hint = node.getAttribute("hint");
         int fontsize  = node.getIntAttribute("fontsize", 0);
         int maxlength = node.getIntAttribute("maxlength", 0);
         
 		TextField textfieldgui = new TextField(node.content, font, new ivec2(0,0), new ivec2(0,0));
+        textfieldgui.setHint(hint);
         if(fontsize > 0)
             textfieldgui.getBox().setTextSize(fontsize);
                 
