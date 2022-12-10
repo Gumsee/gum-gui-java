@@ -165,11 +165,11 @@ public class HierarchyListEntry extends RenderGUI
         if(bHasChildEntries)
         {
             GUIShader.getShaderProgram().use();
-            GUIShader.getShaderProgram().LoadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
-            GUIShader.getShaderProgram().LoadUniform("transmat", m4ArrowMatrix);
-            GUIShader.getShaderProgram().LoadUniform("Uppercolor", new vec4(0.76f, 0.76f, 0.76f,1.0f));
-            GUIShader.getShaderProgram().LoadUniform("borderThickness", 0.0f);
-            GUIShader.getShaderProgram().LoadUniform("hasTexture", false);
+            GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+            GUIShader.getShaderProgram().loadUniform("transmat", m4ArrowMatrix);
+            GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(0.76f, 0.76f, 0.76f,1.0f));
+            GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
+            GUIShader.getShaderProgram().loadUniform("hasTexture", false);
             pArrowVAO.bind();
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
             pArrowVAO.unbind();

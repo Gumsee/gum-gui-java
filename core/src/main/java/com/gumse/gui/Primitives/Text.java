@@ -174,12 +174,12 @@ public class Text extends RenderGUI
             return;
         
         GUIShader.getTextShaderProgram().use();
-        GUIShader.getTextShaderProgram().LoadUniform("color", v4Color);
-        GUIShader.getTextShaderProgram().LoadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
-        GUIShader.getTextShaderProgram().LoadUniform("bboxpos", new vec2(bRenderBox.getPos()));
-        GUIShader.getTextShaderProgram().LoadUniform("bboxsize", new vec2(bRenderBox.getSize()));
-        GUIShader.getTextShaderProgram().LoadUniform("fade", bFadeOut);
-        GUIShader.getTextShaderProgram().LoadUniform("fadestart", bFadeBothSides);
+        GUIShader.getTextShaderProgram().loadUniform("color", v4Color);
+        GUIShader.getTextShaderProgram().loadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getTextShaderProgram().loadUniform("bboxpos", new vec2(bRenderBox.getPos()));
+        GUIShader.getTextShaderProgram().loadUniform("bboxsize", new vec2(bRenderBox.getSize()));
+        GUIShader.getTextShaderProgram().loadUniform("fade", bFadeOut);
+        GUIShader.getTextShaderProgram().loadUniform("fadestart", bFadeBothSides);
 
         GL30.glActiveTexture(GL30.GL_TEXTURE0);
         pVAO.bind();
@@ -187,8 +187,8 @@ public class Text extends RenderGUI
         GL11.glEnable(GL11.GL_BLEND);
         for (TextChar ch : vChars)
         {
-            GUIShader.getTextShaderProgram().LoadUniform("position", ch.pos);
-            GUIShader.getTextShaderProgram().LoadUniform("scale", ch.scale);
+            GUIShader.getTextShaderProgram().loadUniform("position", ch.pos);
+            GUIShader.getTextShaderProgram().loadUniform("scale", ch.scale);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, ch.textureID);
             GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 6);
         }

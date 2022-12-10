@@ -139,7 +139,7 @@ public class Graph extends RenderGUI
         renderchildren();
     
         GraphShader.use();
-        GraphShader.LoadUniform("color", v4Color);
+        GraphShader.loadUniform("color", v4Color);
         
         GL11.glViewport(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - background.getSize().y - vActualPos.y, background.getSize().x, background.getSize().y);
         pVertexArrayObject.bind();

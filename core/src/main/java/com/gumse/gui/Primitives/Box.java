@@ -81,24 +81,24 @@ public class Box extends RenderGUI
 				alpha3 = fAlphaOverride;
 			}
 
-			GUIShader.getShaderProgram().LoadUniform("hasTexture", pTexture != null);
+			GUIShader.getShaderProgram().loadUniform("hasTexture", pTexture != null);
 			if(pTexture != null)
 			{
 				//GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
 				pTexture.bind(0);
 			}
 
-			GUIShader.getShaderProgram().LoadUniform("rightgradient", bRightgradient);
-			GUIShader.getShaderProgram().LoadUniform("gradient", bGradient);
-			GUIShader.getShaderProgram().LoadUniform("Uppercolor", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha1));
-			GUIShader.getShaderProgram().LoadUniform("Lowercolor", new vec4(color2.x, color2.y, color2.z, alpha2));
-			GUIShader.getShaderProgram().LoadUniform("borderColor", new vec4(bordercolor.x, bordercolor.y, bordercolor.z, alpha3));
-			GUIShader.getShaderProgram().LoadUniform("borderThickness", fBorderThickness);
-			GUIShader.getShaderProgram().LoadUniform("invertY", bInvertY);
-			GUIShader.getShaderProgram().LoadUniform("transmat", mTransformationMatrix);
-			GUIShader.getShaderProgram().LoadUniform("resolution", vActualSize);
-			GUIShader.getShaderProgram().LoadUniform("radius", v4CornerRadius);
-			GUIShader.getShaderProgram().LoadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+			GUIShader.getShaderProgram().loadUniform("rightgradient", bRightgradient);
+			GUIShader.getShaderProgram().loadUniform("gradient", bGradient);
+			GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha1));
+			GUIShader.getShaderProgram().loadUniform("Lowercolor", new vec4(color2.x, color2.y, color2.z, alpha2));
+			GUIShader.getShaderProgram().loadUniform("borderColor", new vec4(bordercolor.x, bordercolor.y, bordercolor.z, alpha3));
+			GUIShader.getShaderProgram().loadUniform("borderThickness", fBorderThickness);
+			GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
+			GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
+			GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
+			GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
+			GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

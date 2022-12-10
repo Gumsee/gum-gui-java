@@ -90,12 +90,12 @@ public class List extends RenderGUI
     public void render()
     {
         GUIShader.getStripesShaderProgram().use();
-        GUIShader.getStripesShaderProgram().LoadUniform("transmat", pBackground.getTransformation());
-        GUIShader.getStripesShaderProgram().LoadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
-        GUIShader.getStripesShaderProgram().LoadUniform("patternoffset", (float)vActualPos.y);// + (float)pScroller.getOffset());
-        GUIShader.getStripesShaderProgram().LoadUniform("lineheight", 30.0f);
-        GUIShader.getStripesShaderProgram().LoadUniform("color1", new vec4(0.16f, 0.16f, 0.16f, 1.0f));
-        GUIShader.getStripesShaderProgram().LoadUniform("color2", new vec4(0.18f, 0.18f, 0.18f, 1.0f));
+        GUIShader.getStripesShaderProgram().loadUniform("transmat", pBackground.getTransformation());
+        GUIShader.getStripesShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getStripesShaderProgram().loadUniform("patternoffset", (float)vActualPos.y);// + (float)pScroller.getOffset());
+        GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
+        GUIShader.getStripesShaderProgram().loadUniform("color1", new vec4(0.16f, 0.16f, 0.16f, 1.0f));
+        GUIShader.getStripesShaderProgram().loadUniform("color2", new vec4(0.18f, 0.18f, 0.18f, 1.0f));
         pBackground.renderCustom();
         GUIShader.getStripesShaderProgram().unuse();
     

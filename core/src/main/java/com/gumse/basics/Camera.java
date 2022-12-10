@@ -1,4 +1,4 @@
-/*package com.gumse.basics;
+package com.gumse.basics;
 
 import com.gumse.maths.mat4;
 import com.gumse.maths.vec3;
@@ -20,7 +20,7 @@ public class Camera {
         this.fFOV = fov;
 
         updateView();
-        mProjection = mat4.perspective(fov, Window.getAspectRatio(), 0.1f, 1000.0f);
+        updateProjection();
     }
 
 
@@ -30,6 +30,11 @@ public class Camera {
         mView = new mat4();
         mView.rotate(new vec3(fPitch, fYaw, fRoll));
         mView.translate(new vec3(-vPosition.x, -vPosition.y, -vPosition.z));
+    }
+
+    public void updateProjection()
+    {
+        mProjection = mat4.perspective(fFOV, Window.CurrentlyBoundWindow.getAspectRatioWidthToHeight(), 0.1f, 1000.0f);
     }
 
     public vec3 getPosition()                  { return this.vPosition; }
@@ -43,4 +48,3 @@ public class Camera {
     public void setRoll(float roll)            { this.fRoll = roll;    this.updateView(); }
     public void setProjectionMatrix(mat4 proj) { this.mProjection = proj; }
 }
-*/
