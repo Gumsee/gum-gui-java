@@ -68,6 +68,14 @@ public class vec3 {
     public static vec3 mul(vec3 a, float f) { return new vec3(a.x * f, a.y * f, a.z * f); }
     public static vec3 div(vec3 a, float f) { return new vec3(a.x / f, a.y / f, a.z / f); }
 
+
+    public static vec3 mul(mat3 a, vec3 v) 
+    { 
+        return new vec3(a.get(0, 0) * v.x + a.get(0, 1) * v.y + a.get(0, 2) * v.z, 
+                        a.get(1, 0) * v.x + a.get(1, 1) * v.y + a.get(1, 2) * v.z,
+                        a.get(2, 0) * v.x + a.get(2, 1) * v.y + a.get(2, 2) * v.z); 
+    }
+
     public float valueByIndex(int index)
     {
         switch(index)
