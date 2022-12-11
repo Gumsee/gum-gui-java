@@ -65,6 +65,7 @@ public class vec3 {
     }
 
     public static vec3 sub(vec3 a, vec3 b)  { return new vec3(a.x - b.x, a.y - b.z, a.z - b.z); }
+    public static vec3 mul(vec3 a, float f) { return new vec3(a.x * f, a.y * f, a.z * f); }
     public static vec3 div(vec3 a, float f) { return new vec3(a.x / f, a.y / f, a.z / f); }
 
     public float valueByIndex(int index)
