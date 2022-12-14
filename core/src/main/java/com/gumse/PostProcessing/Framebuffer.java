@@ -49,11 +49,11 @@ public class Framebuffer
         pTexture = new Texture();
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
         pTexture.bind(0);
-        GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGB, vSize.x, vSize.y, 0, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE, 0);
+        GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGBA, vSize.x, vSize.y, 0, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, 0);
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MAG_FILTER, GL30.GL_LINEAR);
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR);
         GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, pTexture.getID(), 0);
-        pTexture.unbind();
+        Texture.unbind();
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }  
 
@@ -66,7 +66,7 @@ public class Framebuffer
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MAG_FILTER, GL30.GL_LINEAR);
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR);
         GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, pDepthTexture.getID(), 0);
-        pDepthTexture.unbind();
+        Texture.unbind();
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
