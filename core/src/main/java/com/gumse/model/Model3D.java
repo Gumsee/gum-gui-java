@@ -62,7 +62,7 @@ public class Model3D extends Transformable
         GL30.glBindVertexArray(iVAO);
         addAttribute(pMesh.getVertexPositions(), 0, 3);
         addAttribute(pMesh.getVertexTexcoords(), 1, 2);
-        addAttribute(pMesh.getVertexNormals(), 2, 3);
+        addAttribute(pMesh.getVertexNormals(),   2, 3);
 
 
         iNumIndices = pMesh.alIndices.size();
@@ -105,7 +105,7 @@ public class Model3D extends Transformable
         pDefaultShader = new ShaderProgram();
         pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.vert"), Shader.TYPES.VERTEX_SHADER));
         pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.frag"), Shader.TYPES.FRAGMENT_SHADER));
-        pDefaultShader.build("CardShader");
+        pDefaultShader.build("ModelShader");
         pDefaultShader.addUniform("color");
         pDefaultShader.addUniform("hasTexture");
         pDefaultShader.addTexture("textureSampler", 0);

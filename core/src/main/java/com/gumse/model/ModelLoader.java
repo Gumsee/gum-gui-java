@@ -48,7 +48,7 @@ public class ModelLoader
         }
 
         pScene = Assimp.aiImportFileFromMemory(modelBuffer,
-            Assimp.aiProcess_Triangulate | Assimp.aiProcess_GenSmoothNormals | 
+            Assimp.aiProcess_Triangulate | //Assimp.aiProcess_GenSmoothNormals | 
             Assimp.aiProcess_FlipUVs | Assimp.aiProcess_CalcTangentSpace | 
             Assimp.aiProcess_LimitBoneWeights | Assimp.aiProcess_SplitLargeMeshes | 
             Assimp.aiProcess_OptimizeMeshes | Assimp.aiProcess_JoinIdenticalVertices, "");
