@@ -14,9 +14,9 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public class Framebuffer 
 {
-    private int iFBO;
-    private ivec2 vPosition;
-    private ivec2 vSize;
+    private final int iFBO;
+    private final ivec2 vPosition;
+    private final ivec2 vSize;
 
     private Texture pTexture, pDepthTexture;
 
@@ -71,8 +71,7 @@ public class Framebuffer
     }
 
     public void addDepthAttachment()
-    {  
-        
+    {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
         int depthBuffer = GL30.glGenRenderbuffers();
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, depthBuffer);
@@ -93,4 +92,12 @@ public class Framebuffer
         if(this.pDepthTexture == null) { Debug.error("Cannot get Depth Texture from framebuffer, did you call addDepthTextureAttachment?"); }
         return this.pDepthTexture;
     }
+
+
+    //
+    // Getter
+    //
+    public ivec2 getSize()     { return this.vSize; }
+    public ivec2 getPosition() { return this.vPosition; }
+    public int getID()         { return this.iFBO; }
 }
