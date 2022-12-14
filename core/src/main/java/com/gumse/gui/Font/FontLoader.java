@@ -76,6 +76,8 @@ public class FontLoader
 		tex.bind(0);
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RED, size.x, size.y, 0, GL11.GL_RED, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		tex.unbind();
 
 		//character.resolution = size;

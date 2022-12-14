@@ -50,7 +50,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.gumse.Example3D</mainClass>
+              <mainClass>com.gumse.Example</mainClass>
             </manifest>
           </archive>
         </configuration>
