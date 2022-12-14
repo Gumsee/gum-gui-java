@@ -33,14 +33,14 @@ public class ModelLoader
                         m.d1(), m.d2(), m.d3(), m.d4());
     }
     
-    public void load(String filename)
+    public void load(String filename, Class<?> classtouse)
     {
         AIPropertyStore settings = Assimp.aiCreatePropertyStore();
         Assimp.aiSetImportPropertyInteger(settings, Assimp.AI_CONFIG_PP_SLM_VERTEX_LIMIT, 65535);
 
 
         ByteBuffer modelBuffer;
-        modelBuffer = Toolbox.loadResourceToByteBuffer(filename);
+        modelBuffer = Toolbox.loadResourceToByteBuffer(filename, classtouse);
         //Debug.info(Integer.toString(imageBuffer.capacity()));
         if(modelBuffer.equals(null))
         {

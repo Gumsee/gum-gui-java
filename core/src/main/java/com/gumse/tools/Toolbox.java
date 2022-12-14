@@ -103,14 +103,14 @@ public class Toolbox
         return buffer;
     }
 
-    public static ByteBuffer loadResourceToByteBuffer(String resource) 
+    public static ByteBuffer loadResourceToByteBuffer(String resource, Class<?> classtouse) 
     {
         ByteBuffer buffer = null;
 
 
         try 
         {
-            InputStream source = Toolbox.class.getClassLoader().getResourceAsStream(resource);
+            InputStream source = classtouse.getClassLoader().getResourceAsStream(resource);
             byte[] bytes = source.readAllBytes();
             buffer = MemoryUtil.memAlloc(bytes.length);
             for(int i = 0; i < bytes.length; i++)
@@ -127,11 +127,11 @@ public class Toolbox
         return buffer;
     }
 
-    public static String loadResourceAsString(String resource)
+    public static String loadResourceAsString(String resource, Class<?> classtouse)
     {
         String retstr = "";
         try {
-            retstr = new Scanner(Toolbox.class.getClassLoader().getResourceAsStream(resource), "UTF-8").useDelimiter("\\A").next();
+            retstr = new Scanner(classtouse.getClassLoader().getResourceAsStream(resource), "UTF-8").useDelimiter("\\A").next();
         }
         //catch(IOException e) { Debug.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }
         catch(Exception e) { Debug.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }

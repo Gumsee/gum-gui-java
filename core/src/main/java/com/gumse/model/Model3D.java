@@ -25,7 +25,7 @@ public class Model3D extends Transformable
 
     public Model3D(ShaderProgram shader)
     {
-        initDefaultShader();
+        initDefaultShader(Model3D.class);
         this.pTexture = null;
         this.pShader = shader;
         this.v4Color = new vec4(1.0f);
@@ -52,10 +52,10 @@ public class Model3D extends Transformable
         alAttributes.add(index);
     }
 
-    public void load(String filename)
+    public void load(String filename, Class<?> classtouse)
     {
         ModelLoader modelLoader = new ModelLoader();
-        modelLoader.load(filename);
+        modelLoader.load(filename, classtouse);
         Mesh pMesh = modelLoader.getMesh(0);
 
 
@@ -97,14 +97,14 @@ public class Model3D extends Transformable
         Texture.unbind();
     }
 
-    public static void initDefaultShader()
+    public static void initDefaultShader(Class<?> classtouse)
     {
         if(pDefaultShader != null)
             return;
 
         pDefaultShader = new ShaderProgram();
-        pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.vert"), Shader.TYPES.VERTEX_SHADER));
-        pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.frag"), Shader.TYPES.FRAGMENT_SHADER));
+        pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.vert", classtouse), Shader.TYPES.VERTEX_SHADER));
+        pDefaultShader.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/model.frag", classtouse), Shader.TYPES.FRAGMENT_SHADER));
         pDefaultShader.build("ModelShader");
         pDefaultShader.addUniform("color");
         pDefaultShader.addUniform("hasTexture");

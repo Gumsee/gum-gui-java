@@ -32,7 +32,7 @@ public class Example3D
         pMainWindow.setClearColor(new vec4(0.09f, 0.1f, 0.11f, 1.0f)); // Set the clear color);
 
         Model3D pCube = new Model3D(null);
-        pCube.load("models/teapot.obj");
+        pCube.load("models/teapot.obj", Example3D.class);
         //pCube.load("models/card.obj");
         pCube.setPosition(new vec3(0,0,-70));
         pCube.setScale(new vec3(20));

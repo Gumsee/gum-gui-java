@@ -141,7 +141,7 @@ public class Box extends RenderGUI
 		if(!texture.equals(""))
         {
             Texture tex = new Texture();
-            tex.load(texture);
+            tex.load(texture, Box.class);
 		    boxgui.setTexture(tex);
         }
 		return boxgui;

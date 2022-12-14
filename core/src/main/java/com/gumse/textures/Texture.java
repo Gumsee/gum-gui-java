@@ -56,10 +56,10 @@ public class Texture {
         create();
     }
 
-    public void load(String filename)
+    public void load(String filename, Class<?> classtouse)
     {
         ByteBuffer imageBuffer;
-        imageBuffer = Toolbox.loadResourceToByteBuffer(filename);
+        imageBuffer = Toolbox.loadResourceToByteBuffer(filename, classtouse);
 
         if(imageBuffer.equals(null))
             throw new RuntimeException();

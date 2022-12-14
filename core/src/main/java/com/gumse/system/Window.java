@@ -134,23 +134,23 @@ public class Window
 
 		Texture icon22 = new Texture("icon22");
 		icon22.dontCreateGLTexture();
-		icon22.load("icons/icon22.png");
+		icon22.load("icons/icon22.png", Window.class);
 
 		Texture icon32 = new Texture("icon32");
 		icon32.dontCreateGLTexture();
-		icon32.load("icons/icon32.png");
+		icon32.load("icons/icon32.png", Window.class);
 
 		Texture icon48 = new Texture("icon48");
 		icon48.dontCreateGLTexture();
-		icon48.load("icons/icon48.png");
+		icon48.load("icons/icon48.png", Window.class);
 
 		Texture icon64 = new Texture("icon64");
 		icon64.dontCreateGLTexture();
-		icon64.load("icons/icon64.png");
+		icon64.load("icons/icon64.png", Window.class);
 
 		Texture icon128 = new Texture("icon128");
 		icon128.dontCreateGLTexture();
-		icon128.load("icons/icon128.png");
+		icon128.load("icons/icon128.png", Window.class);
 		
 		setIcon(new ArrayList<Texture>(Arrays.asList(new Texture[] { icon22, icon32, icon48, icon64, icon128 })), true, new vec4(0.61f, 0.53f, 1.0f, 1.0f));
 

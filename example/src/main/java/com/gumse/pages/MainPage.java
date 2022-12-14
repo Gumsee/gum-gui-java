@@ -40,7 +40,7 @@ public class MainPage extends RenderGUI
         testBox.setBorderThickness(2.0f);
         
         Texture hehe = new Texture();
-        hehe.load("textures/hehe.jpg");
+        hehe.load("textures/hehe.jpg", MainPage.class);
         testBox.setTexture(hehe);
         mainScroller.addGUI(testBox);
 

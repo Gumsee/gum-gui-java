@@ -18,8 +18,8 @@ public class GUIShader
         if(pShaderProgram == null)
         {
             pShaderProgram = new ShaderProgram();
-            pShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/GUI.vert"), Shader.TYPES.VERTEX_SHADER));
-            pShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/GUI.frag"), Shader.TYPES.FRAGMENT_SHADER));
+            pShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/GUI.vert", GUIShader.class), Shader.TYPES.VERTEX_SHADER));
+            pShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/GUI.frag", GUIShader.class), Shader.TYPES.FRAGMENT_SHADER));
             pShaderProgram.build("GUIShader");
             pShaderProgram.addUniform("transmat");
             pShaderProgram.addUniform("orthomat");
@@ -40,8 +40,8 @@ public class GUIShader
         if(pTextShaderProgram == null)
         {
             pTextShaderProgram = new ShaderProgram();
-            pTextShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Text.vert"), Shader.TYPES.VERTEX_SHADER));
-            pTextShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Text.frag"), Shader.TYPES.FRAGMENT_SHADER));
+            pTextShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Text.vert", GUIShader.class), Shader.TYPES.VERTEX_SHADER));
+            pTextShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Text.frag", GUIShader.class), Shader.TYPES.FRAGMENT_SHADER));
             Map<String, Integer> textShaderAttributes = new HashMap<String, Integer>();
             textShaderAttributes.put("info", 0);
 
@@ -60,8 +60,8 @@ public class GUIShader
         if(pStripesShaderProgram == null)
         {
             pStripesShaderProgram = new ShaderProgram();
-            pStripesShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Stripes.vert"), Shader.TYPES.VERTEX_SHADER));
-            pStripesShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Stripes.frag"), Shader.TYPES.FRAGMENT_SHADER));
+            pStripesShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Stripes.vert", GUIShader.class), Shader.TYPES.VERTEX_SHADER));
+            pStripesShaderProgram.addShader(new Shader(Shader.SHADER_VERSION_STR + Toolbox.loadResourceAsString("shaders/Stripes.frag", GUIShader.class), Shader.TYPES.FRAGMENT_SHADER));
             pStripesShaderProgram.build("StripesShader"); 
             pStripesShaderProgram.addUniform("transmat");
             pStripesShaderProgram.addUniform("orthomat");
