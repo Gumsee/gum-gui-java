@@ -1,18 +1,14 @@
 package com.gumse.system;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
 import org.lwjgl.glfw.GLFWImage;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.MemoryStack;
 
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
@@ -36,7 +32,6 @@ public class Window
 
     private static long lWindowID;
     private Window pParentWindow;
-    private ivec2 v2VisibleAreaSize;
     private ivec2 v2Size, v2Pos;
     private vec2 v2PixelSize;
     private mat4 m4ScreenMatrix;
@@ -60,8 +55,6 @@ public class Window
     //Callbacks
     private WindowResizePosCallback movedCallback = null, resizedCallback = null;
     private WindowFocusCallback focusedCallback = null;
-
-    private static vec4 v4DecorationSize;
 
     public static Window MainWindow = null;
     public static Window CurrentlyBoundWindow = null;
@@ -94,7 +87,6 @@ public class Window
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        System.out.println(System.getProperty("os.name"));
         if(System.getProperty("os.name") == "Mac OS X")
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Apple bullshit
 
@@ -382,6 +374,7 @@ public class Window
 	public void setTitle(String title)          { glfwSetWindowTitle(lWindowID, title); this.sTitle = title; }
 	public void setClearColor(vec4 color)	    { glClearColor(color.x, color.y, color.z, color.w); }
 	public void setResizable(boolean resizable) { this.bIsResizable = resizable; }
+	public void setScreenMatrix(mat4 matrix)	{ this.m4ScreenMatrix = matrix; }
 
 	//Getter
 	public Keyboard getKeyboard()				{ return this.pKeyboard; }
