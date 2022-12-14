@@ -33,6 +33,7 @@ public class Example3D
 
         Model3D pCube = new Model3D(null);
         pCube.load("models/teapot.obj");
+        //pCube.load("models/card.obj");
         pCube.setPosition(new vec3(0,0,-70));
         pCube.setScale(new vec3(20));
 
