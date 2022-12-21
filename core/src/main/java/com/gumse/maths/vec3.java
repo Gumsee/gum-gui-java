@@ -14,6 +14,14 @@ public class vec3 {
         this.z = 0;
     }
 
+    
+    public boolean equals(vec3 other)
+    {
+        if(other.x == x && other.y == y && other.z == z)
+            return true;
+        return false;
+    }
+
     public vec3(float x, float y, float z)
     {
         this.x = x;
