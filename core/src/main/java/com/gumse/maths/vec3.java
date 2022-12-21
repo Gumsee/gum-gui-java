@@ -21,6 +21,15 @@ public class vec3 {
             return true;
         return false;
     }
+    
+    public boolean equalsRound(vec3 other)
+    {
+        if(Math.round(other.x) == Math.round(x) && 
+           Math.round(other.y) == Math.round(y) && 
+           Math.round(other.z) == Math.round(z))
+            return true;
+        return false;
+    }
 
     public vec3(float x, float y, float z)
     {
@@ -118,10 +127,16 @@ public class vec3 {
     public static vec3 cross(vec3 a, vec3 b) { return new vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x); }
     public static float dot(vec3 a, vec3 b)  { return a.x * b.x + a.y * b.y + a.z * b.z; }
 
+
+    public String toString() { return toString(true, "vec3(", ")", ", "); }
+    public String toString(boolean oneline, String prefix, String suffix, String delimiter)
+    {
+        return prefix + this.x + delimiter + this.y + delimiter + this.z + suffix;
+    }  
+
     public void print()
     {
-        String vecstr = "vec3(" + Float.toString(this.x) + ", " + Float.toString(this.y) + ", " + Float.toString(this.z) + ")";
-        Debug.info(vecstr);
+        Debug.info(toString());
     }
 
     public vec2 xy()
