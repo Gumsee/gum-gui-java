@@ -193,7 +193,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.22.1</version>
         </plugin>
-        <plugin>
+        <!--<plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
                 <execution>
@@ -208,7 +208,7 @@
                     <descriptorRef>jar-with-dependencies</descriptorRef>
                 </descriptorRefs>
             </configuration>
-        </plugin>
+        </plugin>-->
         <!--<plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <version>3.0.2</version>
@@ -244,7 +244,7 @@
           <version>3.0.0</version>
         </plugin>
 
-        <plugin>
+        <!--<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>2.9</version>
@@ -256,11 +256,10 @@
                 <goal>build-classpath</goal>
               </goals>
               <configuration>
-                <!-- configure the plugin here -->
               </configuration>
             </execution>
           </executions>
-        </plugin>
+        </plugin>-->
 
       </plugins>
     </pluginManagement>
