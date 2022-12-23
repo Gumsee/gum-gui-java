@@ -325,12 +325,18 @@ public class RenderGUI
     public boolean collidesWithSimple(RenderGUI gui)           { return Toolbox.checkBoxIntersection(new bbox2i(getPosition(), getSize()), new bbox2i(gui.getPosition(), gui.getSize())); }
 
 
+    public boolean isMouseInsideSkipChildren() { return isMouseInsideSkipChildren(new ivec2(0,0)); }
+    public boolean isMouseInsideSkipChildren(ivec2 offset) 
+    {
+        return Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(ivec2.add(getPosition(), offset), getSize()));
+    }
+
     public boolean isMouseInside() { return isMouseInside(new ivec2(0,0)); }
     public boolean isMouseInside(ivec2 offset) 
     {
         if(bIsHidden)
             return false;
-        boolean isinside = Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(ivec2.add(getPosition(), offset), getSize()));
+        boolean isinside = isMouseInsideSkipChildren(offset);
         if(!isinside && !bChildrenHidden)
             for(int i = 0; i < numChildren(); i++)
                 if(vChildren.get(i).isMouseInside())

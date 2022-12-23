@@ -38,14 +38,14 @@ public class Dropdown extends RenderGUI
 		{
 			this.vPos = new ivec2(0, offset);
 			this.vSize = new ivec2(100, 100);
-			this.v4Color = new vec4(0.7f, 0.7f, 0.7f, 1.0f);
+			this.v4Color = new vec4(0.27f, 0.27f, 0.27f, 1.0f);
             this.pParent = parent;
 			setSizeInPercent(true, true);
 
 			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
 			pBox.setSizeInPercent(true, true);
 			pBox.setTextSize(iTextSize);
-			pBox.setColor(v4Color);
+			pBox.setColor(this.v4Color);
 			addElement(pBox);
 			this.pCallback = callback;
 		}
@@ -53,13 +53,13 @@ public class Dropdown extends RenderGUI
         @Override
         public void update()
         {
-            if(isMouseInside())
+            if(isMouseInsideSkipChildren())
             {
                 Mouse.setActiveHovering(true);
                 Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-                pBox.setColor(vec4.sub(v4Color, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+                pBox.setColor(vec4.sub(this.v4Color, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
                 if(isHoldingLeftClick())
-                    pBox.setColor(vec4.sub(v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+                    pBox.setColor(vec4.sub(this.v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 
                 if(isClicked())
                 {
@@ -69,6 +69,10 @@ public class Dropdown extends RenderGUI
                     if(pCallback != null)
                         pCallback.run(pBox.getTitle());
                 }
+            }
+            else
+            {
+                pBox.setColor(this.v4Color);
             }
         }
 	};
@@ -81,10 +85,12 @@ public class Dropdown extends RenderGUI
 		this.sType = "Dropdown";
 		this.iTextSize = textsize;
 		this.pFont = pFont;
+		this.v4Color = new vec4(0.3f, 0.3f, 0.3f, 1.0f);
 	
 		pSmoothFloat = new SmoothFloat(0, 10, 0);
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
 		pPreviewTextbox.setTextSize(textsize);
+		pPreviewTextbox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
 	
