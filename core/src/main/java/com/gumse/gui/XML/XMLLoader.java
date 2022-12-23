@@ -12,6 +12,7 @@ import com.gumse.maths.vec4;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.filesystem.XML.XMLReader;
 import com.gumse.system.filesystem.XML.XMLReader.NodeCallback;
+import com.gumse.tools.Debug;
 import com.gumse.tools.Toolbox;
 
 public class XMLLoader
@@ -35,15 +36,15 @@ public class XMLLoader
 
                 if(type.equals("item"))
                 {
-                    /*if(parentGUI.getType() == "Dropdown")
+                    if(parentGUI.getType() == "Dropdown")
                     {
-                        bool active = attrs["active"] == "true";
-                        ((Dropdown*)parentGUI).addEntry(content, nullptr, active);
+                        boolean active = node.getAttribute("active") == "true";
+                        ((Dropdown)parentGUI).addEntry(node.content, null, active);
                     }
                     else
                     {
-                        Gum.Output.error("item tag added outside of dropdown tag");
-                    }*/
+                        Debug.error("item tag added outside of dropdown tag");
+                    }
                 }
                 else if(type.equals("gui-root")) { gui = pRootGUI; }
                 else if(type.equals("gui"))      { gui = new RenderGUI(); }
