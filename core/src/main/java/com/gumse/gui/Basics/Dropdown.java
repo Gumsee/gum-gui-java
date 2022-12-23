@@ -9,7 +9,6 @@ import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
-import com.gumse.tools.Toolbox;
 
 public class Dropdown extends RenderGUI
 {
@@ -36,9 +35,9 @@ public class Dropdown extends RenderGUI
 
 		public MenuEntry(String name, Font font, int offset, DropdownEntryCallback callback)
 		{
-			vPos = new ivec2(0, offset);
-			vSize = new ivec2(100, 100);
-			v4Color = new vec4(0.7f, 0.7f, 0.7f, 1.0f);
+			this.vPos = new ivec2(0, offset);
+			this.vSize = new ivec2(100, 100);
+			this.v4Color = new vec4(0.7f, 0.7f, 0.7f, 1.0f);
 			setSizeInPercent(true, true);
 
 			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
@@ -48,6 +47,22 @@ public class Dropdown extends RenderGUI
 			addElement(pBox);
 			this.pCallback = callback;
 		}
+
+        @Override
+        public void update()
+        {
+            if(isMouseInside())
+            {
+                Mouse.setActiveHovering(true);
+                Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
+                pBox.setColor(vec4.sub(v4Color, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+                if(isHoldingLeftClick())
+                    pBox.setColor(vec4.sub(v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+
+                if(pCallback != null && hasClickedInside())
+                    pCallback.run(pBox.getTitle());
+            }
+        }
 	};
 
 
@@ -140,21 +155,14 @@ public class Dropdown extends RenderGUI
 		{
 			moveEntries();
 		}
-		
-	
-		/*if(bIsOpen)
-		{
-			//If all entries together are bigger (longer) than then screen
-			if(vMenuEntries.get(0).box.getSize().y * (int)vMenuEntries.size() > Window.CurrentlyBoundWindow.getSize().y - pPreviewTextbox.getSize().y)
-			{
-				//If Mouse is on the dropdown
-				if(Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(vMenuEntries.get(0).box.getPosition(), new ivec2(vMenuEntries.get(0).box.getSize().x, vMenuEntries.get(0).box.getSize().y * vMenuEntries.size()))))
-				{
-					fScrollOffset += Window.CurrentlyBoundWindow.getMouse().getMouseWheelState() * vMenuEntries.get(0).box.getSize().y;
-					if(fScrollOffset > 0) { fScrollOffset = 0; } //Do not move below the dropdown menu
-				}
-			}
-		}*/
+        
+        //Only update if entry is underneath the pPreviewTextbox
+        if(getChild(0).getPosition().y > vActualPos.y)
+        {
+            getChild(0).update();
+            for(RenderGUI child : getChild(0).getChildren())
+                child.update();
+        }
 	}
 	
 	public void render()
