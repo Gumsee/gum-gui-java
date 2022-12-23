@@ -32,12 +32,14 @@ public class Dropdown extends RenderGUI
 	{
 		private TextBox pBox;
 		private DropdownEntryCallback pCallback;
+        private Dropdown pParent;
 
-		public MenuEntry(String name, Font font, int offset, DropdownEntryCallback callback)
+		public MenuEntry(String name, Font font, int offset, DropdownEntryCallback callback, Dropdown parent)
 		{
 			this.vPos = new ivec2(0, offset);
 			this.vSize = new ivec2(100, 100);
 			this.v4Color = new vec4(0.7f, 0.7f, 0.7f, 1.0f);
+            this.pParent = parent;
 			setSizeInPercent(true, true);
 
 			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
@@ -59,8 +61,13 @@ public class Dropdown extends RenderGUI
                 if(isHoldingLeftClick())
                     pBox.setColor(vec4.sub(v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 
-                if(pCallback != null && hasClickedInside())
-                    pCallback.run(pBox.getTitle());
+                if(hasClickedInside())
+                {
+                    pParent.setTitle(pBox.getTitle());
+
+                    if(pCallback != null)
+                        pCallback.run(pBox.getTitle());
+                }
             }
         }
 	};
@@ -188,12 +195,12 @@ public class Dropdown extends RenderGUI
 	
 	public void addEntry(String title, DropdownEntryCallback OnCLickFunction, boolean active)
 	{
-		MenuEntry entry = new MenuEntry(title, pFont, iNumEntries * vActualSize.y, OnCLickFunction);
+		MenuEntry entry = new MenuEntry(title, pFont, iNumEntries * vActualSize.y, OnCLickFunction, this);
 		if(iNumEntries++ == 0) { addGUI(entry); }
 		else                   { getChild(0).addGUI(entry); }
 	
 		if(active)
-			this.pPreviewTextbox.setString(title);
+			setTitle(title);
 
 		moveEntries();
 	}
