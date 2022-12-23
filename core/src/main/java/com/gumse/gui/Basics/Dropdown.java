@@ -61,9 +61,10 @@ public class Dropdown extends RenderGUI
                 if(isHoldingLeftClick())
                     pBox.setColor(vec4.sub(v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 
-                if(hasClickedInside())
+                if(isClicked())
                 {
                     pParent.setTitle(pBox.getTitle());
+                    pParent.close();
 
                     if(pCallback != null)
                         pCallback.run(pBox.getTitle());
@@ -205,6 +206,7 @@ public class Dropdown extends RenderGUI
 		moveEntries();
 	}
 	
+    @Override
 	protected void updateOnTitleChange()
 	{
 		this.pPreviewTextbox.setString(sTitle);
