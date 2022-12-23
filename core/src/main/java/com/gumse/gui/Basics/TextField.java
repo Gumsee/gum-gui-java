@@ -46,6 +46,7 @@ public class TextField extends RenderGUI
 		this.iIndicatorCharIndex = 0;
 		this.pReturnFunc = null;
 		this.uiCursorShape = Mouse.GUM_CURSOR_IBEAM;
+        this.sCurrentText = str;
 	
 		iTextScrollRightOffset = 30;
 	
