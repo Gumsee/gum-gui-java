@@ -21,9 +21,11 @@ public class TextBox extends RenderGUI
 	
     private Box	pBackgroundBox;
 	private Text pText;
+    private String sActualText, sFinalText;
 	
 	private Alignment iAlignment;
 	private ivec2 v2TextOffset;
+    private boolean bAutoInsertLinebreaks;
 
 
 	public TextBox(String str, Font font, ivec2 pos, ivec2 size)
@@ -34,6 +36,7 @@ public class TextBox extends RenderGUI
 		this.sTitle = str;
 		this.iAlignment = Alignment.CENTER;
 		this.v2TextOffset = new ivec2(0,0);
+        this.bAutoInsertLinebreaks = false;
 
 		pBackgroundBox = new Box(new ivec2(0,0), new ivec2(100,100));
 		pBackgroundBox.setSizeInPercent(true, true);
@@ -46,6 +49,8 @@ public class TextBox extends RenderGUI
 		pText.setCharacterHeight((int)(size.y * 0.9));
 		pText.setColor(new vec4(0.9f, 0.9f, 0.9f, 1.0f));
 		addElement(pText);
+
+        setString(str);
 
 		resize();
 		reposition();
@@ -65,7 +70,6 @@ public class TextBox extends RenderGUI
 
 	public void updateText()
 	{
-		pText.applyStringChanges();
 		updateOnSizeChange();
 	}
 
@@ -77,6 +81,12 @@ public class TextBox extends RenderGUI
 
 	protected void updateOnSizeChange()
 	{
+        if(bAutoInsertLinebreaks)
+        {
+            insertLinebreaks();
+            pText.setString(sFinalText);
+        }
+
 		ivec2 textSize = pText.getSize();
 		switch(iAlignment)
 		{
@@ -109,17 +119,51 @@ public class TextBox extends RenderGUI
 
 	public void setString(String str)
 	{
-		pText.setString(str);
+        sActualText = str;
+        if(bAutoInsertLinebreaks)
+            insertLinebreaks();
+        else
+            sFinalText = sActualText;
+
+		pText.setString(sFinalText);
 		updateText();
 	}
 
-	public void setAlignment(Alignment alignment) { this.iAlignment = alignment; updateOnSizeChange(); }
-	public void setTextOffset(ivec2 offset)		  { this.v2TextOffset = offset; updateOnSizeChange(); }
-	public void setTexture(Texture tex) 		  { this.pBackgroundBox.setTexture(tex); }
-	public void setTextColor(vec4 color)      	  { this.pText.setColor(color); }
-	public void setTextSize(int size)			  { this.pText.setCharacterHeight(size); }
-	public void setMaxTextlength(int length)	  { this.pText.setMaxLength(length); }
-	public void setCornerRadius(vec4 radius)	  { this.pBackgroundBox.setCornerRadius(radius); }
+    private void insertLinebreaks()
+    {
+        //ArrayList<String> words
+        int wordStart = 0, wordEnd = 0;
+        int currentOffset = 0;
+
+        char[] chars = sActualText.toCharArray();
+        for(int i = 0; i < sActualText.length(); i++)
+        {
+            if(sActualText.charAt(i) == ' ')
+            {
+                wordStart = wordEnd;
+                wordEnd = i;
+
+                int wordWidth = pText.getTextSize(sActualText, wordStart, wordEnd).x;
+                currentOffset += wordWidth;
+
+                if(currentOffset > vActualSize.x * 0.9f)
+                {
+                    chars[wordStart] = '\n';
+                    currentOffset = wordWidth;
+                }
+            }
+        }
+        sFinalText = String.valueOf(chars);
+    }
+
+	public void setAlignment(Alignment alignment)    { this.iAlignment = alignment; updateOnSizeChange(); }
+	public void setTextOffset(ivec2 offset)		     { this.v2TextOffset = offset; updateOnSizeChange(); }
+	public void setTexture(Texture tex) 		     { this.pBackgroundBox.setTexture(tex); }
+	public void setTextColor(vec4 color)      	     { this.pText.setColor(color); }
+	public void setTextSize(int size)			     { this.pText.setCharacterHeight(size); }
+	public void setMaxTextlength(int length)	     { this.pText.setMaxLength(length); }
+	public void setCornerRadius(vec4 radius)	     { this.pBackgroundBox.setCornerRadius(radius); }
+    public void setAutoInsertLinebreaks(boolean ins) { this.bAutoInsertLinebreaks = ins; pText.setFadeOverride(ins, ins); }
 
 	public ivec2 getTextSize()					  { return this.pText.getSize(); }
 	public boolean isMouseInside() 				  { return this.pBackgroundBox.isMouseInside(); }

@@ -3,9 +3,11 @@ package com.gumse.pages;
 import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
+import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.Slider;
 import com.gumse.gui.Basics.TextBox;
+import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -77,13 +79,21 @@ public class MainPage extends RenderGUI
         mainScroller.addGUI(testDropdown);
 
 
-        testGraph = new Graph("Some Graph", new ivec2(30, 500), new ivec2(90, 150));
-        testGraph.setSizeInPercent(true, false);
-        mainScroller.addGUI(testGraph);
+        //testGraph = new Graph("Some Graph", new ivec2(30, 500), new ivec2(90, 150));
+        //testGraph.setSizeInPercent(true, false);
 
+        String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mauris elit, luctus id mollis a, posuere sed ante. Mauris a aliquet est. Integer egestas massa ac erat finibus iaculis.";
 
-        TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
+        TextBox textBox = new TextBox(lipsum, FontManager.getInstance().getDefaultFont(), new ivec2(30, 500), new ivec2(90, 150));
+        textBox.setTextSize(25);
+        textBox.setSizeInPercent(true, false);
+        textBox.setAutoInsertLinebreaks(true);
+        textBox.setAlignment(Alignment.LEFT);
         mainScroller.addGUI(textBox);
+
+
+        //TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
+        //mainScroller.addGUI(textBox);
 
         this.setSizeInPercent(true, true);
         reposition();
@@ -99,7 +109,7 @@ public class MainPage extends RenderGUI
             
         fpsBox.setString("FPS: " + (int)FPS.getFPS());
         //testGraph.addData((float)Math.cos(f += 0.1f));
-        testGraph.addData(FPS.getFPS());
+        //testGraph.addData(FPS.getFPS());
         updatechildren();
     }
 }

@@ -52,7 +52,7 @@ public class Text extends RenderGUI
     float fPixelSize;
     float fScale;
 
-    boolean bFadeOut, bFadeBothSides;
+    boolean bFadeOut, bFadeBothSides, bLeftFade, bRightFade;
 
         
     public Text(String text, Font font, ivec2 position, int maxlength)
@@ -72,6 +72,8 @@ public class Text extends RenderGUI
         this.vChars = new ArrayList<>();
         this.bFadeOut = false;
         this.bFadeBothSides = false;
+        this.bLeftFade = false;
+        this.bRightFade = false;
 
         ArrayList<Float> vertices = new ArrayList<>(Arrays.asList(new Float[] {
             1.0f, 0.0f, 1.0f, 1.0f,  
@@ -140,16 +142,18 @@ public class Text extends RenderGUI
                 
                 x += (ch.Bearing.x + charsize.x + ch.Advance) * fScale;
 
-                if(pos.x + scale.x > bRenderBox.pos.x + bRenderBox.size.x)
+                if(!bRightFade && pos.x + scale.x > bRenderBox.pos.x + bRenderBox.size.x)
                 {
                     bFadeOut = true;
                 }
-                if(pos.x < bRenderBox.pos.x)
+                if(!bLeftFade && pos.x < bRenderBox.pos.x)
                 {
                     bFadeOut = true;
                     bFadeBothSides = true;
                 }
-                if(pos.x > bRenderBox.pos.x + bRenderBox.size.x || pos.x + scale.x < bRenderBox.pos.x)
+                float ycheckpos = Window.CurrentlyBoundWindow.getSize().y - pos.y;
+                if(pos.x > bRenderBox.pos.x + bRenderBox.size.x || pos.x + scale.x < bRenderBox.pos.x ||
+                   ycheckpos > bRenderBox.pos.y + bRenderBox.size.y || ycheckpos - scale.y < bRenderBox.pos.y)
                     continue;
                 
                 vChars.add(new TextChar(i, pos, scale, ch.texture.getID()));
@@ -221,10 +225,11 @@ public class Text extends RenderGUI
         applyStringChanges();
     }
 
-    public void setScale(float scale)            { this.fScale = scale; }
-    public void setCharacterHeight(float height) { this.fScale = height / this.pFont.getHighestGlyphSize();  updateVAO(); }
-    public void setMaxLength(int length)         { this.iMaxLength = length; }
-    public void setRenderBox(bbox2i box)         { this.bRenderBox = box; }
+    public void setScale(float scale)                        { this.fScale = scale; }
+    public void setCharacterHeight(float height)             { this.fScale = height / this.pFont.getHighestGlyphSize();  updateVAO(); }
+    public void setMaxLength(int length)                     { this.iMaxLength = length; }
+    public void setRenderBox(bbox2i box)                     { this.bRenderBox = box; }
+    public void setFadeOverride(boolean left, boolean right) { this.bLeftFade = left; this.bRightFade = right; }
 
 
     //
