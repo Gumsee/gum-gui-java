@@ -230,6 +230,11 @@ public class Text extends RenderGUI
         this.sText = str;
         applyStringChanges();
     }
+    public void setFont(Font font)
+    {
+        this.pFont = font;
+        applyStringChanges();
+    }
 
     public void setScale(float scale)                        { this.fScale = scale; }
     public void setCharacterHeight(float height)             { this.fScale = height / this.pFont.getHighestGlyphSize();  updateVAO(); }
