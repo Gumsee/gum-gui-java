@@ -2,6 +2,7 @@ package com.gumse.pages;
 
 import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.Graph;
+import com.gumse.gui.Basics.Radiobutton;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.Scroller;
@@ -17,6 +18,8 @@ import com.gumse.maths.vec4;
 import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
+
+import clojure.main;
 
 
 public class MainPage extends RenderGUI
@@ -84,13 +87,16 @@ public class MainPage extends RenderGUI
 
         String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mauris elit, luctus id mollis a, posuere sed ante. Mauris a aliquet est. Integer egestas massa ac erat finibus iaculis.";
 
-        TextBox textBox = new TextBox(lipsum, FontManager.getInstance().getDefaultFont(), new ivec2(30, 500), new ivec2(90, 150));
+        TextBox textBox = new TextBox(lipsum, fonts.getDefaultFont(), new ivec2(30, 500), new ivec2(90, 150));
         textBox.setTextSize(25);
         textBox.setSizeInPercent(true, false);
         textBox.setAutoInsertLinebreaks(true);
         textBox.setAlignment(Alignment.LEFT);
         mainScroller.addGUI(textBox);
 
+        Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 20, 90, fonts.getDefaultFont(), new String[] {"Option 1", "Option 2" + lipsum, "Option 3"});
+        radiobutton.setSizeInPercent(true, false);
+        mainScroller.addGUI(radiobutton);
 
         //TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
         //mainScroller.addGUI(textBox);

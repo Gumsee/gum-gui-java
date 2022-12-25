@@ -115,12 +115,8 @@ public class Example
         altMenu.addGUI(loginPage);
         altMenu.addGUI(listsPage);
 
-        RenderGUI xmlTest = XMLGUI.loadFile("guis/examplegui.xml");
-        mainPage.addGUI(xmlTest);
-
-        RenderGUI findgui = xmlTest.findChildByID("testID");
-        if(findgui != null)
-            Debug.info(findgui.getID());
+        //RenderGUI xmlTest = XMLGUI.loadFile("guis/examplegui.xml");
+        //mainPage.addGUI(xmlTest);
 
         altMenu.resize();
         altMenu.reposition();
