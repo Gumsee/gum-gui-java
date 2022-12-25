@@ -23,6 +23,7 @@ public class Radiobutton extends RenderGUI
             this.iFontSize = fontsize;
 
             pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), (int)(fontsize * 0.66));
+            pSwitch.tick(false);
             addElement(pSwitch);
 
             int xoffset = iFontSize * 2;
