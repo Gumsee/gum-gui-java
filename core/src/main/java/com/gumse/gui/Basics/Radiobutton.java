@@ -27,7 +27,7 @@ public class Radiobutton extends RenderGUI
 
             int xoffset = iFontSize * 2;
             pTextBox = new TextBox(str, font, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
-            pTextBox.setTextSize(20);
+            pTextBox.setTextSize(fontsize);
             pTextBox.setAutoInsertLinebreaks(true);
             pTextBox.setAlignment(Alignment.LEFT);
             pTextBox.setSize(new ivec2(vActualSize.x - xoffset, pTextBox.getText().getSize().y));
@@ -51,12 +51,13 @@ public class Radiobutton extends RenderGUI
         }
     }
 
-    private static final int iGapSize = 10;
+    private int iGapSize;
 
     public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options)
     {
         this.sType = "Radiobutton";
         this.vPos.set(pos);
+        this.iGapSize = fontsize / 2;
 
         int maxheight = 0;
         for(int i = 0; i < options.length; i++)
