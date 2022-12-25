@@ -30,8 +30,8 @@ public class Box extends RenderGUI
 	{
 		this.pTexture = null;
 		this.sType = "box";
-		this.vPos = pos;
-		this.vSize = size;
+		this.vPos.set(pos);
+		this.vSize.set(size);
 		this.fBorderThickness = 0.0f;
 		this.bGradient = false;
 		this.bRightgradient = false;

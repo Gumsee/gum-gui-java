@@ -152,6 +152,12 @@ public class TextBox extends RenderGUI
                     currentOffset = wordWidth;
                 }
             }
+            else if(sActualText.charAt(i) == '\n')
+            {
+                wordStart = wordEnd;
+                wordEnd = i;
+                currentOffset = 0;
+            }
         }
         sFinalText = String.valueOf(chars);
     }
