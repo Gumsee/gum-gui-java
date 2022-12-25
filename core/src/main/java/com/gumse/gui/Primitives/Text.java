@@ -176,9 +176,15 @@ public class Text extends RenderGUI
     {
         if(bIsHidden)
             return;
+
+        float alpha = v4Color.w;
+        if(fAlphaOverride < 1.0f)
+        {
+            alpha = fAlphaOverride;
+        }
         
         GUIShader.getTextShaderProgram().use();
-        GUIShader.getTextShaderProgram().loadUniform("color", v4Color);
+        GUIShader.getTextShaderProgram().loadUniform("color", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha));
         GUIShader.getTextShaderProgram().loadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
         GUIShader.getTextShaderProgram().loadUniform("bboxpos", new vec2(bRenderBox.getPos()));
         GUIShader.getTextShaderProgram().loadUniform("bboxsize", new vec2(bRenderBox.getSize()));
