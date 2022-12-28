@@ -227,16 +227,16 @@ public class RenderGUI
 
     public void updatechildren() 
     { 
-        /*for(int i = numElements(); i --> 0;) { vElements.get(i).update();  }
+        for(int i = numElements(); i --> 0;) { vElements.get(i).update();  }
         if(!bChildrenHidden)
         {
             for(int i = numChildren(); i --> 0;) { vChildren.get(i).update(); } 
-        }*/
-        for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
+        }
+        /*for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
         if(!bChildrenHidden)
         {
             for(int i = 0; i < numChildren(); i++) { vChildren.get(i).update(); } 
-        }
+        }*/
     }
 
     public void updateBoundingBox() { updateBoundingBox(false); }

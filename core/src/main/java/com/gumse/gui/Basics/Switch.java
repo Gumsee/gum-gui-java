@@ -56,9 +56,9 @@ public class Switch extends RenderGUI
         updatechildren();
     }
 
-    public boolean isTicked()       { return pTickbox.isHidden(); }
+    public boolean isTicked()       { return !pTickbox.isHidden(); }
 
-    public void tick(boolean state) { pTickbox.hide(state); }
+    public void tick(boolean state) { pTickbox.hide(!state); }
 
     public static Switch createFromXMLNode(XMLNode node)
     {
