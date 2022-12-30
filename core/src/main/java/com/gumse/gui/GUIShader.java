@@ -34,6 +34,7 @@ public class GUIShader
             pShaderProgram.addUniform("rightgradient");
             pShaderProgram.addUniform("radius");
             pShaderProgram.addUniform("isTextureGrayscale");
+            pShaderProgram.addUniform("circleMode");
             pShaderProgram.addTexture("textureSampler", 0);
         }
 

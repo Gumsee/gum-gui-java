@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import java.util.ArrayList;
 
+import com.gumse.gui.Basics.Switch.Shape;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -22,7 +23,8 @@ public class Radiobutton extends RenderGUI
             this.sType = "RadiobuttonOption";
             this.iFontSize = fontsize;
 
-            pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), (int)(fontsize * 0.66));
+            pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), 0);
+            pSwitch.setShape(Shape.CIRCLE);
             pSwitch.tick(false);
             addElement(pSwitch);
 

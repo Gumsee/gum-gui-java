@@ -21,8 +21,9 @@ public class Box extends RenderGUI
 
 	private boolean bGradient;
 	private boolean bRightgradient;
-
 	private boolean bInvertY;
+    private boolean bIsCircle;
+    
 	private float fBorderThickness;
 
 
@@ -64,51 +65,55 @@ public class Box extends RenderGUI
 		reposition();
 	}
 
+    private void renderInternal()
+    {
+        float alpha1 = v4Color.w;
+        float alpha2 = color2.w;
+        float alpha3 = bordercolor.w;
+        if(fAlphaOverride < 1.0f)
+        {
+            alpha1 = fAlphaOverride;
+            alpha2 = fAlphaOverride;
+            alpha3 = fAlphaOverride;
+        }
+
+        GUIShader.getShaderProgram().loadUniform("hasTexture", pTexture != null);
+        if(pTexture != null)
+        {
+            //GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
+            pTexture.bind(0);
+        }
+
+        GUIShader.getShaderProgram().loadUniform("circleMode", bIsCircle);
+        GUIShader.getShaderProgram().loadUniform("rightgradient", bRightgradient);
+        GUIShader.getShaderProgram().loadUniform("gradient", bGradient);
+        GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha1));
+        GUIShader.getShaderProgram().loadUniform("Lowercolor", new vec4(color2.x, color2.y, color2.z, alpha2));
+        GUIShader.getShaderProgram().loadUniform("borderColor", new vec4(bordercolor.x, bordercolor.y, bordercolor.z, alpha3));
+        GUIShader.getShaderProgram().loadUniform("borderThickness", fBorderThickness);
+        GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
+        GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
+        GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
+        GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
+        GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        pVAO.bind();
+        GL30.glDrawArrays(GL30.GL_TRIANGLE_STRIP, 0, 6);
+        pVAO.unbind();
+    }
+
 
 	public void render()
 	{
 		if(!bIsHidden)
 		{
-			GUIShader.getShaderProgram().use();
+            GUIShader.getShaderProgram().use();
+            renderInternal();
+            GUIShader.getShaderProgram().unuse();
 
-			float alpha1 = v4Color.w;
-			float alpha2 = color2.w;
-			float alpha3 = bordercolor.w;
-			if(fAlphaOverride < 1.0f)
-			{
-				alpha1 = fAlphaOverride;
-				alpha2 = fAlphaOverride;
-				alpha3 = fAlphaOverride;
-			}
-
-			GUIShader.getShaderProgram().loadUniform("hasTexture", pTexture != null);
-			if(pTexture != null)
-			{
-				//GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
-				pTexture.bind(0);
-			}
-
-			GUIShader.getShaderProgram().loadUniform("rightgradient", bRightgradient);
-			GUIShader.getShaderProgram().loadUniform("gradient", bGradient);
-			GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha1));
-			GUIShader.getShaderProgram().loadUniform("Lowercolor", new vec4(color2.x, color2.y, color2.z, alpha2));
-			GUIShader.getShaderProgram().loadUniform("borderColor", new vec4(bordercolor.x, bordercolor.y, bordercolor.z, alpha3));
-			GUIShader.getShaderProgram().loadUniform("borderThickness", fBorderThickness);
-			GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
-			GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
-			GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
-			GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
-			GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
-
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-			pVAO.bind();
-			GL30.glDrawArrays(GL30.GL_TRIANGLE_STRIP, 0, 6);
-			pVAO.unbind();
-
-			GUIShader.getShaderProgram().unuse();
-
-			renderchildren();
+            renderchildren();
 		}
 	}
 
@@ -120,16 +125,17 @@ public class Box extends RenderGUI
 	}
 
 
-	public void invertTexcoordY(boolean invert)          { this.bInvertY = invert; }
-	public void setTexture(Texture texture)          { this.pTexture = texture; }
-	public void setSecondColor(vec4 col)              { this.color2 = col; }
-	public void setBorderColor(vec4 col)              { this.bordercolor = col; }
-	public void setBorderThickness(float thickness)   { this.fBorderThickness = thickness; }
-	public void setHasGradient(boolean val)              { this.bGradient = val; }
-	public void setGradientDirectionRight(boolean val)   { this.bRightgradient = val; }
+	public void invertTexcoordY(boolean invert)        { this.bInvertY = invert; }
+    public void renderAsCircle(boolean iscircle)       { this.bIsCircle = iscircle; }
+	public void setTexture(Texture texture)            { this.pTexture = texture; }
+	public void setSecondColor(vec4 col)               { this.color2 = col; }
+	public void setBorderColor(vec4 col)               { this.bordercolor = col; }
+	public void setBorderThickness(float thickness)    { this.fBorderThickness = thickness; }
+	public void setHasGradient(boolean val)            { this.bGradient = val; }
+	public void setGradientDirectionRight(boolean val) { this.bRightgradient = val; }
 
-	public Texture getTexture()                      { return this.pTexture; }
-	public vec4 getSecondColor()                      { return this.color2; }
+	public Texture getTexture()                        { return this.pTexture; }
+	public vec4 getSecondColor()                       { return this.color2; }
 
 
 	public static Box createFromXMLNode(XMLNode node)

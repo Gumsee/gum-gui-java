@@ -7,6 +7,7 @@ uniform vec4 Lowercolor;
 uniform vec4 borderColor;
 uniform bool hasTexture;
 uniform bool gradient;
+uniform bool circleMode;
 uniform bool rightgradient;
 uniform bool isTextureGrayscale;
 uniform vec4 radius;
@@ -46,47 +47,58 @@ void main(void)
 
 
     vec2 borderSize = guisize - vec2(borderThickness*2);
-    float dist, distBorder;
-    vec2 borderCenter = Texcoord * guisize - (borderSize/2.0f) - vec2(borderThickness);
-    vec2 cornerCenter = Texcoord * guisize - (guisize/2.0f);
-    if(Texcoord.x < 0.5)
+
+
+    if(circleMode)
     {
-        if(Texcoord.y > 0.5)
-        {
-            //Bottom Left
-            if(borderThickness > 0)
-                distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.w - borderThickness);
-            dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.w); 
-        }
-        else
-        {
-            //Top Left
-            if(borderThickness > 0)
-                distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.x - borderThickness);
-            dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.x); 
-        }
+        float dist = distance(Texcoord, vec2(0.5, 0.5));
+        float alpha = smoothstep(0.45 - fwidth(dist), 0.45, dist);
+        fragColor = vec4(fragColor.rgb, 1 - alpha);
     }
     else
     {
-        if(Texcoord.y < 0.5)
+        float dist, distBorder;
+        vec2 borderCenter = Texcoord * guisize - (borderSize/2.0f) - vec2(borderThickness);
+        vec2 cornerCenter = Texcoord * guisize - (guisize/2.0f);
+        if(Texcoord.x < 0.5)
         {
-            //Bottom Right
-            if(borderThickness > 0)
-                distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.y - borderThickness);
-            dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.y); 
+            if(Texcoord.y > 0.5)
+            {
+                //Bottom Left
+                if(borderThickness > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.w - borderThickness);
+                dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.w); 
+            }
+            else
+            {
+                //Top Left
+                if(borderThickness > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.x - borderThickness);
+                dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.x); 
+            }
         }
         else
         {
-            //Top Right
-            if(borderThickness > 0)
-                distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.z - borderThickness);
-            dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.z); 
+            if(Texcoord.y < 0.5)
+            {
+                //Bottom Right
+                if(borderThickness > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.y - borderThickness);
+                dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.y); 
+            }
+            else
+            {
+                //Top Right
+                if(borderThickness > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.z - borderThickness);
+                dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.z); 
+            }
         }
-    }
 
-    if(borderThickness > 0)
-        fragColor = mix(fragColor, borderColor, clamp(distBorder, 0.0f, 1.0f));
-        
-    float smoothedAlpha = 1.0f - smoothstep(0.0f, 2.0f, dist);
-    fragColor.a *= smoothedAlpha;
+        if(borderThickness > 0)
+            fragColor = mix(fragColor, borderColor, clamp(distBorder, 0.0f, 1.0f));
+            
+        float smoothedAlpha = 1.0f - smoothstep(0.0f, 2.0f, dist);
+        fragColor.a *= smoothedAlpha;
+    }
 }
