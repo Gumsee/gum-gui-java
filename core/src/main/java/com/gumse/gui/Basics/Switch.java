@@ -24,6 +24,8 @@ public class Switch extends RenderGUI
         CHECK
     };
 
+    public interface OnSwitchTicked { public void run(boolean ticked); }
+
 
     private Box pBackground;
     private Box pTickbox;
@@ -31,6 +33,7 @@ public class Switch extends RenderGUI
     private mat4 m4CheckMatrix;
     private static VertexArrayObject pVAO;
     private boolean bIsTicked;
+    private OnSwitchTicked pOnTickedCallback;
 
     static void initVAO()
     {
@@ -77,6 +80,7 @@ public class Switch extends RenderGUI
         this.vSize.set(size);
         this.iShape = Shape.CHECK;
         this.bIsTicked = false;
+        this.pOnTickedCallback = null;
         initVAO();
 
         pBackground = new Box(new ivec2(0,0), new ivec2(100, 100));
@@ -112,6 +116,8 @@ public class Switch extends RenderGUI
         if(isClicked())
         {
             bIsTicked = !bIsTicked;
+            if(pOnTickedCallback == null)
+                pOnTickedCallback.run(bIsTicked);
         }
 
 
@@ -176,6 +182,10 @@ public class Switch extends RenderGUI
             case SQUARE: pBackground.renderAsCircle(false); pTickbox.renderAsCircle(false); break;
             default: break;
         }
+    }
+    public void onTick(OnSwitchTicked callback)
+    {
+        this.pOnTickedCallback = callback;
     }
 
 
