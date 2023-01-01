@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import java.util.ArrayList;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -37,8 +38,6 @@ public class List extends RenderGUI
     private TextBox pTitleBox = null;
     private Box pBackground = null;
 
-    private vec4 v4FirstColor, v4SecondColor;
-
 
     public enum ENTRY_TYPE {
         STRING,
@@ -54,8 +53,6 @@ public class List extends RenderGUI
         this.vSize.set(size);
         this.vPos.set(pos);
         this.sTitle = title;
-        this.v4FirstColor = new vec4(0.3f, 0.3f, 0.3f, 1.0f);
-        this.v4SecondColor = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
         this.vEntries = new ArrayList<>();
     
     
@@ -108,7 +105,10 @@ public class List extends RenderGUI
     
     public void addEntry(String title, ENTRY_TYPE type)
     {
-        ListEntry entry = new ListEntry(title, (vEntries.size() % 2 == 0) ? v4FirstColor : v4SecondColor);
+        ListEntry entry = new ListEntry(
+            title, 
+            (vEntries.size() % 2 == 0) ? GUI.getTheme().primaryColor : GUI.getTheme().secondaryColor
+        );
         entry.setSize(new ivec2(100, 40));
         entry.setPosition(new ivec2(0, vEntries.size() * 30 + 30));
         vEntries.add(entry);

@@ -1,5 +1,6 @@
 package com.gumse.gui.Basics;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
@@ -34,7 +35,6 @@ public class Group extends RenderGUI
         {
             pTitle = new Text("", FontManager.getInstance().getDefaultFont(), new ivec2(0, -25), 0);
             pTitle.setCharacterHeight(20.0f);
-            pTitle.setColor(this.getColor());
             addElement(pTitle);
         }
 
@@ -45,7 +45,7 @@ public class Group extends RenderGUI
     {
         if(pTitle != null)
         {
-            pTitle.setColor(this.getColor());
+            pTitle.setColor(this.getColor(GUI.getTheme().textColor));
         }
     }
 

@@ -2,6 +2,7 @@ package com.gumse.gui.AltMenu;
 
 import java.util.ArrayList;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -23,7 +24,7 @@ public class AltMenu extends RenderGUI
     
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 30));
         pBackground.setSizeInPercent(true, false);
-        pBackground.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
+        pBackground.setColor(GUI.getTheme().secondaryColor);
         addElement(pBackground);
     }
     

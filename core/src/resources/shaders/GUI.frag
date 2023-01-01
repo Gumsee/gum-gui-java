@@ -11,7 +11,7 @@ uniform bool circleMode;
 uniform bool rightgradient;
 uniform bool isTextureGrayscale;
 uniform vec4 radius;
-uniform float borderThickness;
+uniform int borderThickness;
 
 out vec4 fragColor;
 

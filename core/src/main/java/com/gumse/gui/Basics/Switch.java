@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -86,7 +87,7 @@ public class Switch extends RenderGUI
         pBackground = new Box(new ivec2(0,0), new ivec2(100, 100));
         pBackground.setCornerRadius(new vec4(radius));
         pBackground.setSizeInPercent(true, true);
-        pBackground.setColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
+        pBackground.setColor(getColor(GUI.getTheme().secondaryColor));
         addElement(pBackground);
 
 
@@ -96,7 +97,7 @@ public class Switch extends RenderGUI
         pTickbox.setSizeInPercent(true, true);
         pTickbox.setOrigin(new ivec2(50, 50));
         pTickbox.setOriginInPercent(true, true);
-        pTickbox.setColor(new vec4(0.3f,0.6f,0.3f,1.0f));
+        pTickbox.setColor(GUI.getTheme().accentColor);
         //pTickbox.setColor(vec4(Gum::Maths::HSVToRGB(vec3(rand() % 360, 100, 70)),1.0));
         addElement(pTickbox);
 
@@ -116,7 +117,7 @@ public class Switch extends RenderGUI
         if(isClicked())
         {
             bIsTicked = !bIsTicked;
-            if(pOnTickedCallback == null)
+            if(pOnTickedCallback != null)
                 pOnTickedCallback.run(bIsTicked);
         }
 
@@ -159,7 +160,7 @@ public class Switch extends RenderGUI
         GUIShader.getShaderProgram().use();
         GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
         GUIShader.getShaderProgram().loadUniform("transmat", m4CheckMatrix);
-        GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(0.3f,0.6f,0.3f,1.0f));
+        GUIShader.getShaderProgram().loadUniform("Uppercolor", GUI.getTheme().accentColor);
         GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
         GUIShader.getShaderProgram().loadUniform("hasTexture", false);
         pVAO.bind();

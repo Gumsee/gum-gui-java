@@ -43,6 +43,7 @@ public class vec4 {
 
     public static vec4 add(vec4 a, vec4 b)          { return new vec4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w); }
     public static vec4 sub(vec4 a, vec4 b)          { return new vec4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w); }
+    public static vec4 sub(vec4 a, float f)         { return new vec4(a.x - f, a.y - f, a.z - f, a.w - f); }
     public static vec4 mul(vec4 a, vec4 b)          { return new vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w); }
     public static vec4 mul(vec4 a, float f)         { return new vec4(a.x * f, a.y * f, a.z * f, a.w * f); }
     public static vec4 div(vec4 a, float f)         { return new vec4(a.x / f, a.y / f, a.z / f, a.w / f); }

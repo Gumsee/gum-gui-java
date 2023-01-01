@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.maths.*;
 import com.gumse.textures.Texture;
@@ -24,7 +25,7 @@ public class Box extends RenderGUI
 	private boolean bInvertY;
     private boolean bIsCircle;
     
-	private float fBorderThickness;
+	private int iBorderThickness;
 
 
 	public Box(ivec2 pos, ivec2 size) 
@@ -33,12 +34,12 @@ public class Box extends RenderGUI
 		this.sType = "box";
 		this.vPos.set(pos);
 		this.vSize.set(size);
-		this.fBorderThickness = 0.0f;
+		this.iBorderThickness = -1;
 		this.bGradient = false;
 		this.bRightgradient = false;
 		this.bInvertY = false;
 		this.color2 = new vec4();
-		this.bordercolor = new vec4();
+		this.bordercolor = GUI.getTheme().accentColor;
 		
 		if(pVAO == null)
 		{
@@ -67,14 +68,14 @@ public class Box extends RenderGUI
 
     private void renderInternal()
     {
-        float alpha1 = v4Color.w;
-        float alpha2 = color2.w;
-        float alpha3 = bordercolor.w;
+        vec4 col1 = getColor(GUI.getTheme().primaryColor);
+        vec4 col2 = color2;
+        vec4 col3 = bordercolor;
         if(fAlphaOverride < 1.0f)
         {
-            alpha1 = fAlphaOverride;
-            alpha2 = fAlphaOverride;
-            alpha3 = fAlphaOverride;
+            col1.w = fAlphaOverride;
+            col2.w = fAlphaOverride;
+            col3.w = fAlphaOverride;
         }
 
         GUIShader.getShaderProgram().loadUniform("hasTexture", pTexture != null);
@@ -87,10 +88,10 @@ public class Box extends RenderGUI
         GUIShader.getShaderProgram().loadUniform("circleMode", bIsCircle);
         GUIShader.getShaderProgram().loadUniform("rightgradient", bRightgradient);
         GUIShader.getShaderProgram().loadUniform("gradient", bGradient);
-        GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha1));
-        GUIShader.getShaderProgram().loadUniform("Lowercolor", new vec4(color2.x, color2.y, color2.z, alpha2));
-        GUIShader.getShaderProgram().loadUniform("borderColor", new vec4(bordercolor.x, bordercolor.y, bordercolor.z, alpha3));
-        GUIShader.getShaderProgram().loadUniform("borderThickness", fBorderThickness);
+        GUIShader.getShaderProgram().loadUniform("Uppercolor", col1);
+        GUIShader.getShaderProgram().loadUniform("Lowercolor", col2);
+        GUIShader.getShaderProgram().loadUniform("borderColor", col3);
+        GUIShader.getShaderProgram().loadUniform("borderThickness", iBorderThickness);
         GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
         GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
         GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
@@ -130,12 +131,18 @@ public class Box extends RenderGUI
 	public void setTexture(Texture texture)            { this.pTexture = texture; }
 	public void setSecondColor(vec4 col)               { this.color2 = col; }
 	public void setBorderColor(vec4 col)               { this.bordercolor = col; }
-	public void setBorderThickness(float thickness)    { this.fBorderThickness = thickness; }
+	public void setBorderThickness(int thickness)      { this.iBorderThickness = thickness; }
 	public void setHasGradient(boolean val)            { this.bGradient = val; }
 	public void setGradientDirectionRight(boolean val) { this.bRightgradient = val; }
 
 	public Texture getTexture()                        { return this.pTexture; }
 	public vec4 getSecondColor()                       { return this.color2; }
+	public int getBorderThickness()
+    { 
+        if(iBorderThickness == -1)
+            return GUI.getTheme().borderThickness;
+        return iBorderThickness; 
+    }
 
 
 	public static Box createFromXMLNode(XMLNode node)

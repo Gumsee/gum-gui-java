@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gumse.gui.GUI;
 import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
@@ -50,7 +51,7 @@ public class RenderGUI
 
     public RenderGUI() 
     {
-        this.v4Color = new vec4(1,1,1,1);
+        this.v4Color = null;
         this.v4CornerRadius = new vec4(0,0,0,0);
         this.pParent = null;
         this.sTitle = "";
@@ -377,6 +378,7 @@ public class RenderGUI
         return null;
     }
 
+
     //
     // Setter
     //
@@ -430,13 +432,24 @@ public class RenderGUI
     public String getTitle()                                  { return this.sTitle; }
     public String getValuePtr()                               { return this.value; }
     public String getAttribute(String attr)                   { return this.mAttributes.get(attr); }
-    public vec4 getColor()                                    { return this.v4Color; }
-    public vec4 getCornerRadius()                             { return this.v4CornerRadius; }
     public float getAlphaOverride()                           { return this.fAlphaOverride; }
     public boolean isHidden()                                 { return this.bIsHidden; }
     public boolean areChildrenHidden()                        { return this.bChildrenHidden; }
     public boolean hasChild(RenderGUI gui)                    { for(RenderGUI child : vChildren) { if(child == gui) return true; } return false;}
     public ArrayList<RenderGUI> getChildren()                 { return vChildren; }
+
+    public vec4 getCornerRadius()                             
+    { 
+        if(this.v4CornerRadius == null)
+            return GUI.getTheme().cornerRadius;
+        return this.v4CornerRadius; 
+    }
+    public vec4 getColor(vec4 fallback)
+    { 
+        if(this.v4Color == null)
+            return fallback;
+        return this.v4Color; 
+    }
 
     public boolean isClicked()                                   
     { 

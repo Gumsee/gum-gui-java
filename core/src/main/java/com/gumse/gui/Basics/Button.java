@@ -1,5 +1,6 @@
 package com.gumse.gui.Basics;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -24,11 +25,11 @@ public class Button extends RenderGUI
         this.vPos.set(pos);
         this.vSize.set(size);
         this.sType = "button";
-        this.v4Color = new vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
         backgroundBox = new TextBox(title, font, new ivec2(0), new ivec2(100, 100));
         backgroundBox.setSizeInPercent(true, true);
         backgroundBox.setAlignment(TextBox.Alignment.CENTER);
+        backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
         addGUI(backgroundBox);
 
         resize();
@@ -57,10 +58,10 @@ public class Button extends RenderGUI
         {
             Mouse.setActiveHovering(true);
             Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-            backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.02f)));
+            backgroundBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.02f));
             if(isHoldingLeftClick())
             {
-                backgroundBox.setColor(vec4.sub(v4Color, new vec4(0.05f)));
+                backgroundBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.05f));
             }
             if(!Mouse.isBusy() && isClicked())
             {
@@ -72,7 +73,7 @@ public class Button extends RenderGUI
         }
         else
         {
-            backgroundBox.setColor(v4Color);
+            backgroundBox.setColor(GUI.getTheme().primaryColor);
         }
     }
 

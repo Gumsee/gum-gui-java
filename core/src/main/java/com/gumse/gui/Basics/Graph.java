@@ -20,8 +20,6 @@ import com.gumse.model.VertexBufferObject;
 import com.gumse.shader.Shader;
 import com.gumse.shader.ShaderProgram;
 import com.gumse.system.Window;
-import com.gumse.tools.Debug;
-import com.gumse.tools.FPS;
 
 public class Graph extends RenderGUI
 {

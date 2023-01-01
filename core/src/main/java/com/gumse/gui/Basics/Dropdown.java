@@ -1,6 +1,7 @@
 package com.gumse.gui.Basics;
 
 import com.gumse.basics.SmoothFloat;
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -8,7 +9,6 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
 
 public class Dropdown extends RenderGUI
 {
@@ -38,14 +38,13 @@ public class Dropdown extends RenderGUI
 		{
 			this.vPos = new ivec2(0, offset);
 			this.vSize = new ivec2(100, 100);
-			this.v4Color = new vec4(0.27f, 0.27f, 0.27f, 1.0f);
             this.pParent = parent;
 			setSizeInPercent(true, true);
 
 			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
 			pBox.setSizeInPercent(true, true);
 			pBox.setTextSize(iTextSize);
-			pBox.setColor(this.v4Color);
+			pBox.setColor(GUI.getTheme().primaryColor);
 			addElement(pBox);
 			this.pCallback = callback;
 		}
@@ -57,9 +56,9 @@ public class Dropdown extends RenderGUI
             {
                 Mouse.setActiveHovering(true);
                 Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-                pBox.setColor(vec4.sub(this.v4Color, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+                pBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
                 if(isHoldingLeftClick())
-                    pBox.setColor(vec4.sub(this.v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+                    pBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 
                 if(isClicked())
                 {
@@ -72,7 +71,7 @@ public class Dropdown extends RenderGUI
             }
             else
             {
-                pBox.setColor(this.v4Color);
+                pBox.setColor(getColor(GUI.getTheme().primaryColor));
             }
         }
 	};
@@ -85,12 +84,11 @@ public class Dropdown extends RenderGUI
 		this.sType = "Dropdown";
 		this.iTextSize = textsize;
 		this.pFont = pFont;
-		this.v4Color = new vec4(0.3f, 0.3f, 0.3f, 1.0f);
 	
 		pSmoothFloat = new SmoothFloat(0, 10, 0);
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
 		pPreviewTextbox.setTextSize(textsize);
-		pPreviewTextbox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+		pPreviewTextbox.setTextColor(GUI.getTheme().textColor);
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
 	
@@ -116,10 +114,10 @@ public class Dropdown extends RenderGUI
 		{
 			Mouse.setActiveHovering(true);
 			Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-			pPreviewTextbox.setColor(vec4.sub(v4Color, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+			pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
 			if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
 			{
-				pPreviewTextbox.setColor(vec4.sub(v4Color, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+				pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 			}
 			if(Window.CurrentlyBoundWindow.getMouse().hasLeftRelease())
 			{
@@ -128,7 +126,7 @@ public class Dropdown extends RenderGUI
 		}
 		else
 		{
-			pPreviewTextbox.setColor(v4Color);
+			pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
 		}
 	
 		/*bIsClicked = false;

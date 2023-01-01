@@ -1,5 +1,6 @@
 package com.gumse.pages;
 
+import com.gumse.gui.Basics.Button;
 import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Radiobutton;
@@ -19,8 +20,12 @@ import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
 
-import clojure.main;
 
+/**
+ * TODO:
+ * 
+ * RenderGUI Colortheme override checker (v4Color > theme)
+ */
 
 public class MainPage extends RenderGUI
 {
@@ -42,7 +47,7 @@ public class MainPage extends RenderGUI
         testBox.setColor(new vec4(1.0f,1.0f,1.0f,1.0f));
         testBox.setBorderColor(new vec4(1.0f, 0.0f, 0.0f, 1.0f));
         testBox.setCornerRadius(new vec4(10, 5, 0, 40));
-        testBox.setBorderThickness(2.0f);
+        testBox.setBorderThickness(2);
         
         Texture hehe = new Texture();
         hehe.load("textures/hehe.jpg", MainPage.class);
@@ -53,6 +58,9 @@ public class MainPage extends RenderGUI
         fpsBox = new TextBox("FPS: ", fonts.getDefaultFont(), new ivec2(210, 100), new ivec2(200, 40));
         fpsBox.setAlignment(TextBox.Alignment.LEFT);
         mainScroller.addGUI(fpsBox);
+
+        Button themeButton = new Button(new ivec2(210, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
+        mainScroller.addGUI(themeButton);
 
         Slider testSlider = new Slider(new ivec2(30, 200), 200, "Slider1", 0);
         testSlider.setViewMultiplier(666);
@@ -65,7 +73,6 @@ public class MainPage extends RenderGUI
 
         Text sliderInfoText = new Text("Shift: Slow down\nLControl: Speed up", fonts.getDefaultFont(), new ivec2(30, 270), 0);
         sliderInfoText.setCharacterHeight(20);
-        sliderInfoText.setColor(new vec4(0.8f, 0.8f, 0.8f, 1.0f));
         mainScroller.addGUI(sliderInfoText);
 
 

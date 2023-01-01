@@ -1,5 +1,6 @@
 package com.gumse.gui.Basics;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -11,8 +12,6 @@ import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
-import com.gumse.tools.Toolbox;
 
 public class Slider extends RenderGUI
 {
@@ -46,13 +45,13 @@ public class Slider extends RenderGUI
 
 		pBackground = new Box(new ivec2(0,0), new ivec2(100, 100));
 		pBackground.setSizeInPercent(true, true);
-		pBackground.setColor(new vec4(0.7f, 0.7f, 0.7f, 1.0f));
+		pBackground.setColor(GUI.getTheme().secondaryColor);
 		pBackground.setCornerRadius(new vec4(12.0f));
 		addElement(pBackground);
 
 		pSliderRect = new Box(new ivec2(0,0), new ivec2(0, 100));
 		pSliderRect.setSizeInPercent(true, true);
-		pSliderRect.setColor(new vec4(0.4f, 0.4f, 0.4f, 1));
+		pSliderRect.setColor(GUI.getTheme().accentColor);
 		addElement(pSliderRect);
 
 		this.value = "0";
@@ -86,8 +85,8 @@ public class Slider extends RenderGUI
 		{
 			Mouse.setActiveHovering(true);
 			Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HORIZONTAL_RESIZE);
-			pBackground.setColor(new vec4(0.6f, 0.6f, 0.6f, 1.0f));
-			pSliderRect.setColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
+			pBackground.setColor(vec4.sub(GUI.getTheme().secondaryColor, 0.02f));
+			pSliderRect.setColor(vec4.sub(GUI.getTheme().accentColor, 0.02f));
 
 			if(hasClickedInside())
 			{
@@ -97,14 +96,14 @@ public class Slider extends RenderGUI
 		}
 		else 
 		{
-			pBackground.setColor(new vec4(0.7f, 0.7f, 0.7f, 1.0f));
-			pSliderRect.setColor(new vec4(0.4f, 0.4f, 0.4f, 1.0f));
+			pBackground.setColor(GUI.getTheme().secondaryColor);
+			pSliderRect.setColor(GUI.getTheme().accentColor);
 		}
 
 		if(bSnapped)
 		{
-			pBackground.setColor(new vec4(0.6f, 0.6f, 0.6f, 1.0f));
-			pSliderRect.setColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
+			pBackground.setColor(vec4.sub(GUI.getTheme().secondaryColor, 0.02f));
+			pSliderRect.setColor(vec4.sub(GUI.getTheme().accentColor, 0.02f));
 			float newvar = fValue;
 			if(bInfinite)
 			{

@@ -5,14 +5,13 @@ import org.lwjgl.opengl.GL30;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
-import com.gumse.tools.Debug;
 
 public class GUI
 {
 	private RenderGUI WindowCanvas;
 	//private TextBox pToolTipBox;
 	private float fToolTipHideTimer, fToolTipShowTimer;
-	private mat4 m4Projection;
+    private static Theme pCurrentTheme, pDefaultTheme = null;
 
 	
 	public GUI(Window contextwindow)  
@@ -21,10 +20,19 @@ public class GUI
 		//Gum::GUI::initFonts();
 
 		WindowCanvas = new RenderGUI();
-
 		WindowCanvas.setPosition(new ivec2(0,0));
 		WindowCanvas.setSize(contextwindow.getSize());
 		WindowCanvas.setType("MainCanvas");
+
+        if(pDefaultTheme == null)
+        {
+            pDefaultTheme = new Theme();
+            pDefaultTheme.backgroundColor = new vec4();
+            pDefaultTheme.primaryColor = new vec4(0.2f, 0.2f, 0.2f, 1.0f);
+            pDefaultTheme.secondaryColor = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
+
+            pCurrentTheme = pDefaultTheme;
+        }
 
 		/*pToolTipBox = new TextBox("", Gum::GUI::Fonts.getDefaultFont(), ivec2(0,0), ivec2(200, 200));
 		pToolTipBox.setTextSize(12);
@@ -100,6 +108,11 @@ public class GUI
 		}
 	}*/
 
+    public static Theme getTheme()
+    {
+        return pCurrentTheme;
+    }
+
 
 	public ivec2 getSize()
 	{
@@ -118,6 +131,10 @@ public class GUI
 		WindowCanvas.resize();
 	}
 
+    public void setTheme(Theme theme)
+    {
+        pCurrentTheme = theme;
+    }
 
 
 	public static void cleanupAllGUIs()

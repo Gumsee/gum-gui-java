@@ -1,5 +1,6 @@
 package com.gumse.gui.AltMenu;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -33,16 +34,15 @@ public class AltMenuEntry extends RenderGUI
         pTextBox.setSizeInPercent(true, true);
         pTextBox.setTextSize(20);
         //pTextBox.setColor(vec4(0.26f, 0.26f, 0.26f, 1.0f));
-        pTextBox.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
-        pTextBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+        pTextBox.setColor(GUI.getTheme().primaryColor);
         pTextBox.setAlignment(TextBox.Alignment.LEFT);
         pTextBox.setTextOffset(new ivec2(-5, 3));
         addElement(pTextBox);
 
         pChildBorderBox = new Box(new ivec2(0,0), new ivec2(0,0));
         pChildBorderBox.setColor(new vec4(0,0,0,0));
-        pChildBorderBox.setBorderColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
-        pChildBorderBox.setBorderThickness(2.0f);
+        //pChildBorderBox.setBorderColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
+        pChildBorderBox.setBorderThickness(2);
         addElement(pChildBorderBox);
 
         this.vSize = new ivec2(pTextBox.getTextSize().x + 30, 30);
@@ -59,7 +59,7 @@ public class AltMenuEntry extends RenderGUI
 
     private void close()
     {
-        pTextBox.setColor(new vec4(0.14f, 0.14f, 0.14f, 1.0f));
+        pTextBox.setColor(GUI.getTheme().primaryColor);
         //pTextBox.setColor(vec4(0.26f, 0.26f, 0.26f, 1.0f));
         if(bIsOpen)
         {
@@ -87,7 +87,7 @@ public class AltMenuEntry extends RenderGUI
                     pChildBorderBox.setSize(new ivec2(iWidestChild, numChildren() * getSize().y));
 
                     if(pParent.getType() == "AltMenu") { pChildBorderBox.setPosition(new ivec2(0, getSize().y)); }
-                    else                                { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
+                    else                               { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
 
                     if(pParent.getType().equals("AltMenu"))
                         Mouse.setBusiness(true);
@@ -100,7 +100,7 @@ public class AltMenuEntry extends RenderGUI
                 }
             }
         
-            pTextBox.setColor(new vec4(0.2f, 0.2f, 0.2f, 1.0f));
+            pTextBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.05f));
         }
         else
         {

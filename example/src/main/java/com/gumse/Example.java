@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import com.gumse.basics.Globals;
 import com.gumse.gui.GUI;
+import com.gumse.gui.Theme;
 import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;
@@ -32,7 +33,6 @@ public class Example
         
         //Window Options
         Window pMainWindow = new Window("Example App", new ivec2(500, 500), Window.GUM_WINDOW_RESIZABLE, null);
-        pMainWindow.setClearColor(new vec4(0.09f, 0.1f, 0.11f, 1.0f)); // Set the clear color);
         
         GUI testGUI = new GUI(pMainWindow);
 		pMainWindow.onResized(new WindowResizePosCallback() {
@@ -41,6 +41,14 @@ public class Example
             }
         });
 
+        Theme lightTheme = new Theme();
+        lightTheme.backgroundColor = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
+        lightTheme.primaryColor    = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
+        lightTheme.secondaryColor  = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
+        lightTheme.accentColor     = vec4.div(Color.HEXToRGBA("#0F79D9"), 255.0f);
+        lightTheme.textColor       = vec4.div(Color.HEXToRGBA("#000000"), 255.0f);
+        lightTheme.borderThickness = 1;
+        testGUI.setTheme(lightTheme);
 
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
@@ -124,6 +132,7 @@ public class Example
         while(pMainWindow.isOpen())
         {
             Display.pollEvents();
+            pMainWindow.setClearColor(GUI.getTheme().backgroundColor);
             pMainWindow.clear(GL_COLOR_BUFFER_BIT);
             testGUI.render();
             testGUI.update();

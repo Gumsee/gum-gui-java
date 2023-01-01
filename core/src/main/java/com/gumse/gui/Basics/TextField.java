@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -52,7 +53,6 @@ public class TextField extends RenderGUI
 	
 		pBackgroundBox = new TextBox(str, font, new ivec2(0, 0), new ivec2(100, 100));
 		pBackgroundBox.setSizeInPercent(true, true);
-		pBackgroundBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
 		pBackgroundBox.setAlignment(TextBox.Alignment.LEFT);
 		pBackgroundBox.setTextSize(30);
 		//pBackgroundBox.setTextOffset(new ivec2(3, 5));
@@ -60,7 +60,7 @@ public class TextField extends RenderGUI
 	
 		pIndicatorBox = new Box(new ivec2(0,0), new ivec2(2, 100));
 		pIndicatorBox.setSizeInPercent(false, true);
-		pIndicatorBox.setColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+		pIndicatorBox.setColor(GUI.getTheme().textColor);
 		pIndicatorBox.hide(true);
 		addElement(pIndicatorBox);
 	

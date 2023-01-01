@@ -3,6 +3,7 @@ package com.gumse.gui.Basics;
 import org.lwjgl.opengl.GL11;
 
 import com.gumse.basics.SmoothFloat;
+import com.gumse.gui.GUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
@@ -84,12 +85,12 @@ public class Scroller extends RenderGUI
 		pScrollBar.setSizeInPercent(false, true);
 		pScrollBar.setOrigin(new ivec2(0, 0));
 		pScrollBar.setMargin(new ivec2(0, -10));
-		pScrollBar.setColor(new vec4(0.4f,0.4f,1.0f,1.0f));
+		//pScrollBar.setColor(new vec4(0.4f,0.4f,1.0f,1.0f));
 		addElement(pScrollBar);
 
 		pScrollIndicator = new Box(new ivec2(5,0), new ivec2(10, 10));
 		pScrollIndicator.setCornerRadius(new vec4(8.0f));
-		pScrollIndicator.setColor(new vec4(0.19f, 0.2f, 0.42f, 1.0f));
+		//pScrollIndicator.setColor(new vec4(0.19f, 0.2f, 0.42f, 1.0f));
 		pScrollBar.addGUI(pScrollIndicator);
 
 		resize();
@@ -120,20 +121,20 @@ public class Scroller extends RenderGUI
 
 				if(pScrollBar.isMouseInside())
 				{
-					pScrollIndicator.setColor(new vec4(0.41f, 0.43f, 0.88f, 1.0f));
+					pScrollIndicator.setColor(GUI.getTheme().accentColor);
 					pIndicatorWidthFloat.setTarget(12);
 
 					if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
 					{
 						bSnapped = true;
 						iSnapOffset = pScrollIndicator.getPosition().y - Window.CurrentlyBoundWindow.getMouse().getPosition().y;
-						pScrollIndicator.setColor(new vec4(0.41f, 0.43f, 0.88f, 1.0f));
+						pScrollIndicator.setColor(GUI.getTheme().accentColor);
 						Mouse.setBusiness(true);
 					}
 				}
 				else
 				{
-					pScrollIndicator.setColor(new vec4(0.19f, 0.2f, 0.42f, 1.0f));
+					pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
 					pIndicatorWidthFloat.setTarget(6);
 				}
 			}
@@ -145,7 +146,7 @@ public class Scroller extends RenderGUI
 
 				if(!Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
 				{
-					pScrollIndicator.setColor(new vec4(0.19f, 0.2f, 0.42f, 1.0f));
+					pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
 					bSnapped = false;
 					Mouse.setBusiness(false);
 				}

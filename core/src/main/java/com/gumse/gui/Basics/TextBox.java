@@ -1,5 +1,6 @@
 package com.gumse.gui.Basics;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -40,14 +41,12 @@ public class TextBox extends RenderGUI
 
 		pBackgroundBox = new Box(new ivec2(0,0), new ivec2(100,100));
 		pBackgroundBox.setSizeInPercent(true, true);
-		pBackgroundBox.setColor(new vec4(0.3f, 0.3f, 0.3f, 1.0f));
 		addElement(pBackgroundBox);
 
 		pText = new Text(str, font, new ivec2(50, 50), 0);
 		pText.setPositionInPercent(true, true);
 		pText.setOrigin(ivec2.div(pText.getSize(), 2.0f));
 		pText.setCharacterHeight((int)(size.y * 0.9));
-		pText.setColor(new vec4(0.9f, 0.9f, 0.9f, 1.0f));
 		addElement(pText);
 
         setString(str);

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -58,8 +59,6 @@ public class Text extends RenderGUI
     public Text(String text, Font font, ivec2 position, int maxlength)
     {
         this.vPos.set(position);
-        //super.v4Color = new vec4(0.19f, 0.2f, 0.42f, 1.0f);
-        this.v4Color = new vec4(0.9f, 0.9f, 0.9f, 1.0f);
         //super.sType = "Text";
         this.sType = "Text";
 
@@ -177,14 +176,12 @@ public class Text extends RenderGUI
         if(bIsHidden)
             return;
 
-        float alpha = v4Color.w;
+        vec4 col = getColor(GUI.getTheme().textColor);
         if(fAlphaOverride < 1.0f)
-        {
-            alpha = fAlphaOverride;
-        }
+            col.w = fAlphaOverride;
         
         GUIShader.getTextShaderProgram().use();
-        GUIShader.getTextShaderProgram().loadUniform("color", new vec4(v4Color.x, v4Color.y, v4Color.z, alpha));
+        GUIShader.getTextShaderProgram().loadUniform("color", col);
         GUIShader.getTextShaderProgram().loadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
         GUIShader.getTextShaderProgram().loadUniform("bboxpos", new vec2(bRenderBox.getPos()));
         GUIShader.getTextShaderProgram().loadUniform("bboxsize", new vec2(bRenderBox.getSize()));

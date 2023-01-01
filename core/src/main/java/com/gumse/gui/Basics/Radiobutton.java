@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import java.util.ArrayList;
 
+import com.gumse.gui.GUI;
 import com.gumse.gui.Basics.Switch.Shape;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.Font;
@@ -93,9 +94,9 @@ public class Radiobutton extends RenderGUI
         for(RenderGUI child : vElements)
         {
             if(child.getType() == "TextBox")
-                ((TextBox)child).getText().setColor(this.getColor());
+                ((TextBox)child).getText().setColor(this.getColor(GUI.getTheme().textColor));
             else
-                child.setColor(this.getColor());
+                child.setColor(this.getColor(GUI.getTheme().primaryColor));
         }
     }
 
