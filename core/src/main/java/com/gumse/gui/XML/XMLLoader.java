@@ -6,6 +6,7 @@ import com.gumse.gui.Basics.*;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.TagList.TagList;
 import com.gumse.maths.Color;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
@@ -59,6 +60,7 @@ public class XMLLoader
                 else if(type.equals("text"))     { gui = Text.createFromXMLNode(node); }
                 else if(type.equals("textfield")){ gui = TextField.createFromXMLNode(node); }
                 else if(type.equals("textbox"))  { gui = TextBox.createFromXMLNode(node); }
+                else if(type.equals("tag-list")) { gui = TagList.createFromXMLNode(node); }
 
                 if(gui != null)
                 {

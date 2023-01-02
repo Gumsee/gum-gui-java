@@ -6,9 +6,11 @@ import java.util.List;
 import com.gumse.gui.Basics.TextField;
 import com.gumse.gui.Basics.TextField.TextFieldInputCallback;
 import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.TagList.TagListEntry.TagRemoveCallback;
 import com.gumse.maths.ivec2;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.tools.Debug;
 
 public class TagList extends RenderGUI
@@ -156,4 +158,14 @@ public class TagList extends RenderGUI
     public void setMaximumWordLength(int len)        { this.pTextField.getBox().setMaxTextlength(len); }
     public void setTagCallback(TagCallback callback) { this.pTagCallback = callback; }
     public void onlyAllowWords(boolean allow)        { this.bOnlyWords = allow; }
+
+
+	public static TagList createFromXMLNode(XMLNode node)
+	{
+        String fontName = node.getAttribute("font");
+        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+
+		TagList taglistgui = new TagList(new ivec2(0,0), new ivec2(100,100), font);
+		return taglistgui;
+	}
 }
