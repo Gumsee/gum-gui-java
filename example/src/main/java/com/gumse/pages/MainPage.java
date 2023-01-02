@@ -14,6 +14,7 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.TagList.TagList;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.textures.Texture;
@@ -76,19 +77,6 @@ public class MainPage extends RenderGUI
         mainScroller.addGUI(sliderInfoText);
 
 
-        Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);
-        DropdownEntryCallback dropdowncallback = new DropdownEntryCallback() { 
-            @Override public void run(String str) { 
-                Debug.info(str); 
-            } 
-        };
-        testDropdown.addEntry("Entry1", dropdowncallback, false);
-        testDropdown.addEntry("Entry2", dropdowncallback, false);
-        testDropdown.addEntry("Entry3", dropdowncallback, false);
-        testDropdown.addEntry("Entry4", dropdowncallback, false);
-        mainScroller.addGUI(testDropdown);
-
-
         //testGraph = new Graph("Some Graph", new ivec2(30, 500), new ivec2(90, 150));
         //testGraph.setSizeInPercent(true, false);
 
@@ -105,8 +93,24 @@ public class MainPage extends RenderGUI
         radiobutton.setSizeInPercent(true, false);
         mainScroller.addGUI(radiobutton);
 
+        Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);
+        DropdownEntryCallback dropdowncallback = new DropdownEntryCallback() { 
+            @Override public void run(String str) { 
+                Debug.info(str); 
+            } 
+        };
+        testDropdown.addEntry("Entry1", dropdowncallback, false);
+        testDropdown.addEntry("Entry2", dropdowncallback, false);
+        testDropdown.addEntry("Entry3", dropdowncallback, false);
+        testDropdown.addEntry("Entry4", dropdowncallback, false);
+        mainScroller.addGUI(testDropdown);
+
         //TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
         //mainScroller.addGUI(textBox);
+
+        TagList tagList = new TagList(new ivec2(30, 700), new ivec2(90, 30), fonts.getDefaultFont());
+        tagList.setSizeInPercent(true, false);
+        mainScroller.addGUI(tagList);
 
         this.setSizeInPercent(true, true);
         reposition();

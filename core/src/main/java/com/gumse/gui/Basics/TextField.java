@@ -29,10 +29,11 @@ public class TextField extends RenderGUI
 	private String sOrigString;
     private String sHint;
     private String sCurrentText;
-	public interface TextFieldFinishedInputCallback {
-		void run(String str);
+	public interface TextFieldInputCallback {
+		void enter(String complete);
+		void input(String input, String complete);
 	}
-	private TextFieldFinishedInputCallback pReturnFunc;
+	private TextFieldInputCallback pCallback;
 
 
 	public TextField(String str, Font font, ivec2 pos, ivec2 size)
@@ -45,7 +46,7 @@ public class TextField extends RenderGUI
 		this.bIsEditing = false;
 		this.bActivateOnDoubleclick = false;
 		this.iIndicatorCharIndex = 0;
-		this.pReturnFunc = null;
+		this.pCallback = null;
 		this.uiCursorShape = Mouse.GUM_CURSOR_IBEAM;
         this.sCurrentText = str;
 	
@@ -55,6 +56,8 @@ public class TextField extends RenderGUI
 		pBackgroundBox.setSizeInPercent(true, true);
 		pBackgroundBox.setAlignment(TextBox.Alignment.LEFT);
 		pBackgroundBox.setTextSize(30);
+        pBackgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        pBackgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
 		//pBackgroundBox.setTextOffset(new ivec2(3, 5));
 		addElement(pBackgroundBox);
 	
@@ -103,6 +106,7 @@ public class TextField extends RenderGUI
 	
 	protected void updateOnSizeChange()
 	{
+		pBackgroundBox.setTextSize((int)(getSize().y * 0.9f));
 		updateText();
 	}
 	
@@ -200,7 +204,7 @@ public class TextField extends RenderGUI
 			//pClock.update();
 			if     (keyboard.checkLastPressedKey(Keyboard.GUM_KEY_BACKSPACE))            { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : 1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_DELETE))               { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : -1); }
-			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ENTER)) 	             { finishEditing(); if(pReturnFunc != null) pReturnFunc.run(sCurrentText); }
+			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ENTER)) 	             { finishEditing(); if(pCallback != null) pCallback.enter(sCurrentText); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_ESCAPE)) 	             { finishEditing(); setString(sOrigString); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_LEFT)) 	             { moveIndicator(-1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_RIGHT)) 	             { moveIndicator(1); }
@@ -208,9 +212,9 @@ public class TextField extends RenderGUI
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_HOME)) 	             { setIndicator(0); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_LEFT, Keyboard.GUM_MOD_SHIFT))  { setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex - 1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_RIGHT, Keyboard.GUM_MOD_SHIFT)) { setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex + 1); }
-			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END, Keyboard.GUM_MOD_SHIFT)) 	 { setSelection(iSelectorStartCharIndex, sCurrentText.length()); }
+			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_END, Keyboard.GUM_MOD_SHIFT))   { setSelection(iSelectorStartCharIndex, sCurrentText.length()); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_HOME, Keyboard.GUM_MOD_SHIFT))  { setSelection(iSelectorStartCharIndex, 0); }
-			else if(keyboard.getTextInput() != "") 				   		     { appendString(keyboard.getTextInput()); }
+			else if(keyboard.getTextInput() != "") 				   		                 { appendString(keyboard.getTextInput()); }
 		}
 	
 		updatechildren();
@@ -221,12 +225,12 @@ public class TextField extends RenderGUI
         if(sCurrentText.equals(""))
         {
 		    pBackgroundBox.getText().setString(sHint);
-            pBackgroundBox.setTextColor(new vec4(0.26f, 0.26f, 0.26f, 1.0f));
+            pBackgroundBox.setTextColor(GUI.getTheme().secondaryColor);
         }
         else
         {
 		    pBackgroundBox.getText().setString(sCurrentText);
-            pBackgroundBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+            pBackgroundBox.setTextColor(GUI.getTheme().textColor);
         }
 		pBackgroundBox.updateText();
 		//pBackgroundBox.setTextSize(getSize().y * 0.9f);
@@ -280,6 +284,9 @@ public class TextField extends RenderGUI
         sCurrentText = sb.toString();
 		updateText();
 		setIndicator(iIndicatorCharIndex + 1);
+
+        if(pCallback != null)
+            pCallback.input(utf8, sCurrentText);
 	}
 	
 	public void backspaceString(int backspaces)
@@ -298,7 +305,7 @@ public class TextField extends RenderGUI
 			return;
 	
 		StringBuilder sb = new StringBuilder(sCurrentText);
-		sb.delete(startingpoint - backspaces, startingpoint);
+		sb.delete(GumMath.clamp(startingpoint - backspaces, 0, sCurrentText.length()), GumMath.clamp(startingpoint, 0, sCurrentText.length()));
 		sCurrentText = sb.toString();
 		updateText();
 		setIndicator(startingpoint - backspaces);
@@ -345,6 +352,7 @@ public class TextField extends RenderGUI
 	{
 		sCurrentText = utf8;
 		updateText();
+        setIndicator(utf8.length());
 	}
 	
 	public void setCursorShapeOnHover(int shape) 				   	   { this.uiCursorShape = shape; }
@@ -352,7 +360,7 @@ public class TextField extends RenderGUI
 	public void setSelectionColor(vec4 color) 						   { this.pSelectionBox.setColor(color); }
 	public void setIndicatorColor(vec4 color) 						   { this.pIndicatorBox.setColor(color); }
 	public void setTextColor(vec4 color) 	  						   { this.pBackgroundBox.setTextColor(color); }
-	public void setReturnCallback(TextFieldFinishedInputCallback func) { this.pReturnFunc = func; }
+	public void setCallback(TextFieldInputCallback func)               { this.pCallback = func; }
 	public void setCornerRadius(vec4 radius)						   { this.pBackgroundBox.setCornerRadius(radius); }
     public void setHint(String hint)                                   { this.sHint = hint; }	
 	

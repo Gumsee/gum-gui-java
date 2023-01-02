@@ -44,7 +44,7 @@ public class Dropdown extends RenderGUI
 			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
 			pBox.setSizeInPercent(true, true);
 			pBox.setTextSize(iTextSize);
-			pBox.setColor(GUI.getTheme().primaryColor);
+            pBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
 			addElement(pBox);
 			this.pCallback = callback;
 		}
@@ -89,6 +89,7 @@ public class Dropdown extends RenderGUI
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
 		pPreviewTextbox.setTextSize(textsize);
 		pPreviewTextbox.setTextColor(GUI.getTheme().textColor);
+        pPreviewTextbox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
 	

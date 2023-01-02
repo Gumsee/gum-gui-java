@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.TextField;
-import com.gumse.gui.Basics.TextField.TextFieldFinishedInputCallback;
+import com.gumse.gui.Basics.TextField.TextFieldInputCallback;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
@@ -242,9 +242,9 @@ public class HierarchyListEntry extends RenderGUI
         this.indent = indent;
         //this.title.setPosition(ivec2(indent, title.getPosition().y));
     }
-    public void setRenameCallback(TextFieldFinishedInputCallback callback)
+    public void setRenameCallback(TextFieldInputCallback callback)
     {
-        this.title.setReturnCallback(callback);
+        this.title.setCallback(callback);
     }
 
     public static void cleanupAll()

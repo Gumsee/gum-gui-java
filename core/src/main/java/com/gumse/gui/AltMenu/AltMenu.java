@@ -36,10 +36,10 @@ public class AltMenu extends RenderGUI
 
     public void render()
     {
-        pBackground.render();
         for(int i = vEntries.size(); i < vChildren.size(); i++)
             vChildren.get(i).render();
 
+        pBackground.render();
         for(int i = 0; i < vEntries.size(); i++)
             vEntries.get(i).render();
     }
