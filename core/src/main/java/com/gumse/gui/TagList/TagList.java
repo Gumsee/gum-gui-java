@@ -82,15 +82,6 @@ public class TagList extends RenderGUI
             }
         };
 
-
-        addTag("Some");
-        addTag("test");
-        addTag("entry");
-        addTag("Some2");
-        addTag("test2");
-        addTag("entry2");
-        addTag("entry3");
-
         resize();
         reposition();
     }
