@@ -28,8 +28,9 @@ public class GUI
         {
             pDefaultTheme = new Theme();
             pDefaultTheme.backgroundColor = new vec4();
-            pDefaultTheme.primaryColor = new vec4(0.2f, 0.2f, 0.2f, 1.0f);
-            pDefaultTheme.secondaryColor = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
+            pDefaultTheme.primaryColor    = new vec4(0.2f, 0.2f, 0.2f, 1.0f);
+            pDefaultTheme.secondaryColor  = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
+            pDefaultTheme.textColor       = new vec4(0.9f, 0.9f, 0.9f, 1.0f);
 
             pCurrentTheme = pDefaultTheme;
         }
