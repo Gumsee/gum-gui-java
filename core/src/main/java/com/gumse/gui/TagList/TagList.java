@@ -165,7 +165,7 @@ public class TagList extends RenderGUI
         String fontName = node.getAttribute("font");
         Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-		TagList taglistgui = new TagList(new ivec2(0,0), new ivec2(100,100), font);
+		TagList taglistgui = new TagList(new ivec2(0,0), new ivec2(100,30), font);
 		return taglistgui;
 	}
 }
