@@ -44,7 +44,6 @@ public class Switch extends RenderGUI
             pVAO = new VertexArrayObject();
             VertexBufferObject pArrowVBO = new VertexBufferObject();
 
-            // TODO
             pArrowVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] { 
                 1.0f,             -1.0f,               0.0f,
                 1.0f - thickness, -1.0f,               0.0f,
@@ -125,6 +124,7 @@ public class Switch extends RenderGUI
         updatechildren();
     }
 
+    @Override
     protected void updateOnPosChange()
     {
         vec3 rot = new vec3(0,0,-45);

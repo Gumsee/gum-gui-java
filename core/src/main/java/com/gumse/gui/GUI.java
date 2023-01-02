@@ -27,10 +27,12 @@ public class GUI
         if(pDefaultTheme == null)
         {
             pDefaultTheme = new Theme();
-            pDefaultTheme.backgroundColor = new vec4();
-            pDefaultTheme.primaryColor    = new vec4(0.2f, 0.2f, 0.2f, 1.0f);
-            pDefaultTheme.secondaryColor  = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
-            pDefaultTheme.textColor       = new vec4(0.9f, 0.9f, 0.9f, 1.0f);
+            pDefaultTheme.backgroundColor   = new vec4();
+            pDefaultTheme.primaryColor      = new vec4(0.20f, 0.20f, 0.20f, 1.0f);
+            pDefaultTheme.secondaryColor    = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
+            pDefaultTheme.textColor         = new vec4(0.90f, 0.90f, 0.90f, 1.0f);
+            pDefaultTheme.accentColor       = new vec4(0.60f, 0.58f, 0.85f, 1.0f);
+            pDefaultTheme.accentColorShade1 = new vec4(0.73f, 0.74f, 0.96f, 1.0f);
 
             pCurrentTheme = pDefaultTheme;
         }
