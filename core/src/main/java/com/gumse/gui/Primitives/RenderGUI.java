@@ -322,8 +322,8 @@ public class RenderGUI
     public void removeChild(int index)                  { vChildren.remove(index); }
     public void removeChild(RenderGUI child)            { vChildren.remove(child); }
     public void addAttribute(String attr, String value) { this.mAttributes.put(attr, value); }
-    public boolean collidesWith(RenderGUI gui)                 { return Toolbox.checkBoxIntersection(getBoundingBox(), gui.getBoundingBox()); }
-    public boolean collidesWithSimple(RenderGUI gui)           { return Toolbox.checkBoxIntersection(new bbox2i(getPosition(), getSize()), new bbox2i(gui.getPosition(), gui.getSize())); }
+    public boolean collidesWith(RenderGUI gui)          { return Toolbox.checkBoxIntersection(getBoundingBox(), gui.getBoundingBox()); }
+    public boolean collidesWithSimple(RenderGUI gui)    { return Toolbox.checkBoxIntersection(new bbox2i(getPosition(), getSize()), new bbox2i(gui.getPosition(), gui.getSize())); }
 
 
     public boolean isMouseInsideSkipChildren() { return isMouseInsideSkipChildren(new ivec2(0,0)); }
@@ -346,6 +346,7 @@ public class RenderGUI
         return isinside; 
     }
 
+    public ivec2 getUserDefinedPosition() { return this.vPos; }
     public bbox2i getBoundingBox()
     {
         return this.bBoundingBox;
