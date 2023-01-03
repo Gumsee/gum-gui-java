@@ -178,7 +178,7 @@ public class Scroller extends RenderGUI
     public void destroyChildren() 
     {
         super.destroyChildren();
-        pContent.clear();
+        pContent.destroyChildren();
     }
 
     @Override
