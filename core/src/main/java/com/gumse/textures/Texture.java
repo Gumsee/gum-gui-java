@@ -56,10 +56,23 @@ public class Texture {
         create();
     }
 
-    public void load(String filename, Class<?> classtouse)
+    public void load(String resname, Class<?> classtouse)
     {
         ByteBuffer imageBuffer;
-        imageBuffer = Toolbox.loadResourceToByteBuffer(filename, classtouse);
+        imageBuffer = Toolbox.loadResourceToByteBuffer(resname, classtouse);
+
+        if(imageBuffer.equals(null))
+            throw new RuntimeException();
+
+        loadMemory(imageBuffer);
+
+        MemoryUtil.memFree(imageBuffer);
+    }
+
+    public void loadFile(String filename, Class<?> classtouse)
+    {
+        ByteBuffer imageBuffer;
+        imageBuffer = Toolbox.loadFileToByteBuffer(filename, classtouse);
 
         if(imageBuffer.equals(null))
             throw new RuntimeException();

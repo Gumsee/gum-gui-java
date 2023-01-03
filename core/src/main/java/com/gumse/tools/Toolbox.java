@@ -106,8 +106,6 @@ public class Toolbox
     public static ByteBuffer loadResourceToByteBuffer(String resource, Class<?> classtouse) 
     {
         ByteBuffer buffer = null;
-
-
         try 
         {
             InputStream source = classtouse.getClassLoader().getResourceAsStream(resource);
@@ -118,10 +116,35 @@ public class Toolbox
                 //System.out.println(String.format("%02X ", bytes[i]));
                 buffer.put(i, bytes[i]);
             }
+
+            source.close();
         }
         catch(Exception e)
         {
             Debug.error("Failed to read resource \"" + resource + "\" into bytebuffer: " + e.getMessage());
+        }
+
+        return buffer;
+    }
+
+    public static ByteBuffer loadFileToByteBuffer(String filepath, Class<?> classtouse) 
+    {
+        ByteBuffer buffer = null;
+        try 
+        {
+            InputStream source = new FileInputStream(filepath);
+            byte[] bytes = source.readAllBytes();
+            buffer = MemoryUtil.memAlloc(bytes.length);
+            for(int i = 0; i < bytes.length; i++)
+            {
+                //System.out.println(String.format("%02X ", bytes[i]));
+                buffer.put(i, bytes[i]);
+            }
+            source.close();
+        }
+        catch(Exception e)
+        {
+            Debug.error("Failed to read file \"" + filepath + "\" into bytebuffer: " + e.getMessage());
         }
 
         return buffer;
