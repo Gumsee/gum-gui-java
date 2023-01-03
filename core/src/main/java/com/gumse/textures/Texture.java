@@ -56,33 +56,36 @@ public class Texture {
         create();
     }
 
-    public void load(String resname, Class<?> classtouse)
+    public boolean load(String resname, Class<?> classtouse)
     {
         ByteBuffer imageBuffer;
         imageBuffer = Toolbox.loadResourceToByteBuffer(resname, classtouse);
 
         if(imageBuffer.equals(null))
-            throw new RuntimeException();
+            return false;
 
-        loadMemory(imageBuffer);
-
+        boolean result = loadMemory(imageBuffer);
         MemoryUtil.memFree(imageBuffer);
+
+        return result;
     }
 
-    public void loadFile(String filename, Class<?> classtouse)
+    public boolean loadFile(String filename, Class<?> classtouse)
     {
         ByteBuffer imageBuffer;
         imageBuffer = Toolbox.loadFileToByteBuffer(filename, classtouse);
 
         if(imageBuffer.equals(null))
-            throw new RuntimeException();
+            return false;
 
-        loadMemory(imageBuffer);
+        boolean result = loadMemory(imageBuffer);
 
         MemoryUtil.memFree(imageBuffer);
+
+        return result;
     }
 
-    public void loadMemory(ByteBuffer imageBuffer)
+    public boolean loadMemory(ByteBuffer imageBuffer)
     {
         IntBuffer x = BufferUtils.createIntBuffer(1);
         IntBuffer y = BufferUtils.createIntBuffer(1);
@@ -91,23 +94,26 @@ public class Texture {
 
         //Debug.info(Integer.toString(imageBuffer.capacity()));
         if(imageBuffer.equals(null))
-        {
-            throw new RuntimeException();
-        }
+            return false;
 
         if(!stbi_info_from_memory(imageBuffer, x, y, channels)) 
         {
-            Debug.error(stbi_failure_reason());
-            return;
+            Debug.warn(stbi_failure_reason());
+            return false;
         }
 
         bImageData = stbi_load_from_memory(imageBuffer, x, y, channels, 0);
 
         if (bImageData == null) 
-            Debug.error("Failed to load Texture file " + sName + ": " + stbi_failure_reason());
+        {
+            Debug.warn("Failed to load Texture file " + sName + ": " + stbi_failure_reason());
+            return false;
+        }
 
         loadDirectly(bImageData, channels.get(0), new ivec2(x.get(0), y.get(0)), GL11.GL_UNSIGNED_BYTE);
         //stbi_image_free(bImageData);
+
+        return true;
     }
 
     public void loadDirectly(ByteBuffer imageBuffer, int numcomps, ivec2 res, int datatype)
