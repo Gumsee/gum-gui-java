@@ -14,6 +14,7 @@ import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
 import com.gumse.textures.Texture;
 import com.gumse.tools.Toolbox;
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.maths.*;
 
 public class Window
@@ -34,11 +35,10 @@ public class Window
     private Window pParentWindow;
     private ivec2 v2Size, v2Pos;
     private vec2 v2PixelSize;
-    private mat4 m4ScreenMatrix;
-    private float fAspectRatio, fAspectRatioWidthToHeight;
     private boolean bHasBorder, bHasVerticalSync, bHasScalingSnapped, bIsFloating, bIsMaximized, bIsMinimized, bIsResizable, bIsFullscreen, bIsHidden, bShouldClose, bKeepInsideParent;
     private String sTitle;
     private String sWindowClass = "Gumball";
+    private final Framebuffer pFramebuffer;
     
     
     private Keyboard pKeyboard;
@@ -72,6 +72,7 @@ public class Window
 		this.bIsMaximized = false;
 		this.bShouldClose = false;
 		this.bIsMinimized = false;
+        this.pFramebuffer = new Framebuffer(windowsize, true);
 
 		if((properties & GUM_WINDOW_SIZE_IN_PERCENT) > 0)
 		{
@@ -150,9 +151,6 @@ public class Window
 			MainWindow = this;
 
 
-		fAspectRatio = (float)v2Size.y / (float)v2Size.x;
-		fAspectRatioWidthToHeight = (float)v2Size.x / (float)v2Size.y;
-		m4ScreenMatrix = mat4.ortho((float)v2Size.y, (float)v2Size.x, 0.0f, 0.0f, -100.0f, 100.0f);
 
 
 		pKeyboard = new Keyboard(this);
@@ -249,9 +247,7 @@ public class Window
 	void windowResizedCallback(ivec2 size)
 	{
 		v2Size = size;
-		fAspectRatio = (float)v2Size.y / (float)v2Size.x;
-		fAspectRatioWidthToHeight = (float)v2Size.x / (float)v2Size.y;
-		m4ScreenMatrix = mat4.ortho((float)v2Size.y, (float)v2Size.x, 0.0f, 0.0f, -100.0f, 100.0f);
+        pFramebuffer.setSize(size);
 		v2PixelSize = vec2.div(new vec2(1.0f), new vec2(v2Size));
 
 		resetViewport();
@@ -374,7 +370,6 @@ public class Window
 	public void setTitle(String title)          { glfwSetWindowTitle(lWindowID, title); this.sTitle = title; }
 	public void setClearColor(vec4 color)	    { glClearColor(color.x, color.y, color.z, color.w); }
 	public void setResizable(boolean resizable) { this.bIsResizable = resizable; }
-	public void setScreenMatrix(mat4 matrix)	{ this.m4ScreenMatrix = matrix; }
 
 	//Getter
 	public Keyboard getKeyboard()				{ return this.pKeyboard; }
@@ -383,10 +378,8 @@ public class Window
 	public vec2 getPixelSize()          		{ return this.v2PixelSize; }
 	public ivec2 getSize()              		{ return this.v2Size; }
 	public ivec2 getPosition()          		{ return this.v2Pos; }
-	public mat4 getScreenMatrix()			    { return this.m4ScreenMatrix; }
+	public Framebuffer getFramebuffer()		    { return this.pFramebuffer; }
 	public String getTitle()			        { return this.sTitle; }
-	public float getAspectRatio()        	    { return this.fAspectRatio; }
-	public float getAspectRatioWidthToHeight()  { return this.fAspectRatioWidthToHeight; }
 	public boolean isFullscreen()          	    { return this.bIsFullscreen; }
 	public boolean isOpen()                	    { return !this.bShouldClose; }
 	public boolean isMaximized()				{ return this.bIsMaximized; }

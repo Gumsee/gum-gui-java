@@ -7,14 +7,11 @@ import com.gumse.basics.Globals;
 import com.gumse.gui.GUI;
 import com.gumse.maths.*;
 import com.gumse.model.Model3D;
-import com.gumse.shader.Shader;
-import com.gumse.shader.ShaderProgram;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
 import com.gumse.tools.Debug;
 import com.gumse.tools.FPS;
-import com.gumse.tools.Toolbox;
 
 
 public class Example3D
@@ -48,10 +45,10 @@ public class Example3D
             }
         });
         
-        //float aspect = (float)Window.CurrentlyBoundWindow.getSize().y / (float)Window.CurrentlyBoundWindow.getSize().x;
+        //float aspect = (float)Framebuffer.CurrentlyBoundFramebuffer.getSize().y / (float)Framebuffer.CurrentlyBoundFramebuffer.getSize().x;
         //float distance = 10.0f;
         //camera.setProjectionMatrix(mat4.ortho(aspect * distance / 2, distance * 0.5f, -aspect * distance / 2, -distance * 0.5f, 0.1f, 1000.0f));
-        //camera.setProjectionMatrix(Window.CurrentlyBoundWindow.getScreenMatrix());
+        //camera.setProjectionMatrix(Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
 
         while(pMainWindow.isOpen())
         {

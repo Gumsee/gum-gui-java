@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.maths.*;
 import com.gumse.maths.vec4;
@@ -308,7 +309,7 @@ public class RenderGUI
     {
         mat4 model = new mat4();
         ivec2 modelPos = ivec2.add(vActualPos, ivec2.mul(vActualSize, 0.5f));
-        modelPos.y = Window.CurrentlyBoundWindow.getSize().y - modelPos.y;
+        modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y;
         model.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
         model.scale(new vec3(vActualSize.x * 0.5f, vActualSize.y * 0.5f, 1.0f));
         model.transpose();

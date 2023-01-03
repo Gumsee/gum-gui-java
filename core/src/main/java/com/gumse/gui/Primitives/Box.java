@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.maths.*;
@@ -96,7 +97,7 @@ public class Box extends RenderGUI
         GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
         GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
         GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
-        GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

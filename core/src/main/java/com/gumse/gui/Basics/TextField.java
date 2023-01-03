@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -117,7 +118,7 @@ public class TextField extends RenderGUI
 		if(iSelectorStartCharIndex != iSelectorEndCharIndex)
 		{
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
-    		GL11.glScissor(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y, vActualSize.x, vActualSize.y);
+    		GL11.glScissor(vActualPos.x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y, vActualSize.x, vActualSize.y);
 			pSelectionBox.render();
 			Window.CurrentlyBoundWindow.resetViewport();
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -377,7 +378,7 @@ public class TextField extends RenderGUI
 
         String hint = node.getAttribute("hint");
         int fontsize  = node.getIntAttribute("fontsize", 0);
-        int maxlength = node.getIntAttribute("maxlength", 0);
+        //int maxlength = node.getIntAttribute("maxlength", 0);
         
 		TextField textfieldgui = new TextField(node.content, font, new ivec2(0,0), new ivec2(0,0));
         textfieldgui.setHint(hint);

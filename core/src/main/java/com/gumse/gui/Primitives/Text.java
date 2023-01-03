@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Font.Font;
@@ -106,7 +107,7 @@ public class Text extends RenderGUI
 
         float x = vActualPos.x;
         float y = vActualPos.y;
-        y = Window.CurrentlyBoundWindow.getSize().y - vActualPos.y;
+        y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y;
         //y -= this.pFont.getHighestGlyphSize() * fScale;
 
         // Iterate through all characters
@@ -150,7 +151,7 @@ public class Text extends RenderGUI
                     bFadeOut = true;
                     bFadeBothSides = true;
                 }
-                float ycheckpos = Window.CurrentlyBoundWindow.getSize().y - pos.y;
+                float ycheckpos = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - pos.y;
                 if(pos.x > bRenderBox.pos.x + bRenderBox.size.x || pos.x + scale.x < bRenderBox.pos.x ||
                    ycheckpos > bRenderBox.pos.y + bRenderBox.size.y || ycheckpos - scale.y < bRenderBox.pos.y)
                     continue;
@@ -182,7 +183,7 @@ public class Text extends RenderGUI
         
         GUIShader.getTextShaderProgram().use();
         GUIShader.getTextShaderProgram().loadUniform("color", col);
-        GUIShader.getTextShaderProgram().loadUniform("projection", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getTextShaderProgram().loadUniform("projection", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getTextShaderProgram().loadUniform("bboxpos", new vec2(bRenderBox.getPos()));
         GUIShader.getTextShaderProgram().loadUniform("bboxsize", new vec2(bRenderBox.getSize()));
         GUIShader.getTextShaderProgram().loadUniform("fade", bFadeOut);

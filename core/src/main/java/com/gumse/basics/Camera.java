@@ -1,5 +1,6 @@
 package com.gumse.basics;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.maths.mat4;
 import com.gumse.maths.vec3;
 import com.gumse.system.Window;
@@ -34,7 +35,7 @@ public class Camera {
 
     public void updateProjection()
     {
-        mProjection = mat4.perspective(fFOV, Window.CurrentlyBoundWindow.getAspectRatioWidthToHeight(), 0.1f, 1000.0f);
+        mProjection = mat4.perspective(fFOV, Framebuffer.CurrentlyBoundFramebuffer.getAspectRatioWidthToHeight(), 0.1f, 1000.0f);
     }
 
     public vec3 getPosition()                  { return this.vPosition; }

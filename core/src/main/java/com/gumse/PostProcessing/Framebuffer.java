@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
 import com.gumse.maths.ivec2;
+import com.gumse.maths.mat4;
 import com.gumse.system.Window;
 import com.gumse.textures.Texture;
 import com.gumse.tools.Debug;
@@ -14,20 +15,39 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public class Framebuffer 
 {
+    public static Framebuffer CurrentlyBoundFramebuffer = null;
     private final int iFBO;
-    private final ivec2 vPosition;
-    private final ivec2 vSize;
+    private ivec2 vPosition;
+    private ivec2 vSize;
+    private mat4 m4ScreenMatrix;
+    private float fAspectRatio, fAspectRatioWidthToHeight;
 
     private Texture pTexture, pDepthTexture;
 
     public Framebuffer(ivec2 size)
     {
+        this(size, false);
+    }
+
+    public Framebuffer(ivec2 size, boolean iswindow)
+    {
         vPosition = new ivec2(0);
         vSize = size;
-        iFBO = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
-        GL30.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        if(iswindow)
+        {
+            iFBO = 0;
+        }
+        else
+        {
+            iFBO = GL30.glGenFramebuffers();
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
+            GL30.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        }
+
+        if(CurrentlyBoundFramebuffer == null)
+            CurrentlyBoundFramebuffer = this;
+        updateMatrix();
     }
 
     public void bind() 
@@ -93,11 +113,26 @@ public class Framebuffer
         return this.pDepthTexture;
     }
 
+    private void updateMatrix()
+    {
+		fAspectRatio = (float)vSize.y / (float)vSize.x;
+		fAspectRatioWidthToHeight = (float)vSize.x / (float)vSize.y;
+		m4ScreenMatrix = mat4.ortho((float)vSize.y, (float)vSize.x, 0.0f, 0.0f, -100.0f, 100.0f);
+    }
+
+
+    //
+    // Setter
+    //
+    public void setSize(ivec2 size) { this.vSize = size; updateMatrix(); }
 
     //
     // Getter
     //
-    public ivec2 getSize()     { return this.vSize; }
-    public ivec2 getPosition() { return this.vPosition; }
-    public int getID()         { return this.iFBO; }
+    public ivec2 getSize()                      { return this.vSize; }
+    public ivec2 getPosition()                  { return this.vPosition; }
+    public int getID()                          { return this.iFBO; }
+    public mat4 getScreenMatrix()               { return this.m4ScreenMatrix; }
+	public float getAspectRatio()        	    { return this.fAspectRatio; }
+	public float getAspectRatioWidthToHeight()  { return this.fAspectRatioWidthToHeight; }
 }

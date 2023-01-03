@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.basics.SmoothFloat;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -120,7 +121,7 @@ public class Tabs extends RenderGUI
     public void render()
     {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y + vTabSize.y, vActualSize.x, vActualSize.y);
+        GL11.glScissor(vActualPos.x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y + vTabSize.y, vActualSize.x, vActualSize.y);
         pBackground.render();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }

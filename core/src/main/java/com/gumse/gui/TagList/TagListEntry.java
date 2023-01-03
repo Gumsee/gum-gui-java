@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.TextBox;
@@ -96,7 +97,7 @@ public class TagListEntry extends RenderGUI
         mat4 model = new mat4();
         model.translate(new vec3(
             vActualPos.x + vActualSize.x - size - 3, 
-            Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - size * 2.0f, 
+            Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - size * 2.0f, 
             0));
         model.scale(new vec3(size, size, 1.0f));
         model.rotate(rot);
@@ -148,7 +149,7 @@ public class TagListEntry extends RenderGUI
     private void renderCross()
     {
         GUIShader.getShaderProgram().use();
-        GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getShaderProgram().loadUniform("transmat", m4CrossMatrix);
         GUIShader.getShaderProgram().loadUniform("Uppercolor", bHovering ? v4CrossColor : GUI.getTheme().accentColor);
         GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);

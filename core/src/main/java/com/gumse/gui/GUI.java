@@ -98,19 +98,6 @@ public class GUI
         WindowCanvas.reposition();
     }
 
-
-	/*public void showToolTip(String tooltip)
-	{
-		pToolTipBox.setString(tooltip);
-		pToolTipBox.setPosition(Window.CurrentlyBoundWindow.getMouse().getPosition());
-		fToolTipShowTimer += FPS.get();
-		if(fToolTipShowTimer > 2.0f) //Show after 2 seconds
-		{
-			fToolTipHideTimer = 0.0f;
-			pToolTipBox.hide(false);
-		}
-	}*/
-
     public static Theme getTheme()
     {
         return pCurrentTheme;

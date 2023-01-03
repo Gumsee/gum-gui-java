@@ -1,5 +1,6 @@
 package com.gumse.gui.HierarchyList;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.TextBox;
@@ -87,7 +88,7 @@ public class HierarchyList extends RenderGUI
     {
         GUIShader.getStripesShaderProgram().use();
         GUIShader.getStripesShaderProgram().loadUniform("transmat", pBackground.getTransformation());
-        GUIShader.getStripesShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getStripesShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getStripesShaderProgram().loadUniform("patternoffset", (float)vActualPos.y + (float)pScroller.getOffset());
         GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
         GUIShader.getStripesShaderProgram().loadUniform("color1", new vec4(0.16f, 0.16f, 0.16f, 1.0f));

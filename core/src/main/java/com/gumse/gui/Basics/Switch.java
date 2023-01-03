@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Primitives.Box;
@@ -132,7 +133,7 @@ public class Switch extends RenderGUI
         mat4 model = new mat4();
         model.translate(new vec3(
             vActualPos.x + vActualSize.x * 0.5f - 1, 
-            Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y * 0.25f, 
+            Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y * 0.25f, 
             0));
         model.scale(new vec3(vActualSize.x * 0.35f, vActualSize.y * 0.35f, 1.0f));
         model.rotate(rot);
@@ -158,7 +159,7 @@ public class Switch extends RenderGUI
     private void renderCheck()
     {
         GUIShader.getShaderProgram().use();
-        GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+        GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getShaderProgram().loadUniform("transmat", m4CheckMatrix);
         GUIShader.getShaderProgram().loadUniform("Uppercolor", GUI.getTheme().accentColor);
         GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);

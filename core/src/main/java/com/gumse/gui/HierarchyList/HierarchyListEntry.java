@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.TextField;
@@ -152,7 +153,7 @@ public class HierarchyListEntry extends RenderGUI
             rot.set(new vec3(0, 0, 90));
 
         mat4 model = new mat4();
-        model.translate(new vec3(vActualPos.x + 5, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - 15, 0));
+        model.translate(new vec3(vActualPos.x + 5, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - 15, 0));
         model.scale(new vec3(15));
         model.rotate(rot);
         model.transpose();
@@ -165,7 +166,7 @@ public class HierarchyListEntry extends RenderGUI
         if(bHasChildEntries)
         {
             GUIShader.getShaderProgram().use();
-            GUIShader.getShaderProgram().loadUniform("orthomat", Window.CurrentlyBoundWindow.getScreenMatrix());
+            GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
             GUIShader.getShaderProgram().loadUniform("transmat", m4ArrowMatrix);
             GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(0.76f, 0.76f, 0.76f,1.0f));
             GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);

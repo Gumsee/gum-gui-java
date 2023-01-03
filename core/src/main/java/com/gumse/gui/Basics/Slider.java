@@ -81,10 +81,12 @@ public class Slider extends RenderGUI
 
 	public void update()
 	{
+        Mouse mouse = Window.CurrentlyBoundWindow.getMouse();
+        Keyboard keyboard = Window.CurrentlyBoundWindow.getKeyboard();
 		if(pBackground.isMouseInside() && !Mouse.isBusy())
 		{
 			Mouse.setActiveHovering(true);
-			Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HORIZONTAL_RESIZE);
+			mouse.setCursor(Mouse.GUM_CURSOR_HORIZONTAL_RESIZE);
 			pBackground.setColor(vec4.sub(GUI.getTheme().secondaryColor, 0.02f));
 			pSliderRect.setColor(vec4.sub(GUI.getTheme().accentColor, 0.02f));
 
@@ -108,17 +110,17 @@ public class Slider extends RenderGUI
 			if(bInfinite)
 			{
 				float speed = 0.1f;
-				if(Window.CurrentlyBoundWindow.getKeyboard().checkKeyPressed(Keyboard.GUM_KEY_LEFT_CONTROL))
+				if(keyboard.checkKeyPressed(Keyboard.GUM_KEY_LEFT_CONTROL))
 					speed *= 10;
-				else if(Window.CurrentlyBoundWindow.getKeyboard().checkKeyPressed(Keyboard.GUM_KEY_LEFT_SHIFT))
+				else if(keyboard.checkKeyPressed(Keyboard.GUM_KEY_LEFT_SHIFT))
 					speed *= 0.01;
 					
-				Window.CurrentlyBoundWindow.getMouse().lock(true);
-				newvar += (Window.CurrentlyBoundWindow.getMouse().getPositionDelta().x + Window.CurrentlyBoundWindow.getMouse().getMouseWheelState()) * speed;
+                    mouse.lock(true);
+				newvar += (mouse.getPositionDelta().x + mouse.getMouseWheelState()) * speed;
 			}
 			else 
 			{
-				newvar = (float)(Window.CurrentlyBoundWindow.getMouse().getPosition().x - getPosition().x) / (float)getSize().x;
+				newvar = (float)(mouse.getPosition().x - getPosition().x) / (float)getSize().x;
 				newvar = GumMath.clamp(newvar, 0.0f, 1.0f);
 			}
 			if(newvar != fValue)
@@ -127,10 +129,10 @@ public class Slider extends RenderGUI
 				updateData();
 				if(callbackFunction != null) { callbackFunction.run(fValue); }
 			}
-			if(!Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
+			if(!mouse.hasLeftClick())
 			{
 				bSnapped = false;
-				Window.CurrentlyBoundWindow.getMouse().lock(false);
+				mouse.lock(false);
 				Mouse.setBusiness(false);
 			}
 		}

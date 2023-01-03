@@ -7,6 +7,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -139,13 +140,13 @@ public class Graph extends RenderGUI
         GraphShader.use();
         GraphShader.loadUniform("color", v4Color);
         
-        GL11.glViewport(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - background.getSize().y - vActualPos.y, background.getSize().x, background.getSize().y);
+        GL11.glViewport(vActualPos.x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - background.getSize().y - vActualPos.y, background.getSize().x, background.getSize().y);
         pVertexArrayObject.bind();
         pVertexBuffer.setData(vPositionsData, GL30.GL_DYNAMIC_DRAW);
         
         GL11.glDrawArrays(GL11.GL_LINE_STRIP, 0, vData.size());
         pVertexArrayObject.unbind();
-        GL11.glViewport(0,0, Window.CurrentlyBoundWindow.getSize().x, Window.CurrentlyBoundWindow.getSize().y);
+        GL11.glViewport(0,0, Framebuffer.CurrentlyBoundFramebuffer.getSize().x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y);
         GraphShader.unuse();
     }
 
