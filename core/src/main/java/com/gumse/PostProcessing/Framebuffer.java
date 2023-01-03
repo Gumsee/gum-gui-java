@@ -52,6 +52,7 @@ public class Framebuffer
 
     public void bind() 
     {
+        CurrentlyBoundFramebuffer = this;
         GL30.glBindTexture(GL30.GL_TEXTURE_2D, 0);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
         GL30.glViewport(vPosition.x, vPosition.y, vSize.x, vSize.y);
@@ -60,6 +61,7 @@ public class Framebuffer
 
     public void unbind() 
     {
+        CurrentlyBoundFramebuffer = Window.CurrentlyBoundWindow.getFramebuffer();
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         Window.CurrentlyBoundWindow.resetViewport();
     }
