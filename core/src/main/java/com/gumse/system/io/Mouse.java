@@ -50,7 +50,7 @@ public class Mouse
 
     private boolean defaulHideState;
     private boolean defaulTrapState;
-    private boolean updateonclick;
+    private boolean bHidden;
     private boolean bIsTrapped;
 
     public interface MouseButtonCallback {
@@ -84,8 +84,8 @@ public class Mouse
         this.pContextWindow = context;
         this.v2LeftClickPosition = new ivec2(-1, -1);
 
-        updateonclick = false;
         bIsTrapped = false;
+        bHidden = false;
 
         iMouseWheelState = 0;
         CursorType = 0;
@@ -208,8 +208,8 @@ public class Mouse
 
     //Setter
     public void setContextWindow(Window context) { this.pContextWindow = context; }
-	public void updateOnClick(boolean bln)    	 { this.updateonclick = bln; }
 	public void trap(boolean doTrap) 			 { this.bIsTrapped = doTrap; }
+	public void hide(boolean hide) 			     { GLFW.glfwSetInputMode(pContextWindow.getNativeWindow(), GLFW.GLFW_CURSOR, hide ? GLFW.GLFW_CURSOR_HIDDEN : GLFW.GLFW_CURSOR_NORMAL); }
     public void setInstanceIDUnderMouse(int id)  { this.mouseOnID = id; }
     static public void setActiveHovering(boolean hover) { bActiveHovering = hover; }
 
