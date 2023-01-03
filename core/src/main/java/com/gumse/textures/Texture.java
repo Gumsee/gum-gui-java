@@ -61,7 +61,7 @@ public class Texture {
         ByteBuffer imageBuffer;
         imageBuffer = Toolbox.loadResourceToByteBuffer(resname, classtouse);
 
-        if(imageBuffer.equals(null))
+        if(imageBuffer == null)
             return false;
 
         boolean result = loadMemory(imageBuffer);
@@ -75,7 +75,7 @@ public class Texture {
         ByteBuffer imageBuffer;
         imageBuffer = Toolbox.loadFileToByteBuffer(filename, classtouse);
 
-        if(imageBuffer.equals(null))
+        if(imageBuffer == null)
             return false;
 
         boolean result = loadMemory(imageBuffer);
@@ -93,7 +93,7 @@ public class Texture {
         stbi_set_flip_vertically_on_load(true);  
 
         //Debug.info(Integer.toString(imageBuffer.capacity()));
-        if(imageBuffer.equals(null))
+        if(imageBuffer == null)
             return false;
 
         if(!stbi_info_from_memory(imageBuffer, x, y, channels)) 
