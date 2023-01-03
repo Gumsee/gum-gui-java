@@ -181,6 +181,20 @@ public class Scroller extends RenderGUI
         pContent.clear();
     }
 
+    @Override
+    public void removeChild(RenderGUI child) 
+    {
+        super.removeChild(child);
+        pContent.removeChild(child);
+    }
+
+    @Override
+    public void removeChild(int index) 
+    {
+        super.removeChild(index);
+        pContent.removeChild(index);
+    }
+
     protected void updateOnPosChange()
 	{
 		moveContent();
