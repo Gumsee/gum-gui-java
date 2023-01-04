@@ -58,10 +58,10 @@ public class Button extends RenderGUI
         {
             Mouse.setActiveHovering(true);
             Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-            backgroundBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.02f));
+            backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.02f));
             if(isHoldingLeftClick())
             {
-                backgroundBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.05f));
+                backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.05f));
             }
             if(!Mouse.isBusy() && isClicked())
             {
@@ -73,7 +73,7 @@ public class Button extends RenderGUI
         }
         else
         {
-            backgroundBox.setColor(GUI.getTheme().primaryColor);
+            backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
         }
     }
 
