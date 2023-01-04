@@ -22,7 +22,7 @@ void main()
         {
             fac = 1 - (gl_FragCoord.x - bboxpos.x) / bboxsize.x;
         }
-        fac *= 2.0f;
+        fac *= 4.0f;
     }
 
     vec4 sample = vec4(1, 1, 1, texture(textureSampler, Texcoord).r);
