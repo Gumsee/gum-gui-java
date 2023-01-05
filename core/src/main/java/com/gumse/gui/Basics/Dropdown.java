@@ -21,7 +21,6 @@ public class Dropdown extends RenderGUI
 	private float fScrollOffset = 0.0f;
 	private int iTextSize = 0;
 	private int iNumEntries;
-	private String sCurrentString;
 
 
 	public interface DropdownEntryCallback {
@@ -84,6 +83,7 @@ public class Dropdown extends RenderGUI
 		this.sType = "Dropdown";
 		this.iTextSize = textsize;
 		this.pFont = pFont;
+		this.iNumEntries = 0;
 	
 		pSmoothFloat = new SmoothFloat(0, 10, 0);
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
@@ -92,9 +92,7 @@ public class Dropdown extends RenderGUI
         pPreviewTextbox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
-	
-		sCurrentString = "";
-		iNumEntries = 0;
+
 	
 		resize();
 		reposition();
@@ -218,7 +216,6 @@ public class Dropdown extends RenderGUI
 	}
 	
 	public int numEntries()			  { return iNumEntries; }
-	public String getCurrentTitle()	  { return sCurrentString; }
 	public boolean isCurrentClicked() { return bIsClicked; }
 	public boolean isOpen()			  { return pSmoothFloat.getTarget() > 0; }
 	
