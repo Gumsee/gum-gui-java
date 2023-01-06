@@ -12,16 +12,9 @@ import com.gumse.system.io.Mouse;
 
 public class Dropdown extends RenderGUI
 {
-	private TextBox pPreviewTextbox;
-	private SmoothFloat pSmoothFloat;
-	private Font pFont;
-
-	private boolean bIsClicked = false;
-	private boolean bIsOpen = false;
-	private float fScrollOffset = 0.0f;
-	private int iTextSize = 0;
-	private int iNumEntries;
-
+    public interface DropdownSelectionCallback {
+        void run(String str);
+    }
 
 	public interface DropdownEntryCallback {
 		void run(String str);
@@ -31,6 +24,7 @@ public class Dropdown extends RenderGUI
 	{
 		private TextBox pBox;
 		private DropdownEntryCallback pCallback;
+        private DropdownSelectionCallback pGlobalCallback;
         private Dropdown pParent;
 
 		public MenuEntry(String name, Font font, int offset, DropdownEntryCallback callback, Dropdown parent)
@@ -66,6 +60,8 @@ public class Dropdown extends RenderGUI
 
                     if(pCallback != null)
                         pCallback.run(pBox.getTitle());
+                    if(pGlobalCallback != null)
+                        pGlobalCallback.run(pBox.getTitle());
                 }
             }
             else
@@ -73,8 +69,23 @@ public class Dropdown extends RenderGUI
                 pBox.setColor(getColor(GUI.getTheme().primaryColor));
             }
         }
+
+        public void setSelectCallback(DropdownSelectionCallback callback)
+        {
+            pGlobalCallback = callback;
+        }
 	};
 
+	private TextBox pPreviewTextbox;
+	private SmoothFloat pSmoothFloat;
+    private DropdownSelectionCallback pGlobalCallback;
+	private Font pFont;
+
+	private boolean bIsClicked = false;
+	private boolean bIsOpen = false;
+	private float fScrollOffset = 0.0f;
+	private int iTextSize = 0;
+	private int iNumEntries;
 
 	public Dropdown(String text, Font pFont, ivec2 pos, ivec2 size, int textsize)
 	{
@@ -202,12 +213,24 @@ public class Dropdown extends RenderGUI
 		MenuEntry entry = new MenuEntry(title, pFont, iNumEntries * vActualSize.y, OnCLickFunction, this);
 		if(iNumEntries++ == 0) { addGUI(entry); }
 		else                   { getChild(0).addGUI(entry); }
+        entry.setSelectCallback(pGlobalCallback);
 	
 		if(active)
 			setTitle(title);
 
 		moveEntries();
 	}
+
+    void onSelection(DropdownSelectionCallback callback)
+    {
+        pGlobalCallback = callback;
+        if(numChildren() > 0)
+        {
+            ((MenuEntry)getChild(0)).setSelectCallback(pGlobalCallback);
+            for(RenderGUI child : getChild(0).getChildren())
+                ((MenuEntry)child).setSelectCallback(pGlobalCallback);
+        }
+    }
 	
     @Override
 	protected void updateOnTitleChange()
