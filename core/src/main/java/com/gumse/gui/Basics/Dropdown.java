@@ -221,7 +221,7 @@ public class Dropdown extends RenderGUI
 		moveEntries();
 	}
 
-    void onSelection(DropdownSelectionCallback callback)
+    public void onSelection(DropdownSelectionCallback callback)
     {
         pGlobalCallback = callback;
         if(numChildren() > 0)
