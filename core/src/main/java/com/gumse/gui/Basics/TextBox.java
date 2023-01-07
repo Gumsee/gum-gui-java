@@ -62,11 +62,6 @@ public class TextBox extends RenderGUI
 		Gum::_delete(value);*/
 	}
 
-	public void update()
-	{
-		updatechildren();
-	}
-
 	public void updateText()
 	{
 		updateOnSizeChange();

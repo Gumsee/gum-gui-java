@@ -104,66 +104,63 @@ public class Scroller extends RenderGUI
 		//Gum::_delete(pScrollIndicator);
 	}
 
-	public void update()
+	public void updateextra()
 	{
-		if(!bIsHidden)
-		{
-			if(!Mouse.isBusy())
-			{
-				if(isMouseInside())
-				{
-					if(Window.CurrentlyBoundWindow.getMouse().getMouseWheelState() != 0)
-					{
-						iIndicatorPos += -Window.CurrentlyBoundWindow.getMouse().getMouseWheelState() * iStepSize;
-						moveContent();
-					}
-				}
+        if(!Mouse.isBusy())
+        {
+            if(isMouseInside())
+            {
+                if(Window.CurrentlyBoundWindow.getMouse().getMouseWheelState() != 0)
+                {
+                    iIndicatorPos += -Window.CurrentlyBoundWindow.getMouse().getMouseWheelState() * iStepSize;
+                    moveContent();
+                }
+            }
 
-				if(pScrollBar.isMouseInside())
-				{
-					pScrollIndicator.setColor(GUI.getTheme().accentColor);
-					pIndicatorWidthFloat.setTarget(12);
+            if(pScrollBar.isMouseInside())
+            {
+                pScrollIndicator.setColor(GUI.getTheme().accentColor);
+                pIndicatorWidthFloat.setTarget(12);
 
-					if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
-					{
-						bSnapped = true;
-						iSnapOffset = pScrollIndicator.getPosition().y - Window.CurrentlyBoundWindow.getMouse().getPosition().y;
-						pScrollIndicator.setColor(GUI.getTheme().accentColor);
-						Mouse.setBusiness(true);
-					}
-				}
-				else
-				{
-					pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
-					pIndicatorWidthFloat.setTarget(6);
-				}
-			}
+                if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
+                {
+                    bSnapped = true;
+                    iSnapOffset = pScrollIndicator.getPosition().y - Window.CurrentlyBoundWindow.getMouse().getPosition().y;
+                    pScrollIndicator.setColor(GUI.getTheme().accentColor);
+                    Mouse.setBusiness(true);
+                }
+            }
+            else
+            {
+                pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
+                pIndicatorWidthFloat.setTarget(6);
+            }
+        }
 
-			if(bSnapped)
-			{
-				iIndicatorPos = Window.CurrentlyBoundWindow.getMouse().getPosition().y - pScrollBar.getPosition().y + iSnapOffset;
-				moveContent();
+        if(bSnapped)
+        {
+            iIndicatorPos = Window.CurrentlyBoundWindow.getMouse().getPosition().y - pScrollBar.getPosition().y + iSnapOffset;
+            moveContent();
 
-				if(!Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
-				{
-					pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
-					bSnapped = false;
-					Mouse.setBusiness(false);
-				}
-			}
-			
-			if(pIndicatorWidthFloat.update())
-			{
-				int width = (int)pIndicatorWidthFloat.get();
-				pScrollIndicator.setSize(new ivec2(width, pScrollIndicator.getSize().y));
-				pScrollIndicator.setOrigin(new ivec2((int)(width * 0.5f), 0));
-				pScrollIndicator.setCornerRadius(new vec4((float)width * 0.8f));
-				pScrollIndicator.setPositionX(10);
-			}
+            if(!Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
+            {
+                pScrollIndicator.setColor(GUI.getTheme().accentColorShade1);
+                bSnapped = false;
+                Mouse.setBusiness(false);
+            }
+        }
+        
+        if(pIndicatorWidthFloat.update())
+        {
+            int width = (int)pIndicatorWidthFloat.get();
+            pScrollIndicator.setSize(new ivec2(width, pScrollIndicator.getSize().y));
+            pScrollIndicator.setOrigin(new ivec2((int)(width * 0.5f), 0));
+            pScrollIndicator.setCornerRadius(new vec4((float)width * 0.8f));
+            pScrollIndicator.setPositionX(10);
+        }
 
-			//updatechildren();
-            pContent.update();
-		}
+        //updatechildren();
+        pContent.update();
 	}
 
 
@@ -205,7 +202,7 @@ public class Scroller extends RenderGUI
 		moveContent();
 	}
 
-	public void render()
+	public void renderextra()
 	{
 		if(!bIsHidden)
 		{

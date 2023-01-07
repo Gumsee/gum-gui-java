@@ -9,12 +9,18 @@ import com.gumse.gui.GUI;
 import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
+import com.gumse.system.io.Mouse;
 import com.gumse.tools.Debug;
 import com.gumse.tools.Toolbox;
 
 public class RenderGUI
 {
     static boolean bHasClickedSomething = false;
+
+    public interface GUICallback
+    {
+        void run(RenderGUI gui);
+    }
 
     //private ArrayList<ContextMenuEntry> vContextMenuEntries;
     private bvec2 sizeInPercent, posInPercent, originInPercent, maxSizeInPercent, minSizeInPercent;
@@ -48,6 +54,13 @@ public class RenderGUI
     protected String sTitle;
     protected String value;
     protected String sToolTip;
+    protected int iHoverCursorShape;
+    protected GUICallback pClickCallback;
+    protected GUICallback pHoverCallback;
+    protected GUICallback pEnterCallback;
+    protected GUICallback pLeaveCallback;
+    protected boolean bIsHovering;
+    protected boolean bUpdateFromFirstToLast;
 
 
     public RenderGUI() 
@@ -55,6 +68,11 @@ public class RenderGUI
         this.v4Color = null;
         this.v4CornerRadius = new vec4(0,0,0,0);
         this.pParent = null;
+        this.pClickCallback = null;
+        this.pHoverCallback = null;
+        this.pEnterCallback = null;
+        this.pLeaveCallback = null;
+        this.iHoverCursorShape = Mouse.GUM_CURSOR_DEFAULT;
         this.sTitle = "";
         this.sID = "";
         this.fRotation = 0.0f;
@@ -62,6 +80,8 @@ public class RenderGUI
         this.bIsHidden = false;
         this.bChildrenHidden = false;
         this.bKeepTrackOfBoundingBox = false;
+        this.bIsHovering = false;
+        this.bUpdateFromFirstToLast = false;
         this.vMinSize = new ivec2(0,0);
         this.vMaxSize = new ivec2(0,0);
 
@@ -214,11 +234,58 @@ public class RenderGUI
         this.vChildren.clear();
     }
 
+    public void renderextra() 
+    {
+        renderchildren();
+    };
+    public void updateextra() {};
 
 
-    public void render()         { if(!bIsHidden) renderchildren(); }
-    public void update()         { if(!bIsHidden) updatechildren(); }
-    public void renderchildren() 
+    public final void render()
+    { 
+        if(bIsHidden)
+            return;
+        
+        renderextra(); 
+    }
+
+    public final void update()
+    { 
+        if(bIsHidden) 
+            return;
+
+        if(!bHasClickedSomething)
+        {
+            if(pHoverCallback != null || iHoverCursorShape != Mouse.GUM_CURSOR_DEFAULT || pEnterCallback != null || pLeaveCallback != null)
+            {
+                if(/*!Mouse.isActiveHovering() &&*/ isMouseInside())
+                {
+                    Mouse.setActiveHovering(true);
+                    Window.CurrentlyBoundWindow.getMouse().setCursor(iHoverCursorShape);
+
+                    if(pEnterCallback != null && bIsHovering == false)
+                        pEnterCallback.run(this);
+                    bIsHovering = true;
+
+                    if(pHoverCallback != null)
+                        pHoverCallback.run(this);
+                }
+                else
+                {
+                    if(pLeaveCallback != null && bIsHovering == true)
+                        pLeaveCallback.run(this);
+
+                    bIsHovering = false;
+                }
+            }
+            if(pClickCallback != null && isClicked())
+                pClickCallback.run(this);
+        }
+
+        updateextra();
+        updatechildren(); 
+    }
+    public final void renderchildren() 
     { 
         for(int i = 0; i < numElements(); i++) { vElements.get(i).render(); }
         if(!bChildrenHidden)
@@ -227,18 +294,24 @@ public class RenderGUI
         }
     }
 
-    public void updatechildren() 
+    public final void updatechildren() 
     { 
-        for(int i = numElements(); i --> 0;) { vElements.get(i).update();  }
-        if(!bChildrenHidden)
+        if(bUpdateFromFirstToLast)
         {
-            for(int i = numChildren(); i --> 0;) { vChildren.get(i).update(); } 
+            for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
+            if(!bChildrenHidden)
+            {
+                for(int i = 0; i < numChildren(); i++) { vChildren.get(i).update(); } 
+            }
         }
-        /*for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
-        if(!bChildrenHidden)
+        else
         {
-            for(int i = 0; i < numChildren(); i++) { vChildren.get(i).update(); } 
-        }*/
+            for(int i = numElements(); i --> 0;) { vElements.get(i).update();  }
+            if(!bChildrenHidden)
+            {
+                for(int i = numChildren(); i --> 0;) { vChildren.get(i).update(); } 
+            }
+        }
     }
 
     public void updateBoundingBox() { updateBoundingBox(false); }
@@ -286,23 +359,6 @@ public class RenderGUI
 
             this.bBoundingBox = bbox;
         }
-    }
-
-    public boolean updateToolTip()
-    {
-        if(isMouseInside())
-        {
-            boolean showToolTip = sToolTip.toString() != "";
-            for(int i = 0; i < numChildren(); i++) 
-            {
-                if(vChildren.get(i).updateToolTip())
-                    showToolTip = false;
-            }
-            //if(showToolTip)
-            //    GumEngine::GUIS.showToolTip(sToolTip);
-            return true;
-        }
-        return false;
     }
 
     public void updateMatrix()
@@ -384,6 +440,10 @@ public class RenderGUI
     //
     // Setter
     //
+    public void onEnter(GUICallback callback)                   { this.pEnterCallback = callback; }
+    public void onLeave(GUICallback callback)                   { this.pLeaveCallback = callback; }
+    public void onClick(GUICallback callback)                   { this.pClickCallback = callback; }
+    public void onHover(GUICallback callback, int shape)        { this.pHoverCallback = callback; this.iHoverCursorShape = shape; }
     public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
     public void setPosition(ivec2 pos)                          { this.vPos.set(pos); reposition(); }
     public void setPositionX(int pos)                           { this.vPos.x = pos; reposition(); }

@@ -29,6 +29,7 @@ public class AltMenuEntry extends RenderGUI
         this.bIsOpen = false;
         this.iWidestChild = 0;
         this.pCallback = callback;
+        this.bUpdateFromFirstToLast = true;
 
         pTextBox = new TextBox(title, FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 100));
         pTextBox.setSizeInPercent(true, true);
@@ -46,6 +47,48 @@ public class AltMenuEntry extends RenderGUI
         addElement(pChildBorderBox);
 
         this.vSize = new ivec2(pTextBox.getTextSize().x + 30, 30);
+
+        onEnter(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                pTextBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.05f));
+            }
+        });
+
+        onLeave(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                close();
+            }
+        });
+
+        onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                if(!bIsOpen/* && !Mouse.isBusy()*/)
+                {
+                    bIsOpen = true;
+                    if(pCallback != null)
+                        pCallback.run();
+    
+                    pChildBorderBox.setSize(new ivec2(iWidestChild, numChildren() * getSize().y));
+    
+                    if(pParent.getType() == "AltMenu") { pChildBorderBox.setPosition(new ivec2(0, getSize().y)); }
+                    else                               { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
+    
+                    if(pParent.getType().equals("AltMenu"))
+                        Mouse.setBusiness(true);
+                    hideChildren(false);
+                    RenderGUI.clickedSomething(true);
+                }
+                else
+                {
+                    close();
+                }
+            }
+        });
+
+        close();
 
         resize();
         reposition();
@@ -70,45 +113,7 @@ public class AltMenuEntry extends RenderGUI
         hideChildren(true);
     }
 
-    public void update()
-    {
-        updatechildren();
-        if(isMouseInside())
-        {
-            Mouse.setActiveHovering(true);
-            if(isClicked())
-            {
-                if(!bIsOpen)
-                {
-                    bIsOpen = true;
-                    if(pCallback != null)
-                        pCallback.run();
-
-                    pChildBorderBox.setSize(new ivec2(iWidestChild, numChildren() * getSize().y));
-
-                    if(pParent.getType() == "AltMenu") { pChildBorderBox.setPosition(new ivec2(0, getSize().y)); }
-                    else                               { pChildBorderBox.setPosition(new ivec2(getSize().x, 0)); }
-
-                    if(pParent.getType().equals("AltMenu"))
-                        Mouse.setBusiness(true);
-                    hideChildren(false);
-                    RenderGUI.clickedSomething(true);
-                }
-                else
-                {
-                    close();
-                }
-            }
-        
-            pTextBox.setColor(vec4.sub(GUI.getTheme().primaryColor, 0.05f));
-        }
-        else
-        {
-            close();
-        }
-    }
-
-    public void render()
+    public void renderextra()
     {
         if(!bChildrenHidden)
         {
@@ -143,7 +148,7 @@ public class AltMenuEntry extends RenderGUI
             vChildren.get(i).setSize(new ivec2(iWidestChild, getSize().y));
 
         if(pParent.getType() == "AltMenu") { entry.setPosition(new ivec2(0, numChildren() * getSize().y)); }
-        else                                { entry.setPosition(new ivec2(getSize().x, (numChildren() - 1) * getSize().y)); }
+        else                               { entry.setPosition(new ivec2(getSize().x, (numChildren() - 1) * getSize().y)); }
         
     }
 

@@ -133,7 +133,7 @@ public class Graph extends RenderGUI
     
     public void cleanup() { }
     
-    public void render()
+    public void renderextra()
     {
         renderchildren();
     

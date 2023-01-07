@@ -9,6 +9,7 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Debug;
 
 public class Dropdown extends RenderGUI
 {
@@ -43,7 +44,7 @@ public class Dropdown extends RenderGUI
 		}
 
         @Override
-        public void update()
+        public void updateextra()
         {
             if(isMouseInsideSkipChildren())
             {
@@ -104,6 +105,28 @@ public class Dropdown extends RenderGUI
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
 
+        onHover(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            { 
+                pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+                if(isHoldingLeftClick())
+                    pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+            }
+        }, Mouse.GUM_CURSOR_HAND);
+
+        onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            { 
+                Switch();
+            }
+        });
+
+        onLeave(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            { 
+                pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
+            }
+        });
 	
 		resize();
 		reposition();
@@ -118,58 +141,8 @@ public class Dropdown extends RenderGUI
 		getChild(0).setPosition(new ivec2(0, (int)(pSmoothFloat.get() * entriesHeight) - entriesHeight + vActualSize.y));
 	}
 	
-	public void update()
-	{
-		if(pPreviewTextbox.isMouseInside())
-		{
-			Mouse.setActiveHovering(true);
-			Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-			pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
-			if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
-			{
-				pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
-			}
-			if(Window.CurrentlyBoundWindow.getMouse().hasLeftRelease())
-			{
-				this.Switch();
-			}
-		}
-		else
-		{
-			pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
-		}
-	
-		/*bIsClicked = false;
-		if(bIsOpen && bDone)
-		{
-			for(int i = 0; i < vMenuEntries.size(); i++)
-			{
-				if(vMenuEntries.get(i).box.getPosition().y > pPreviewTextbox.getPosition().y)  //Only render if entry is underneath the pPreviewTextbox
-				{
-					if(vMenuEntries.get(i).box.isMouseInside())
-					{
-						vMenuEntries.get(i).box.setColor(new vec4(0.5f, 0.5f, 0.5f, 1.0f));
-						if(Window.CurrentlyBoundWindow.getMouse().hasLeftRelease())
-						{
-							sCurrentString = vMenuEntries.get(i).box.getString();
-							pPreviewTextbox.setString(sCurrentString);
-							iCurrentIndex = i;
-							bIsClicked = true;
-							close();
-							if(vMenuEntries.get(i).function != null)
-							{
-								vMenuEntries.get(i).function.run(vMenuEntries.get(i).box.getString());
-							}
-						}
-					}
-					else
-					{
-						vMenuEntries.get(i).box.setColor(new vec4(0.7f, 0.7f, 0.7f, 1.0f));
-					}
-				}
-			}
-		}*/
-
+	public void updateextra()
+	{	
 		if(numChildren() <= 0) 
 			return;
 
@@ -187,7 +160,7 @@ public class Dropdown extends RenderGUI
         }
 	}
 	
-	public void render()
+	public void renderextra()
 	{
 		if(numChildren() > 0)
 		{

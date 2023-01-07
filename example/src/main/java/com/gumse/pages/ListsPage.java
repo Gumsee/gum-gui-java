@@ -39,11 +39,11 @@ public class ListsPage extends RenderGUI
             new ColumnType[] { ColumnType.STRING, ColumnType.STRING, ColumnType.BOOLEAN, ColumnType.INTEGER, ColumnType.TIME}
         );
         testList.setSizeInPercent(true, true);
-        testList.addEntry(new Object[] { "kek",  "lolol", true,  69,  600  }, "userdata");
-        testList.addEntry(new Object[] { "kek2", "eeehh", false, 420, 4    }, "userdata");
-        testList.addEntry(new Object[] { "kek3", "bleb",  true,  666, 3600 }, "userdata");
-        testList.addEntry(new Object[] { "kek4", "hehe",  true,  776, 42   }, "userdata");
-        testList.addEntry(new Object[] { "kek5", "eegg",  false, 42,  123  }, "userdata");
+        testList.addEntry(new Object[] { "kek",  "lolol", true,  69,  600  }, "userdata", null);
+        testList.addEntry(new Object[] { "kek2", "eeehh", false, 420, 4    }, "userdata", null);
+        testList.addEntry(new Object[] { "kek3", "bleb",  true,  666, 3600 }, "userdata", null);
+        testList.addEntry(new Object[] { "kek4", "hehe",  true,  776, 42   }, "userdata", null);
+        testList.addEntry(new Object[] { "kek5", "eegg",  false, 42,  123  }, "userdata", null);
         listTabs.addGUIToTab(testList, "List");
 
         HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element");

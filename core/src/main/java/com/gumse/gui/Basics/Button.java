@@ -5,10 +5,9 @@ import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
-import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Toolbox;
+import com.gumse.textures.Texture;
 
 public class Button extends RenderGUI
 {
@@ -30,17 +29,37 @@ public class Button extends RenderGUI
         backgroundBox.setSizeInPercent(true, true);
         backgroundBox.setAlignment(TextBox.Alignment.CENTER);
         backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        backgroundBox.setTextSize(size.y - 5);
         addGUI(backgroundBox);
+
+        onLeave(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
+            }
+        });
+
+        onHover(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.02f));
+                if(isHoldingLeftClick())
+                {
+                    backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.05f));
+                }
+            }
+        }, Mouse.GUM_CURSOR_HAND);
+
+        onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                if(pCallback != null)
+                    pCallback.run();
+            }
+        });
 
         resize();
         reposition();
-
-        backgroundBox.setTextSize((int)(getSize().y * 0.9f));
-    }
-
-    public void cleanup() 
-    {
-        //Gum::_delete(backgroundBox);
     }
 
     @Override
@@ -49,42 +68,14 @@ public class Button extends RenderGUI
         backgroundBox.setString(sTitle);
     }
 
-    public void update()
-    {
-        if(bIsHidden)
-            return;
-        
-        if(backgroundBox.isMouseInside())
-        {
-            Mouse.setActiveHovering(true);
-            Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-            backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.02f));
-            if(isHoldingLeftClick())
-            {
-                backgroundBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), 0.05f));
-            }
-            if(!Mouse.isBusy() && isClicked())
-            {
-                if(pCallback != null)
-                {
-                    pCallback.run();
-                }
-            }
-        }
-        else
-        {
-            backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
-        }
-    }
-
     public void setCallbackFunction(ButtonCallback func) { this.pCallback = func; }
-    //void setTexture(Texture *newtex)                   { this.backgroundBox.setTexture(newtex); }
+    void setTexture(Texture newtex)                      { this.backgroundBox.setTexture(newtex); }
     public void setSecondColor(vec4 col)                 { this.backgroundBox.getBox().setSecondColor(col); }
     public void setHasGradient(boolean val)              { this.backgroundBox.getBox().setHasGradient(val); }
     public void setGradientDirectionRight(boolean val)   { this.backgroundBox.getBox().setGradientDirectionRight(val); }
     public void setCornerRadius(vec4 radius)             { this.backgroundBox.getBox().setCornerRadius(radius); }
 
-    //Texture* getTexture()                                   { return this.backgroundBox.getBox().getTexture(); }
+    Texture getTexture()                                 { return this.backgroundBox.getBox().getTexture(); }
     public vec4 getSecondColor()                         { return this.backgroundBox.getBox().getSecondColor(); }
     public TextBox getBox()                              { return this.backgroundBox; }
 

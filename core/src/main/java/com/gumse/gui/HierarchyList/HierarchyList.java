@@ -74,17 +74,15 @@ public class HierarchyList extends RenderGUI
             Gum::_delete(gui);*/
     }
 
-    public void update()
+    public void updateextra()
     {
-        updatechildren();
-
         if(pSelectedEntry != null)
         {
             pSelectedEntryIndicator.setPosition(new ivec2(0, pSelectedEntry.getPosition().y - pScroller.getPosition().y));
         }
     }
 
-    public void render()
+    public void renderextra()
     {
         GUIShader.getStripesShaderProgram().use();
         GUIShader.getStripesShaderProgram().loadUniform("transmat", pBackground.getTransformation());

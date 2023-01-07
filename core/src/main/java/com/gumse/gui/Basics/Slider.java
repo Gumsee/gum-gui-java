@@ -79,7 +79,7 @@ public class Slider extends RenderGUI
 		Gum::_delete(pNameText);*/
 	}
 
-	public void update()
+	public void updateextra()
 	{
         Mouse mouse = Window.CurrentlyBoundWindow.getMouse();
         Keyboard keyboard = Window.CurrentlyBoundWindow.getKeyboard();

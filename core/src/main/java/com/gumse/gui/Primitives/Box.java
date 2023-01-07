@@ -11,7 +11,6 @@ import com.gumse.maths.*;
 import com.gumse.textures.Texture;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
-import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 
 public class Box extends RenderGUI
@@ -107,16 +106,13 @@ public class Box extends RenderGUI
     }
 
 
-	public void render()
+	public void renderextra()
 	{
-		if(!bIsHidden)
-		{
-            GUIShader.getShaderProgram().use();
-            renderInternal();
-            GUIShader.getShaderProgram().unuse();
+        GUIShader.getShaderProgram().use();
+        renderInternal();
+        GUIShader.getShaderProgram().unuse();
 
-            renderchildren();
-		}
+        renderchildren();
 	}
 
 	public void renderCustom()

@@ -15,7 +15,6 @@ import com.gumse.gui.Font.Character;
 import com.gumse.maths.*;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
-import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.tools.Debug;
 
@@ -172,11 +171,8 @@ public class Text extends RenderGUI
     }
 
 
-    public void render()
+    public void renderextra()
     {
-        if(bIsHidden)
-            return;
-
         vec4 col = getColor(GUI.getTheme().textColor);
         if(fAlphaOverride < 1.0f)
             col.w = fAlphaOverride;

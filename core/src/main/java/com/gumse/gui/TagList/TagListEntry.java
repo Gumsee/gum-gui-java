@@ -31,7 +31,6 @@ public class TagListEntry extends RenderGUI
 
     private TextBox pTextBox;
     private mat4 m4CrossMatrix;
-    private boolean bHovering;
     private TagRemoveCallback pCallback;
     private String sName;
 
@@ -68,7 +67,6 @@ public class TagListEntry extends RenderGUI
     {
         this.vPos.set(pos);
         this.vSize.set(new ivec2(0, 100));
-        this.bHovering = false;
         this.pCallback = callback;
         this.sName = tagstr;
 
@@ -83,6 +81,28 @@ public class TagListEntry extends RenderGUI
         addElement(pTextBox);
 
         vActualSize.x = pTextBox.getTextSize().x + 25;
+
+        onHover(null, Mouse.GUM_CURSOR_HAND);
+        onEnter(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                pTextBox.setColor(vec4.sub(GUI.getTheme().secondaryColor, 0.02f));
+            }
+        });
+        onLeave(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                pTextBox.setColor(GUI.getTheme().secondaryColor);
+            }
+        });
+        TagListEntry thisEntry = this;
+        onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                if(pCallback != null)
+                    pCallback.run(thisEntry);
+            }
+        });
 
         setSizeInPercent(false, true);
         reposition();
@@ -114,33 +134,7 @@ public class TagListEntry extends RenderGUI
     }
 
     @Override
-    public void update() 
-    {
-        if(isMouseInside())
-        {
-            Mouse.setActiveHovering(true);
-            Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-            pTextBox.setColor(vec4.sub(GUI.getTheme().secondaryColor, 0.02f));
-            bHovering = true;
-
-
-            if(isClicked())
-            {
-                if(pCallback != null)
-                    pCallback.run(this);
-            }
-        }
-        else
-        {
-            pTextBox.setColor(GUI.getTheme().secondaryColor);
-            bHovering = false;
-        }
-
-        updatechildren();
-    }
-
-    @Override
-    public void render() 
+    public void renderextra() 
     {
         pTextBox.render();
         renderCross();
@@ -151,7 +145,7 @@ public class TagListEntry extends RenderGUI
         GUIShader.getShaderProgram().use();
         GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getShaderProgram().loadUniform("transmat", m4CrossMatrix);
-        GUIShader.getShaderProgram().loadUniform("Uppercolor", bHovering ? v4CrossColor : GUI.getTheme().accentColor);
+        GUIShader.getShaderProgram().loadUniform("Uppercolor", bIsHovering ? v4CrossColor : GUI.getTheme().accentColor);
         GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
         GUIShader.getShaderProgram().loadUniform("hasTexture", false);
         pCrossVAO.bind();

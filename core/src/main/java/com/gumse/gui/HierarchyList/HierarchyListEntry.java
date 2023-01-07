@@ -107,10 +107,10 @@ public class HierarchyListEntry extends RenderGUI
         destroyChildren();
     }
 
-    public void update()
+    public void updateextra()
     {
-        if(bIsOpen)
-            updatechildren();
+        //if(bIsOpen)
+        //    updatechildren();
         
         Mouse mouse = Window.CurrentlyBoundWindow.getMouse();
         if(!title.isEditing() && isMouseInside() && !RenderGUI.somethingHasBeenClicked())
@@ -161,7 +161,7 @@ public class HierarchyListEntry extends RenderGUI
         m4ArrowMatrix = model;
     }
 
-    public void render()
+    public void renderextra()
     {
         if(bHasChildEntries)
         {

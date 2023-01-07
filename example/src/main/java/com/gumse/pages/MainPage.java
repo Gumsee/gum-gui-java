@@ -119,14 +119,10 @@ public class MainPage extends RenderGUI
 
     private float f = 0.0f;
 
-    public void update()
-    {
-        if(bIsHidden)
-            return;
-            
+    public void updateextra()
+    {            
         fpsBox.setString("FPS: " + (int)FPS.getFPS());
         //testGraph.addData((float)Math.cos(f += 0.1f));
         //testGraph.addData(FPS.getFPS());
-        updatechildren();
     }
 }

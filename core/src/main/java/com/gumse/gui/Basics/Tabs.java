@@ -58,7 +58,7 @@ public class Tabs extends RenderGUI
         //Gum::_delete(pBackground);
     }
 
-    public void update()
+    public void updateextra()
     {
         if(vTabs.size() > 0)
         {
@@ -94,31 +94,9 @@ public class Tabs extends RenderGUI
                 }
             }   
         }
-        updatechildren();
     }
 
-    public boolean updateToolTip()
-    {
-        if(isMouseInside())
-        {
-            for(int i = 0; i < pActiveTab.numChildren(); i++) 
-            {
-                boolean showToolTip = true;
-                if(pActiveTab.getChild(i).updateToolTip())
-                {
-                    showToolTip = false;
-                }
-
-                //if(showToolTip)
-                //    GumEngine::GUIS.showToolTip(sToolTip);
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    public void render()
+    public void renderextra()
     {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor(vActualPos.x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y + vTabSize.y, vActualSize.x, vActualSize.y);

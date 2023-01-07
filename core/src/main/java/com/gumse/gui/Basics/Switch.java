@@ -13,7 +13,6 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
-import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 
@@ -101,29 +100,21 @@ public class Switch extends RenderGUI
         //pTickbox.setColor(vec4(Gum::Maths::HSVToRGB(vec3(rand() % 360, 100, 70)),1.0));
         addElement(pTickbox);
 
+        onHover(null, Mouse.GUM_CURSOR_HAND);
+        onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                bIsTicked = !bIsTicked;
+                if(pOnTickedCallback != null)
+                    pOnTickedCallback.run(bIsTicked);
+            }
+        });
+
         resize();
         reposition();
     }
 
     public void cleanup() {};
-
-    public void update()
-    {
-        if(isMouseInside())
-        {
-            Mouse.setActiveHovering(true);
-            Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-        }
-        if(isClicked())
-        {
-            bIsTicked = !bIsTicked;
-            if(pOnTickedCallback != null)
-                pOnTickedCallback.run(bIsTicked);
-        }
-
-
-        updatechildren();
-    }
 
     @Override
     protected void updateOnPosChange()
@@ -143,7 +134,7 @@ public class Switch extends RenderGUI
     }
 
     @Override
-    public void render() 
+    public void renderextra() 
     {
         pBackground.render();
         if(bIsTicked)

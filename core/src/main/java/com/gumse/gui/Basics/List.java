@@ -21,7 +21,7 @@ public class List <E> extends RenderGUI
         Object[] alData;
 
 
-        public ListEntry(Object[] data, List<E> parent, E usrptr)
+        public ListEntry(Object[] data, List<E> parent, E usrptr, GUICallback onclickcallback)
         {
             this.alData = data;
             this.pUserPtr = usrptr;
@@ -80,17 +80,12 @@ public class List <E> extends RenderGUI
                     
                 }
             }
+
+            onClick(onclickcallback);
         }
         
-        public Object getColumn(int index)
-        {
-            return alData[index];
-        }
-
-        public E getUserPtr()
-        {
-            return pUserPtr;
-        }
+        public Object getColumn(int index) { return alData[index]; }
+        public E getUserPtr()              { return pUserPtr; }
     };
 
     private static final int TITLEBAR_HEIGHT = 30;
@@ -166,7 +161,7 @@ public class List <E> extends RenderGUI
             Gum::_delete(entry);*/
     }
     
-    public void render()
+    public void renderextra()
     {
         GUIShader.getStripesShaderProgram().use();
         GUIShader.getStripesShaderProgram().loadUniform("transmat", pBackground.getTransformation());
@@ -182,14 +177,14 @@ public class List <E> extends RenderGUI
     }
     
     
-    public void addEntry(Object[] data, E usrptr)
+    public void addEntry(Object[] data, E usrptr, GUICallback onclick)
     {
         if(data.length != alColumns.length)
         {
             Debug.error("List: addEntry: data array length doesnt match column count");
             return;
         }
-        ListEntry entry = new ListEntry(data, this, usrptr);
+        ListEntry entry = new ListEntry(data, this, usrptr, onclick);
         entry.setSize(new ivec2(100, 40));
         entry.setPosition(new ivec2(0, vEntries.size() * 30 + TITLEBAR_HEIGHT));
         vEntries.add(entry);

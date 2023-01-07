@@ -21,6 +21,7 @@ public class AltMenu extends RenderGUI
         this.vSize = size;
         this.setType("AltMenu");
         this.vEntries = new ArrayList<>();
+        this.bUpdateFromFirstToLast = true;
     
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 30));
         pBackground.setSizeInPercent(true, false);
@@ -34,7 +35,7 @@ public class AltMenu extends RenderGUI
         //Gum::_delete(pBackground);
     }
 
-    public void render()
+    public void renderextra()
     {
         for(int i = vEntries.size(); i < vChildren.size(); i++)
             vChildren.get(i).render();

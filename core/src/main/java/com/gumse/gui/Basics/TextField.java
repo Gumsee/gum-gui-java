@@ -112,7 +112,7 @@ public class TextField extends RenderGUI
 	}
 	
 	
-	public void render()
+	public void renderextra()
 	{
 		pBackgroundBox.render();
 		if(iSelectorStartCharIndex != iSelectorEndCharIndex)
@@ -126,7 +126,7 @@ public class TextField extends RenderGUI
 		pIndicatorBox.render();
 	}
 	
-	public void update()
+	public void updateextra()
 	{
 		if(RenderGUI.somethingHasBeenClicked())
 			return;
@@ -217,8 +217,6 @@ public class TextField extends RenderGUI
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_HOME, Keyboard.GUM_MOD_SHIFT))  { setSelection(iSelectorStartCharIndex, 0); }
 			else if(keyboard.getTextInput() != "") 				   		                 { appendString(keyboard.getTextInput()); }
 		}
-	
-		updatechildren();
 	}
 	
 	private void updateText()
