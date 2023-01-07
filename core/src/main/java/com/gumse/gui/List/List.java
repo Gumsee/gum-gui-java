@@ -1,95 +1,23 @@
-package com.gumse.gui.Basics;
+package com.gumse.gui.List;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUIShader;
-import com.gumse.gui.Basics.TextBox.Alignment;
+import com.gumse.gui.Basics.Scroller;
+import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Box;
-import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.*;
 import com.gumse.tools.Debug;
 
 public class List <E> extends RenderGUI
 {
-    private class ListEntry extends RenderGUI
-    {
-        E pUserPtr;
-        Object[] alData;
-
-
-        public ListEntry(Object[] data, List<E> parent, E usrptr, GUICallback onclickcallback)
-        {
-            this.alData = data;
-            this.pUserPtr = usrptr;
-            int columnSize = 100 / parent.getColumnTypes().length;
-            onClick(onclickcallback);
-
-            for(int i = 0; i < parent.getColumnTypes().length; i++)
-            {
-                RenderGUI item = new RenderGUI();
-                item.setPosition(new ivec2(columnSize * i, 0));
-                item.setPositionInPercent(true, false);
-                item.setSize(new ivec2(columnSize, 30));
-                item.setSizeInPercent(true, false);
-                addGUI(item);
-
-                ColumnType type = parent.getColumnTypes()[i];
-                switch(type)
-                {
-                    case BOOLEAN:
-                        Switch boolGUI = new Switch(new ivec2(50, 5), new ivec2(20), 0);
-                        boolGUI.setPositionInPercent(true, false);
-                        boolGUI.setOrigin(new ivec2(10, 0));
-                        item.addGUI(boolGUI);
-                        break;
-                    case DATE:
-                        break;
-                    case DROPDOWN:
-                        break;
-                    case INTEGER:
-                        TextBox numGUI = new TextBox(String.valueOf((Integer)data[i]), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
-                        numGUI.setTextSize(25);
-                        numGUI.getBox().hide(true);
-                        numGUI.setAlignment(Alignment.CENTER);
-                        numGUI.setSizeInPercent(true, false);
-                        item.addGUI(numGUI);
-                        break;
-                    case STRING:
-                        TextBox strGUI = new TextBox((String)data[i], FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
-                        strGUI.setTextSize(25);
-                        strGUI.getBox().hide(true);
-                        strGUI.setAlignment(Alignment.LEFT);
-                        strGUI.setSizeInPercent(true, false);
-                        item.addGUI(strGUI);
-                        break;
-                    case TIME:
-                        int seconds = (Integer)data[i];
-                        int hours = seconds / 3600;
-                        int minutes = (seconds % 3600) / 60;
-                        seconds = seconds % 60;
-
-                        Text timeGUI = new Text(String.format("%02d:%02d:%02d", hours, minutes, seconds), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
-                        timeGUI.setCharacterHeight(25);
-                        item.addGUI(timeGUI);
-                        break;
-                    default:
-                        break;
-                    
-                }
-            }
-        }
-        
-        public Object getColumn(int index)    { return alData[index]; }
-        public E getUserPtr()                 { return pUserPtr; }
-    };
-
     private static final int TITLEBAR_HEIGHT = 30;
 
-    private ArrayList<ListEntry> vEntries;
+    private ArrayList<ListEntry<E> > vEntries;
     private Box pBackground;
     private Scroller pScroller;
     private ColumnType[] alColumns;
@@ -176,16 +104,16 @@ public class List <E> extends RenderGUI
     }
     
     
-    public void addEntry(Object[] data, E usrptr, GUICallback onclick)
+    public void addEntry(ListCell[] cells, E usrptr)
     {
-        if(data.length != alColumns.length)
+        if(cells.length != alColumns.length)
         {
             Debug.error("List: addEntry: data array length doesnt match column count");
             return;
         }
-        ListEntry entry = new ListEntry(data, this, usrptr, onclick);
+        ListEntry<E> entry = new ListEntry<>(cells, this, usrptr);
         entry.setSize(new ivec2(100, 40));
-        entry.setPosition(new ivec2(0, vEntries.size() * 30 + TITLEBAR_HEIGHT));
+        entry.setPosition(new ivec2(0, vEntries.size() * 30));
         vEntries.add(entry);
         pScroller.addGUI(entry);
         entry.setSizeInPercent(true, false);  
@@ -196,11 +124,11 @@ public class List <E> extends RenderGUI
         return alColumns;
     }
 
-    public <T> ArrayList<T> getColumnWhere(int index, Predicate<ListEntry> condition)
+    public <T> ArrayList<T> getColumnWhere(int index, Predicate<ListEntry<E> > condition)
     {
         ArrayList<T> retList = new ArrayList<>();
 
-        for(ListEntry entry : vEntries)
+        for(ListEntry<E> entry : vEntries)
         {
             if(condition.test(entry))
                 retList.add((T)entry.getColumn(index));
@@ -209,11 +137,11 @@ public class List <E> extends RenderGUI
         return retList;
     }
 
-    public ArrayList<E> getUserdataWhere(Predicate<ListEntry> condition)
+    public ArrayList<E> getUserdataWhere(Predicate<ListEntry<E> > condition)
     {
         ArrayList<E> retList = new ArrayList<>();
 
-        for(ListEntry entry : vEntries)
+        for(ListEntry<E> entry : vEntries)
         {
             if(condition.test(entry))
                 retList.add(entry.getUserPtr());

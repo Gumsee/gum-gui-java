@@ -1,18 +1,14 @@
 package com.gumse.pages;
 
-import com.gumse.gui.Basics.Dropdown;
-import com.gumse.gui.Basics.List;
 import com.gumse.gui.Basics.Tabs;
-import com.gumse.gui.Basics.TextBox;
-import com.gumse.gui.Basics.List.ColumnType;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.HierarchyList.HierarchyList;
 import com.gumse.gui.HierarchyList.HierarchyListEntry;
-import com.gumse.gui.Primitives.Box;
+import com.gumse.gui.List.List;
+import com.gumse.gui.List.ListCell;
+import com.gumse.gui.List.List.ColumnType;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
-import com.gumse.maths.vec4;
-import com.gumse.textures.Texture;
 
 
 public class ListsPage extends RenderGUI
@@ -39,11 +35,13 @@ public class ListsPage extends RenderGUI
             new ColumnType[] { ColumnType.STRING, ColumnType.STRING, ColumnType.BOOLEAN, ColumnType.INTEGER, ColumnType.TIME}
         );
         testList.setSizeInPercent(true, true);
-        testList.addEntry(new Object[] { "kek",  "lolol", true,  69,  600  }, "userdata", null);
-        testList.addEntry(new Object[] { "kek2", "eeehh", false, 420, 4    }, "userdata", null);
-        testList.addEntry(new Object[] { "kek3", "bleb",  true,  666, 3600 }, "userdata", null);
-        testList.addEntry(new Object[] { "kek4", "hehe",  true,  776, 42   }, "userdata", null);
-        testList.addEntry(new Object[] { "kek5", "eegg",  false, 42,  123  }, "userdata", null);
+        testList.addEntry(new ListCell[] { new ListCell("kek"),  new ListCell("lolol"), new ListCell(true),  new ListCell(69),  new ListCell(600)  }, "userdata");
+        testList.addEntry(new ListCell[] { new ListCell("kek2"), new ListCell("eeehh"), new ListCell(false), new ListCell(420), new ListCell(4)    }, "userdata");
+        testList.addEntry(new ListCell[] { new ListCell("kek3"), new ListCell("bleb"),  new ListCell(true),  new ListCell(666), new ListCell(3600) }, "userdata");
+        testList.addEntry(new ListCell[] { new ListCell("kek4"), new ListCell("hehe"),  new ListCell(true),  new ListCell(776), new ListCell(42)   }, "userdata");
+        for(int i = 0; i < 200; i++)
+            testList.addEntry(new ListCell[] { new ListCell("kek5"), new ListCell("eegg"),  new ListCell(false), new ListCell(42),  new ListCell(123)  }, "userdata");
+        testList.setMargin(new ivec2(-50, 0));
         listTabs.addGUIToTab(testList, "List");
 
         HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element");
