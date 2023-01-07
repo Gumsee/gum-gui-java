@@ -1,8 +1,10 @@
 package com.gumse.pages;
 
+import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.List;
 import com.gumse.gui.Basics.Tabs;
 import com.gumse.gui.Basics.TextBox;
+import com.gumse.gui.Basics.List.ColumnType;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.HierarchyList.HierarchyList;
 import com.gumse.gui.HierarchyList.HierarchyListEntry;
@@ -30,13 +32,18 @@ public class ListsPage extends RenderGUI
         listTabs.addTab("Reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeally long tab", false);
         addElement(listTabs);
 
-        List testList = new List(new ivec2(0, 0), new ivec2(100, 100), "Test List");
+        List<String> testList = new List<>(
+            new ivec2(0, 0), 
+            new ivec2(100, 100), 
+            new String[] {"Column1", "Column2", "Column3", "Column4", "Column5"}, 
+            new ColumnType[] { ColumnType.STRING, ColumnType.STRING, ColumnType.BOOLEAN, ColumnType.INTEGER, ColumnType.TIME}
+        );
         testList.setSizeInPercent(true, true);
-        testList.addEntry("Some Text entry", List.ENTRY_TYPE.STRING);
-        testList.addEntry("Some Switch entry", List.ENTRY_TYPE.BOOLEAN);
-        testList.addEntry("Some Dropdown entry", List.ENTRY_TYPE.DROPDOWN);
-        testList.addEntry("Some Number entry", List.ENTRY_TYPE.INTEGER);
-        testList.addEntry("Some Time entry", List.ENTRY_TYPE.TIME);
+        testList.addEntry(new Object[] { "kek",  "lolol", true,  69,  600  }, "userdata");
+        testList.addEntry(new Object[] { "kek2", "eeehh", false, 420, 4    }, "userdata");
+        testList.addEntry(new Object[] { "kek3", "bleb",  true,  666, 3600 }, "userdata");
+        testList.addEntry(new Object[] { "kek4", "hehe",  true,  776, 42   }, "userdata");
+        testList.addEntry(new Object[] { "kek5", "eegg",  false, 42,  123  }, "userdata");
         listTabs.addGUIToTab(testList, "List");
 
         HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element");

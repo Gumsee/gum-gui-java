@@ -8,8 +8,6 @@ import com.gumse.gui.Theme;
 import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;
-import com.gumse.gui.Primitives.RenderGUI;
-import com.gumse.gui.XML.XMLGUI;
 import com.gumse.maths.*;
 import com.gumse.pages.ListsPage;
 import com.gumse.pages.LoginPage;
@@ -41,7 +39,7 @@ public class Example
             }
         });
 
-        Theme lightTheme = new Theme();
+        /*Theme lightTheme = new Theme();
         lightTheme.backgroundColor   = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
         lightTheme.primaryColor      = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
         lightTheme.secondaryColor    = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
@@ -49,14 +47,14 @@ public class Example
         lightTheme.accentColorShade1 = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
         lightTheme.textColor         = vec4.div(Color.HEXToRGBA("#000000"), 255.0f);
         lightTheme.borderThickness   = 1;
-        testGUI.setTheme(lightTheme);
+        testGUI.setTheme(lightTheme);*/
 
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
         ListsPage listsPage = new ListsPage();
-        mainPage.hide(false);
+        mainPage.hide(true);
         loginPage.hide(true);
-        listsPage.hide(true);
+        listsPage.hide(false);
 
         //
         // ALWAYS ADD ENTRIES BEFORE ANYTHING ELSE
