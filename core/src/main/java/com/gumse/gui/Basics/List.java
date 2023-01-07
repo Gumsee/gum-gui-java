@@ -34,6 +34,7 @@ public class List <E> extends RenderGUI
                 item.setPositionInPercent(true, false);
                 item.setSize(new ivec2(columnSize, 30));
                 item.setSizeInPercent(true, false);
+                item.onClick(onclickcallback);
                 addElement(item);
 
                 ColumnType type = parent.getColumnTypes()[i];
@@ -80,12 +81,10 @@ public class List <E> extends RenderGUI
                     
                 }
             }
-
-            onClick(onclickcallback);
         }
         
-        public Object getColumn(int index) { return alData[index]; }
-        public E getUserPtr()              { return pUserPtr; }
+        public Object getColumn(int index)    { return alData[index]; }
+        public E getUserPtr()                 { return pUserPtr; }
     };
 
     private static final int TITLEBAR_HEIGHT = 30;
@@ -188,7 +187,7 @@ public class List <E> extends RenderGUI
         entry.setSize(new ivec2(100, 40));
         entry.setPosition(new ivec2(0, vEntries.size() * 30 + TITLEBAR_HEIGHT));
         vEntries.add(entry);
-        addElement(entry);
+        pScroller.addGUI(entry);
         entry.setSizeInPercent(true, false);  
     }
 
