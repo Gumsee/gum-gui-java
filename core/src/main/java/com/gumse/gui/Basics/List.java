@@ -26,6 +26,7 @@ public class List <E> extends RenderGUI
             this.alData = data;
             this.pUserPtr = usrptr;
             int columnSize = 100 / parent.getColumnTypes().length;
+            onClick(onclickcallback);
 
             for(int i = 0; i < parent.getColumnTypes().length; i++)
             {
@@ -34,8 +35,7 @@ public class List <E> extends RenderGUI
                 item.setPositionInPercent(true, false);
                 item.setSize(new ivec2(columnSize, 30));
                 item.setSizeInPercent(true, false);
-                item.onClick(onclickcallback);
-                addElement(item);
+                addGUI(item);
 
                 ColumnType type = parent.getColumnTypes()[i];
                 switch(type)
