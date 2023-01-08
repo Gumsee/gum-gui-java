@@ -68,6 +68,12 @@ public class Button extends RenderGUI
         backgroundBox.setString(sTitle);
     }
 
+    @Override
+    protected void updateOnColorChange() 
+    {
+        backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));    
+    }
+
     public void setCallbackFunction(ButtonCallback func) { this.pCallback = func; }
     void setTexture(Texture newtex)                      { this.backgroundBox.setTexture(newtex); }
     public void setSecondColor(vec4 col)                 { this.backgroundBox.getBox().setSecondColor(col); }
