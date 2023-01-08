@@ -44,9 +44,9 @@ public class ListEntry <E> extends RenderGUI
                     item.addGUI(boolGUI);
                     break;
                 case DATE:
-                    Text timeGUI = new Text(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
-                    timeGUI.setCharacterHeight(25);
-                    item.addGUI(timeGUI);
+                    Text dateGUI = new Text(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
+                    dateGUI.setCharacterHeight(25);
+                    item.addGUI(dateGUI);
                     break;
                 case DROPDOWN:
                     break;
