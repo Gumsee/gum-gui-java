@@ -54,7 +54,7 @@ public class List <E> extends RenderGUI
         for(int i = 0; i < columns.length; i++)
         {    
             TextBox titleBox = new TextBox(columns[i].title, columns[i].font, new ivec2(currentpos, 0), new ivec2(columns[i].width, TITLEBAR_HEIGHT));
-            titleBox.setAlignment(TextBox.Alignment.LEFT);
+            titleBox.setAlignment(columns[i].alignment);
             titleBox.setTextSize(25);
             //titleBox.setTextOffset(new ivec2(-10, 0));
             titleBox.setSizeInPercent(true, false);
