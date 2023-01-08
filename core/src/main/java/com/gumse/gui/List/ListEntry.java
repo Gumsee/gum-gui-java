@@ -1,5 +1,8 @@
 package com.gumse.gui.List;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+
 import com.gumse.gui.Basics.Switch;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Basics.TextBox.Alignment;
@@ -41,6 +44,9 @@ public class ListEntry <E> extends RenderGUI
                     item.addGUI(boolGUI);
                     break;
                 case DATE:
+                    Text timeGUI = new Text(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
+                    timeGUI.setCharacterHeight(25);
+                    item.addGUI(timeGUI);
                     break;
                 case DROPDOWN:
                     break;
