@@ -368,6 +368,7 @@ public class TextField extends RenderGUI
 	//
 	public TextBox getBox()    { return this.pBackgroundBox; }
 	public boolean isEditing() { return this.bIsEditing; }
+    public String getString()  { return this.sCurrentText; }
 
 	public static TextField createFromXMLNode(XMLNode node)
 	{
