@@ -123,6 +123,11 @@ public class List <E> extends RenderGUI
         pScroller.destroyChildren();
     }
 
+    public int numEntries()
+    {
+        return vEntries.size();
+    }
+
     public ColumnInfo[] getColumns()
     {
         return alColumns;
