@@ -13,12 +13,6 @@ public class Button extends RenderGUI
 {
     private TextBox backgroundBox;
 
-    public interface ButtonCallback {
-        void run();
-    }
-
-    private ButtonCallback pCallback = null;
-
     public Button(ivec2 pos, ivec2 size, String title, Font font)
     {
         this.vPos.set(pos);
@@ -50,14 +44,6 @@ public class Button extends RenderGUI
             }
         }, Mouse.GUM_CURSOR_HAND);
 
-        onClick(new GUICallback() {
-            @Override public void run(RenderGUI gui) 
-            {
-                if(pCallback != null)
-                    pCallback.run();
-            }
-        });
-
         resize();
         reposition();
     }
@@ -74,14 +60,13 @@ public class Button extends RenderGUI
         backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));    
     }
 
-    public void setCallbackFunction(ButtonCallback func) { this.pCallback = func; }
-    void setTexture(Texture newtex)                      { this.backgroundBox.setTexture(newtex); }
+    public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }
     public void setSecondColor(vec4 col)                 { this.backgroundBox.getBox().setSecondColor(col); }
     public void setHasGradient(boolean val)              { this.backgroundBox.getBox().setHasGradient(val); }
     public void setGradientDirectionRight(boolean val)   { this.backgroundBox.getBox().setGradientDirectionRight(val); }
     public void setCornerRadius(vec4 radius)             { this.backgroundBox.getBox().setCornerRadius(radius); }
 
-    Texture getTexture()                                 { return this.backgroundBox.getBox().getTexture(); }
+    public Texture getTexture()                          { return this.backgroundBox.getBox().getTexture(); }
     public vec4 getSecondColor()                         { return this.backgroundBox.getBox().getSecondColor(); }
     public TextBox getBox()                              { return this.backgroundBox; }
 

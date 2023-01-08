@@ -53,7 +53,7 @@ public class List <E> extends RenderGUI
         int currentpos = 0;
         for(int i = 0; i < columns.length; i++)
         {    
-            TextBox titleBox = new TextBox(columns[i].title, FontManager.getInstance().getDefaultFont(), new ivec2(currentpos, 0), new ivec2(columns[i].width, TITLEBAR_HEIGHT));
+            TextBox titleBox = new TextBox(columns[i].title, columns[i].font, new ivec2(currentpos, 0), new ivec2(columns[i].width, TITLEBAR_HEIGHT));
             titleBox.setAlignment(TextBox.Alignment.LEFT);
             titleBox.setTextSize(25);
             //titleBox.setTextOffset(new ivec2(-10, 0));
@@ -61,6 +61,7 @@ public class List <E> extends RenderGUI
             titleBox.setPositionInPercent(true, false);
             titleBox.setColor(new vec4(0.1f, 0.1f, 0.1f, 1.0f));
             titleBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+            titleBox.onClick(columns[i].onclickcallback);
             addElement(titleBox);
             currentpos += columns[i].width;
         }

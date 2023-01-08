@@ -368,6 +368,7 @@ public class RenderGUI
         modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y;
         model.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
         model.scale(new vec3(vActualSize.x * 0.5f, vActualSize.y * 0.5f, 1.0f));
+        model.rotate(new vec3(0, 0, fRotation));
         model.transpose();
         
         mTransformationMatrix = model;
@@ -452,6 +453,7 @@ public class RenderGUI
     public void setMaxSize(ivec2 size)                          { this.vMaxSize.set(size); resize(); }
     public void setMinSize(ivec2 size)                          { this.vMinSize.set(size); resize(); }
     public void setMargin(ivec2 margin)                         { this.vMargin.set(margin); resize(); }
+    public void setRotation(float rot)                          { this.fRotation = rot; updateMatrix(); }
     public void setPositionInPercent(boolean x, boolean y)      { this.posInPercent = new bvec2(x, y); reposition(); }
     public void setOriginInPercent(boolean x, boolean y)        { this.originInPercent = new bvec2(x, y); reposition(); }
     public void setSizeInPercent(boolean x, boolean y)          { this.sizeInPercent = new bvec2(x, y); resize(); }
@@ -479,6 +481,7 @@ public class RenderGUI
     public ivec2 getMargin()                                  { return this.vMargin; }
     public ivec2 getPosition()                                { return this.vActualPos; }
     public ivec2 getSize()                                    { return this.vActualSize; }
+    public float getRotation()                                { return this.fRotation; }
     public mat4 getTransformation()                           { return this.mTransformationMatrix; }
     public bvec2 isPositionInPercent()                        { return this.posInPercent; }
     public bvec2 isSizeInPercent()                            { return this.sizeInPercent; }

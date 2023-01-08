@@ -5,9 +5,11 @@ import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Radiobutton;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
+import com.gumse.gui.Basics.Speechbubble.Side;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.Slider;
+import com.gumse.gui.Basics.Speechbubble;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -56,12 +58,24 @@ public class MainPage extends RenderGUI
         mainScroller.addGUI(testBox);
 
 
-        fpsBox = new TextBox("FPS: ", fonts.getDefaultFont(), new ivec2(210, 100), new ivec2(200, 40));
+        fpsBox = new TextBox("FPS: ", fonts.getDefaultFont(), new ivec2(240, 100), new ivec2(200, 40));
         fpsBox.setAlignment(TextBox.Alignment.LEFT);
         mainScroller.addGUI(fpsBox);
 
-        Button themeButton = new Button(new ivec2(210, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
+        Button themeButton = new Button(new ivec2(240, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
         mainScroller.addGUI(themeButton);
+
+        Speechbubble testBubble = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.ABOVE);
+        mainScroller.addGUI(testBubble);
+
+        Button speechbubbleButton = new Button(new ivec2(240, 200), new ivec2(200, 40), "Speak", fonts.getDefaultFont());
+        speechbubbleButton.onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+
+            }
+        });
+        mainScroller.addGUI(speechbubbleButton);
 
         Slider testSlider = new Slider(new ivec2(30, 200), 200, "Slider1", 0);
         testSlider.setViewMultiplier(666);
