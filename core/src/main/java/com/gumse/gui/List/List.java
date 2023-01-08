@@ -116,6 +116,12 @@ public class List <E> extends RenderGUI
         entry.setSizeInPercent(true, false);  
     }
 
+    public void reset()
+    {
+        vEntries.clear();
+        pScroller.destroyChildren();
+    }
+
     public ColumnInfo[] getColumns()
     {
         return alColumns;
