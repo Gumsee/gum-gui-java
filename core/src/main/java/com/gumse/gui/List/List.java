@@ -30,6 +30,7 @@ public class List <E> extends RenderGUI
         this.vPos.set(pos);
         this.vEntries = new ArrayList<>();
         this.alColumns = columns;
+        this.bUpdateFromFirstToLast = true;
 
         int length = 0;
         for(ColumnInfo column : columns)
