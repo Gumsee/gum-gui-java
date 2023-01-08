@@ -474,6 +474,7 @@ public class RenderGUI
     //
     // Getter
     //
+    public ivec2 getRelativeMousePosition()                   { return ivec2.sub(vActualPos, Window.CurrentlyBoundWindow.getMouse().getPosition()); }
     public ivec2 getOrigin()                                  { return this.vOrigin; }
     public ivec2 getMargin()                                  { return this.vMargin; }
     public ivec2 getPosition()                                { return this.vActualPos; }

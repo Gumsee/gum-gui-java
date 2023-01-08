@@ -10,6 +10,7 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Debug;
 
 public class Scroller extends RenderGUI
 {
@@ -27,16 +28,7 @@ public class Scroller extends RenderGUI
 	private int iSnapOffset;
 
 	private void moveContent()
-	{
-		for(int i = 0; i < pMainChildContainer.numChildren(); i++)
-		{   
-			RenderGUI child = pMainChildContainer.getChild(i);
-			float ypos = child.getPosition().y;
-			//Hide if outside
-			child.hide(ypos + child.getSize().y < vActualPos.y + vOrigin.y ||
-						ypos > vActualPos.y + vActualSize.y + vOrigin.y); 
-		}
-	
+	{	
 		float contentOverlap = pContent.getBoundingBox().size.y - vActualSize.y;
 		if(contentOverlap == 0.0f)
 		{
@@ -46,15 +38,24 @@ public class Scroller extends RenderGUI
 		}
 		bHasOverflow = true;
 		iMaxValue = Math.max((int)contentOverlap, 0);
-		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, iMaxValue);
-
-		float scrollPercentage = (float)iIndicatorPos / (float)iMaxValue;
 		int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
-		float indicatorPos = (pScrollBar.getSize().y - indicatorSize) * scrollPercentage;
+        int upperlimit = vActualSize.y - indicatorSize - 5;
+		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
 
+		pScrollIndicator.setPositionY((int)(iIndicatorPos));
 		pScrollIndicator.setSize(new ivec2(pScrollIndicator.getSize().x, indicatorSize));
-		pScrollIndicator.setPositionY((int)(indicatorPos));
+
+		float scrollPercentage = (float)iIndicatorPos / (float)upperlimit;
 		pContent.setPosition(new ivec2(0, (int)(-(scrollPercentage * contentOverlap))));
+        
+		for(int i = 0; i < pMainChildContainer.numChildren(); i++)
+		{   
+			RenderGUI child = pMainChildContainer.getChild(i);
+			float ypos = child.getPosition().y;
+			//Hide if outside
+			child.hide(ypos + child.getSize().y < vActualPos.y + vOrigin.y ||
+						ypos > vActualPos.y + vActualSize.y + vOrigin.y); 
+		}
 	}
 
 
@@ -125,7 +126,7 @@ public class Scroller extends RenderGUI
                 if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick())
                 {
                     bSnapped = true;
-                    iSnapOffset = pScrollIndicator.getPosition().y - Window.CurrentlyBoundWindow.getMouse().getPosition().y;
+                    iSnapOffset = pScrollIndicator.getRelativeMousePosition().y;
                     pScrollIndicator.setColor(GUI.getTheme().accentColor);
                     Mouse.setBusiness(true);
                 }
@@ -155,7 +156,7 @@ public class Scroller extends RenderGUI
             int width = (int)pIndicatorWidthFloat.get();
             pScrollIndicator.setSize(new ivec2(width, pScrollIndicator.getSize().y));
             pScrollIndicator.setOrigin(new ivec2((int)(width * 0.5f), 0));
-            pScrollIndicator.setCornerRadius(new vec4((float)width * 0.8f));
+            pScrollIndicator.setCornerRadius(new vec4((float)width * 0.75f));
             pScrollIndicator.setPositionX(10);
         }
 
@@ -204,20 +205,17 @@ public class Scroller extends RenderGUI
 
 	public void renderextra()
 	{
-		if(!bIsHidden)
-		{
-			GL11.glEnable(GL11.GL_SCISSOR_TEST);
-			GL11.glScissor(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y, vActualSize.x, vActualSize.y);
-			for(int i = 0; i < pContent.numChildren(); i++)
-			{
-				pContent.getChild(i).render();
-			}
-			Window.CurrentlyBoundWindow.resetViewport();
-			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y, vActualSize.x, vActualSize.y);
+        for(int i = 0; i < pContent.numChildren(); i++)
+        {
+            pContent.getChild(i).render();
+        }
+        Window.CurrentlyBoundWindow.resetViewport();
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-			if(bHasOverflow)
-				pScrollIndicator.render();
-		}
+        if(bHasOverflow)
+            pScrollIndicator.render();
 	}
 
 	public void setStepSize(int step)
