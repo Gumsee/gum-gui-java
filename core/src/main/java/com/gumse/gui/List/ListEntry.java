@@ -39,42 +39,68 @@ public class ListEntry <E> extends RenderGUI
             {
                 case BOOLEAN:
                     Switch boolGUI = new Switch(new ivec2(50, 5), new ivec2(20), 0);
-                    boolGUI.setPositionInPercent(true, false);
-                    boolGUI.setOrigin(new ivec2(10, 0));
+                    switch(cells[i].alignment) 
+                    {
+                        case CENTER:
+                            boolGUI.setPositionX(50);
+                            boolGUI.setPositionInPercent(true, false);
+                            boolGUI.setOrigin(new ivec2(10, 0));
+                            break;
+                        case LEFT:
+                            boolGUI.setPositionX(0);
+                            boolGUI.setPositionInPercent(false, false);
+                            boolGUI.setOrigin(new ivec2(0, 0));
+                            break;
+                        case RIGHT:
+                            boolGUI.setPositionX(100);
+                            boolGUI.setPositionInPercent(true, false);
+                            boolGUI.setOrigin(new ivec2(20, 0));
+                            break;
+                    }
                     item.addGUI(boolGUI);
                     break;
+                    
                 case DATE:
-                    Text dateGUI = new Text(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
-                    dateGUI.setCharacterHeight(25);
+                    TextBox dateGUI = new TextBox(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
+                    dateGUI.setTextSize(25);
+                    dateGUI.getBox().hide(true);
+                    dateGUI.setAlignment(cells[i].alignment);
+                    dateGUI.setSizeInPercent(true, false);
                     item.addGUI(dateGUI);
                     break;
+
                 case DROPDOWN:
                     break;
+
                 case INTEGER:
                     TextBox numGUI = new TextBox(String.valueOf((Integer)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
                     numGUI.setTextSize(25);
                     numGUI.getBox().hide(true);
-                    numGUI.setAlignment(Alignment.CENTER);
+                    numGUI.setAlignment(cells[i].alignment);
                     numGUI.setSizeInPercent(true, false);
                     item.addGUI(numGUI);
                     break;
+
                 case STRING:
                     TextBox strGUI = new TextBox((String)cells[i].data, FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
                     strGUI.setTextSize(25);
                     strGUI.getBox().hide(true);
-                    strGUI.setAlignment(Alignment.LEFT);
+                    strGUI.setAlignment(cells[i].alignment);
                     strGUI.setSizeInPercent(true, false);
                     item.addGUI(strGUI);
                     break;
+
                 case TIME:
                     int seconds = (Integer)cells[i].data;
                     int hours = seconds / 3600;
                     int minutes = (seconds % 3600) / 60;
                     seconds = seconds % 60;
 
-                    Text timeGUI = new Text(String.format("%02d:%02d:%02d", hours, minutes, seconds), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), 0);
-                    timeGUI.setCharacterHeight(25);
-                    item.addGUI(timeGUI);
+                    TextBox timeGUI = new TextBox(String.format("%02d:%02d:%02d", hours, minutes, seconds), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
+                    timeGUI.setTextSize(25);
+                    timeGUI.getBox().hide(true);
+                    timeGUI.setAlignment(cells[i].alignment);
+                    timeGUI.setSizeInPercent(true, false);
                     break;
                 default:
                     break;
