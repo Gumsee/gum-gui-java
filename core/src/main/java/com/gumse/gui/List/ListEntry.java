@@ -5,11 +5,8 @@ import java.text.SimpleDateFormat;
 
 import com.gumse.gui.Basics.Switch;
 import com.gumse.gui.Basics.TextBox;
-import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.FontManager;
-import com.gumse.gui.List.List.ColumnType;
 import com.gumse.gui.Primitives.RenderGUI;
-import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.ivec2;
 
 public class ListEntry <E> extends RenderGUI
@@ -22,20 +19,20 @@ public class ListEntry <E> extends RenderGUI
     {
         this.alCells = cells;
         this.pUserPtr = usrptr;
-        int columnSize = 100 / parent.getColumnTypes().length;
+        int columnpos = 0;
 
-        for(int i = 0; i < parent.getColumnTypes().length; i++)
+        for(int i = 0; i < parent.getColumns().length; i++)
         {
+            ColumnInfo column = parent.getColumns()[i];
             RenderGUI item = new RenderGUI();
-            item.setPosition(new ivec2(columnSize * i, 0));
+            item.setPosition(new ivec2(columnpos, 0));
             item.setPositionInPercent(true, false);
-            item.setSize(new ivec2(columnSize, 30));
+            item.setSize(new ivec2(column.width, 30));
             item.setSizeInPercent(true, false);
             item.onClick(cells[i].onclickcallback);
             addGUI(item);
 
-            ColumnType type = parent.getColumnTypes()[i];
-            switch(type)
+            switch(column.type)
             {
                 case BOOLEAN:
                     Switch boolGUI = new Switch(new ivec2(50, 5), new ivec2(20), 0);
@@ -59,7 +56,7 @@ public class ListEntry <E> extends RenderGUI
                     }
                     item.addGUI(boolGUI);
                     break;
-                    
+
                 case DATE:
                     TextBox dateGUI = new TextBox(new SimpleDateFormat("yyyy.MM.dd").format((Timestamp)cells[i].data), FontManager.getInstance().getDefaultFont(), new ivec2(0, 0), new ivec2(100, 30));
                     dateGUI.setTextSize(25);
@@ -106,6 +103,8 @@ public class ListEntry <E> extends RenderGUI
                     break;
                 
             }
+
+            columnpos += column.width;
         }
     }
     

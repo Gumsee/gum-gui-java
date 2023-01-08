@@ -4,9 +4,10 @@ import com.gumse.gui.Basics.Tabs;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.HierarchyList.HierarchyList;
 import com.gumse.gui.HierarchyList.HierarchyListEntry;
+import com.gumse.gui.List.ColumnInfo;
 import com.gumse.gui.List.List;
 import com.gumse.gui.List.ListCell;
-import com.gumse.gui.List.List.ColumnType;
+import com.gumse.gui.List.ColumnInfo.ColumnType;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
 
@@ -31,8 +32,13 @@ public class ListsPage extends RenderGUI
         List<String> testList = new List<>(
             new ivec2(0, 0), 
             new ivec2(100, 100), 
-            new String[] {"Column1", "Column2", "Column3", "Column4", "Column5"}, 
-            new ColumnType[] { ColumnType.STRING, ColumnType.STRING, ColumnType.BOOLEAN, ColumnType.INTEGER, ColumnType.TIME}
+            new ColumnInfo[] {
+                new ColumnInfo("Column1", ColumnType.STRING,  30),
+                new ColumnInfo("Column2", ColumnType.STRING,  30),
+                new ColumnInfo("Bool",    ColumnType.BOOLEAN, 10),
+                new ColumnInfo("Num",     ColumnType.INTEGER, 10),
+                new ColumnInfo("Column5", ColumnType.TIME,    20),
+            }
         );
         testList.setSizeInPercent(true, true);
         testList.addEntry(new ListCell[] { new ListCell("kek"),  new ListCell("lolol"), new ListCell(true),  new ListCell(69),  new ListCell(600)  }, "userdata");

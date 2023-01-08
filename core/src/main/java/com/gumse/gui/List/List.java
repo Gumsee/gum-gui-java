@@ -20,30 +20,26 @@ public class List <E> extends RenderGUI
     private ArrayList<ListEntry<E> > vEntries;
     private Box pBackground;
     private Scroller pScroller;
-    private ColumnType[] alColumns;
+    private ColumnInfo[] alColumns;
 
 
-    public enum ColumnType
-    {
-        STRING,
-        INTEGER,
-        DROPDOWN,
-        DATE,
-        TIME,
-        BOOLEAN,
-    };
 
-    public List(ivec2 pos, ivec2 size, String[] titles, ColumnType[] columns)
+    public List(ivec2 pos, ivec2 size, ColumnInfo[] columns)
     {
         this.vSize.set(size);
         this.vPos.set(pos);
         this.vEntries = new ArrayList<>();
         this.alColumns = columns;
 
-
-        if(titles.length != alColumns.length)
+        int length = 0;
+        for(ColumnInfo column : columns)
         {
-            Debug.error("List: titles array length doesnt match column array length");
+            length += column.width;
+        }
+
+        if(length != 100)
+        {
+            Debug.error("List: column widths must add up to 100");
             return;
         }
     
@@ -54,10 +50,10 @@ public class List <E> extends RenderGUI
         pBackground.hide(true);
         addElement(pBackground);
 
-        int columnSize = 100 / titles.length;
-        for(int i = 0; i < titles.length; i++)
+        int currentpos = 0;
+        for(int i = 0; i < columns.length; i++)
         {    
-            TextBox titleBox = new TextBox(titles[i], FontManager.getInstance().getDefaultFont(), new ivec2(columnSize * i, 0), new ivec2(columnSize, TITLEBAR_HEIGHT));
+            TextBox titleBox = new TextBox(columns[i].title, FontManager.getInstance().getDefaultFont(), new ivec2(currentpos, 0), new ivec2(columns[i].width, TITLEBAR_HEIGHT));
             titleBox.setAlignment(TextBox.Alignment.LEFT);
             titleBox.setTextSize(25);
             //titleBox.setTextOffset(new ivec2(-10, 0));
@@ -66,6 +62,7 @@ public class List <E> extends RenderGUI
             titleBox.setColor(new vec4(0.1f, 0.1f, 0.1f, 1.0f));
             titleBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
             addElement(titleBox);
+            currentpos += columns[i].width;
         }
 
         pScroller = new Scroller(new ivec2(0, TITLEBAR_HEIGHT), new ivec2(100, 100));
@@ -93,7 +90,7 @@ public class List <E> extends RenderGUI
         GUIShader.getStripesShaderProgram().use();
         GUIShader.getStripesShaderProgram().loadUniform("transmat", pBackground.getTransformation());
         GUIShader.getStripesShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
-        GUIShader.getStripesShaderProgram().loadUniform("patternoffset", (float)vActualPos.y);// + (float)pScroller.getOffset());
+        GUIShader.getStripesShaderProgram().loadUniform("patternoffset", (float)(vActualPos.y + pScroller.getOffset()));// + (float)pScroller.getOffset());
         GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
         GUIShader.getStripesShaderProgram().loadUniform("color1", new vec4(0.16f, 0.16f, 0.16f, 1.0f));
         GUIShader.getStripesShaderProgram().loadUniform("color2", new vec4(0.18f, 0.18f, 0.18f, 1.0f));
@@ -119,7 +116,7 @@ public class List <E> extends RenderGUI
         entry.setSizeInPercent(true, false);  
     }
 
-    public ColumnType[] getColumnTypes()
+    public ColumnInfo[] getColumns()
     {
         return alColumns;
     }
