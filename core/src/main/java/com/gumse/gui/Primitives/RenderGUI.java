@@ -254,6 +254,7 @@ public class RenderGUI
         if(bIsHidden) 
             return;
 
+        updatechildren(); 
         if(!bHasClickedSomething)
         {
             if(pHoverCallback != null || iHoverCursorShape != Mouse.GUM_CURSOR_DEFAULT || pEnterCallback != null || pLeaveCallback != null)
@@ -281,9 +282,7 @@ public class RenderGUI
             if(pClickCallback != null && isClicked())
                 pClickCallback.run(this);
         }
-
         updateextra();
-        updatechildren(); 
     }
     public final void renderchildren() 
     { 
