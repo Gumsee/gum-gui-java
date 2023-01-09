@@ -298,11 +298,11 @@ public class RenderGUI
     { 
         if(bUpdateFromFirstToLast)
         {
-            for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
             if(!bChildrenHidden)
             {
                 for(int i = 0; i < numChildren(); i++) { vChildren.get(i).update(); } 
             }
+            for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
         }
         else
         {
