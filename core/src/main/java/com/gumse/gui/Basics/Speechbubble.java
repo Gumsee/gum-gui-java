@@ -29,14 +29,14 @@ public class Speechbubble extends RenderGUI
 
 
         pIndicator = new Box(new ivec2(0, 0), new ivec2(20, 20));
-        pIndicator.setColor(GUI.getTheme().accentColor);
+        pIndicator.setColor(GUI.getTheme().primaryColor);
         pIndicator.setRotation(45.0f);
         addElement(pIndicator);
 
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
         pBackground.setCornerRadius(new vec4(7));
-        pBackground.setColor(GUI.getTheme().accentColor);
+        pBackground.setColor(GUI.getTheme().primaryColor);
         addElement(pBackground);
 
         switch(iSide)
@@ -95,8 +95,8 @@ public class Speechbubble extends RenderGUI
     @Override
     protected void updateOnColorChange() 
     {
-        pBackground.setColor(getColor(GUI.getTheme().accentColor));
-        pIndicator.setColor(getColor(GUI.getTheme().accentColor));
+        pBackground.setColor(getColor(GUI.getTheme().primaryColor));
+        pIndicator.setColor(getColor(GUI.getTheme().primaryColor));
     }
 
     @Override
