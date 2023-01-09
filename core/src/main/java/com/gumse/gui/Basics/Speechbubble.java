@@ -45,9 +45,9 @@ public class Speechbubble extends RenderGUI
                 pIndicator.setPosition(new ivec2(-10, -20));
                 pIndicator.setCornerRadius(new vec4(0, 0, 0, 10));
 
-                pBackground.setPosition(new ivec2(0, -30));
+                pBackground.setPosition(new ivec2(0, -10));
                 pBackground.setOrigin(new ivec2(50, 100));
-                pBackground.setOriginInPercent(true, false);
+                pBackground.setOriginInPercent(true, true);
                 break;
 
             case BELOW:
@@ -63,9 +63,9 @@ public class Speechbubble extends RenderGUI
                 pIndicator.setPosition(new ivec2(-20, -10));
                 pIndicator.setCornerRadius(new vec4(0, 0, 10, 0));
 
-                pBackground.setPosition(new ivec2(20, 0));
+                pBackground.setPosition(new ivec2(-10, 0));
                 pBackground.setOrigin(new ivec2(100, 50));
-                pBackground.setOriginInPercent(false, true);
+                pBackground.setOriginInPercent(true, true);
                 break;
 
             case RIGHT:
@@ -86,7 +86,7 @@ public class Speechbubble extends RenderGUI
     @Override
     public void updateextra() 
     {
-        if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick() && !pBackground.isMouseInside())
+        if(Window.CurrentlyBoundWindow.getMouse().hasLeftClickStart() && !pBackground.isMouseInside())
         {
             this.hide(true);
         }

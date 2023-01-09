@@ -65,29 +65,6 @@ public class MainPage extends RenderGUI
         Button themeButton = new Button(new ivec2(240, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
         mainScroller.addGUI(themeButton);
 
-        Button speechbubbleButton = new Button(new ivec2(240, 200), new ivec2(200, 40), "Speak", fonts.getDefaultFont());
-        mainScroller.addGUI(speechbubbleButton);
-
-        Speechbubble testBubble = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.ABOVE);
-        mainScroller.addGUI(testBubble);
-        Speechbubble testBubble2 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.BELOW);
-        mainScroller.addGUI(testBubble2);
-        //Speechbubble testBubble3 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.LEFT);
-        //testBubble3.setColor(new vec4(1,0,0,1));
-        //mainScroller.addGUI(testBubble3);
-        //Speechbubble testBubble4 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.RIGHT);
-        //testBubble4.setColor(new vec4(1,0,0,1));
-        //mainScroller.addGUI(testBubble4);
-
-        speechbubbleButton.onClick(new GUICallback() {
-            @Override public void run(RenderGUI gui) 
-            {
-                testBubble.show();
-                testBubble2.show();
-                //testBubble3.show();
-                //testBubble4.show();
-            }
-        });
 
         Slider testSlider = new Slider(new ivec2(30, 200), 200, "Slider1", 0);
         testSlider.setViewMultiplier(666);
@@ -102,6 +79,36 @@ public class MainPage extends RenderGUI
         sliderInfoText.setCharacterHeight(20);
         mainScroller.addGUI(sliderInfoText);
 
+        Button speechbubbleButton = new Button(new ivec2(240, 200), new ivec2(200, 40), "Speak", fonts.getDefaultFont());
+        mainScroller.addGUI(speechbubbleButton);
+
+        Speechbubble testBubble = new Speechbubble(new ivec2(50, 0), new ivec2(70, 50), Side.ABOVE);
+        testBubble.setPositionInPercent(true, false);
+        speechbubbleButton.addGUI(testBubble);
+
+        Speechbubble testBubble2 = new Speechbubble(new ivec2(50, 100), new ivec2(70, 50), Side.BELOW);
+        testBubble2.setPositionInPercent(true, true);
+        speechbubbleButton.addGUI(testBubble2);
+
+        Speechbubble testBubble3 = new Speechbubble(new ivec2(0, 50), new ivec2(50, 70), Side.LEFT);
+        testBubble3.setPositionInPercent(false, true);
+        testBubble3.setColor(new vec4(1,0,1,1));
+        speechbubbleButton.addGUI(testBubble3);
+
+        Speechbubble testBubble4 = new Speechbubble(new ivec2(100, 50), new ivec2(50, 70), Side.RIGHT);
+        testBubble4.setPositionInPercent(true, true);
+        testBubble4.setColor(new vec4(0,1,0,1));
+        speechbubbleButton.addGUI(testBubble4);
+
+        speechbubbleButton.onClick(new GUICallback() {
+            @Override public void run(RenderGUI gui) 
+            {
+                testBubble.show();
+                testBubble2.show();
+                testBubble3.show();
+                testBubble4.show();
+            }
+        });
 
         //testGraph = new Graph("Some Graph", new ivec2(30, 500), new ivec2(90, 150));
         //testGraph.setSizeInPercent(true, false);
