@@ -72,6 +72,7 @@ public class Scroller extends RenderGUI
 		this.iMaxValue = 0;
 		this.bHasOverflow = false;
 		this.pIndicatorWidthFloat = new SmoothFloat(0, 10, 0);
+        this.hideChildren(true);
 
 		pContent = new RenderGUI();
 		pContent.setSize(new ivec2(100, 100));
@@ -159,9 +160,6 @@ public class Scroller extends RenderGUI
             pScrollIndicator.setCornerRadius(new vec4((float)width * 0.75f));
             pScrollIndicator.setPositionX(10);
         }
-
-        //updatechildren();
-        pContent.update();
 	}
 
 

@@ -133,11 +133,12 @@ public class Dropdown extends RenderGUI
 
 	private void moveEntries()
 	{
-		int entriesHeight = (vElements.size()) * vActualSize.y;
+		int entriesHeight = vElements.size() * vActualSize.y;
         for(int i = 1; i < vElements.size(); i++)
         {
             RenderGUI entry = vElements.get(i);
-            int ypos = i * vActualSize.y - (int)(pSmoothFloat.get() * entriesHeight);
+            int ypos = i * vActualSize.y + (int)(pSmoothFloat.get() * entriesHeight);
+            ypos -= entriesHeight;
             entry.setPosition(new ivec2(0, ypos));
             entry.hide(ypos < 0);
         }
