@@ -52,6 +52,14 @@ public class Radiobutton extends RenderGUI
             pTextBox.setAlignment(Alignment.LEFT);
             pTextBox.setSize(new ivec2(vActualSize.x - xoffset, pTextBox.getText().getSize().y));
             pTextBox.getBox().hide(true);
+            pTextBox.onClick(new GUICallback() {
+                @Override public void run(RenderGUI gui) 
+                {
+                    select();
+                    if(pCallback != null)
+                        pCallback.run(index, str);
+                }
+            });
             addElement(pTextBox);
 
             vSize.y = pTextBox.getText().getSize().y;

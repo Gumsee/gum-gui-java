@@ -9,7 +9,6 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
 
 public class Dropdown extends RenderGUI
 {
@@ -84,9 +83,7 @@ public class Dropdown extends RenderGUI
 
 	private boolean bIsClicked = false;
 	private boolean bIsOpen = false;
-	private float fScrollOffset = 0.0f;
 	private int iTextSize = 0;
-	private int iNumEntries;
 
 	public Dropdown(String text, Font pFont, ivec2 pos, ivec2 size, int textsize)
 	{
@@ -95,7 +92,6 @@ public class Dropdown extends RenderGUI
 		this.sType = "Dropdown";
 		this.iTextSize = textsize;
 		this.pFont = pFont;
-		this.iNumEntries = 0;
 	
 		pSmoothFloat = new SmoothFloat(0, 10, 0);
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
@@ -137,56 +133,32 @@ public class Dropdown extends RenderGUI
 
 	private void moveEntries()
 	{
-		int entriesHeight = (iNumEntries) * vActualSize.y;
-		getChild(0).setPosition(new ivec2(0, (int)(pSmoothFloat.get() * entriesHeight) - entriesHeight + vActualSize.y));
+		int entriesHeight = (vElements.size()) * vActualSize.y;
+        for(int i = 1; i < vElements.size(); i++)
+        {
+            RenderGUI entry = vElements.get(i);
+            int ypos = i * vActualSize.y - (int)(pSmoothFloat.get() * entriesHeight);
+            entry.setPosition(new ivec2(0, ypos));
+            entry.hide(ypos < 0);
+        }
 	}
 	
 	public void updateextra()
 	{	
-		if(numChildren() <= 0) 
-			return;
-
 		if(pSmoothFloat.update())
-		{
 			moveEntries();
-		}
-        
-        //Only update if entry is underneath the pPreviewTextbox
-        if(getChild(0).getPosition().y > vActualPos.y)
-        {
-            getChild(0).update();
-            for(RenderGUI child : getChild(0).getChildren())
-                child.update();
-        }
 	}
 	
 	public void renderextra()
 	{
-		if(numChildren() > 0)
-		{
-			if(getChild(0).getPosition().y > vActualPos.y)
-				getChild(0).render();
-			else
-			{
-				for(RenderGUI child : getChild(0).getChildren())
-				{
-					if(child.getPosition().y > vActualPos.y)  //Only render if entry is underneath the pPreviewTextbox
-					{
-						child.render();
-					}
-				}
-			}
-		}
-
-		pPreviewTextbox.render();
+        for(int i = numElements(); i --> 0;) { vElements.get(i).render();  }
 	}
 	
 	public void addEntry(String title, DropdownEntryCallback OnCLickFunction, boolean active)
 	{
-		MenuEntry entry = new MenuEntry(title, pFont, iNumEntries * vActualSize.y, OnCLickFunction, this);
-		if(iNumEntries++ == 0) { addGUI(entry); }
-		else                   { getChild(0).addGUI(entry); }
+		MenuEntry entry = new MenuEntry(title, pFont, vElements.size() * vActualSize.y, OnCLickFunction, this);
         entry.setSelectCallback(pGlobalCallback);
+		addElement(entry);
 	
 		if(active)
 			setTitle(title);
@@ -197,12 +169,8 @@ public class Dropdown extends RenderGUI
     public void onSelection(DropdownSelectionCallback callback)
     {
         pGlobalCallback = callback;
-        if(numChildren() > 0)
-        {
-            ((MenuEntry)getChild(0)).setSelectCallback(pGlobalCallback);
-            for(RenderGUI child : getChild(0).getChildren())
-                ((MenuEntry)child).setSelectCallback(pGlobalCallback);
-        }
+        for(int i = 1; i < vElements.size(); i++)
+            ((MenuEntry)vElements.get(i)).setSelectCallback(pGlobalCallback);
     }
 	
     @Override
@@ -211,7 +179,7 @@ public class Dropdown extends RenderGUI
 		this.pPreviewTextbox.setString(sTitle);
 	}
 	
-	public int numEntries()			  { return iNumEntries; }
+	public int numEntries()			  { return vElements.size() - 1; }
 	public boolean isCurrentClicked() { return bIsClicked; }
 	public boolean isOpen()			  { return pSmoothFloat.getTarget() > 0; }
 	
