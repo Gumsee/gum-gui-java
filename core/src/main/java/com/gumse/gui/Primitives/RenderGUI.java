@@ -259,10 +259,13 @@ public class RenderGUI
         {
             if(pHoverCallback != null || iHoverCursorShape != Mouse.GUM_CURSOR_DEFAULT || pEnterCallback != null || pLeaveCallback != null)
             {
-                if(/*!Mouse.isActiveHovering() &&*/ isMouseInside())
+                if(isMouseInside())
                 {
-                    Mouse.setActiveHovering(true);
-                    Window.CurrentlyBoundWindow.getMouse().setCursor(iHoverCursorShape);
+                    if(!Mouse.isActiveHovering())
+                    {
+                        Mouse.setActiveHovering(true);
+                        Window.CurrentlyBoundWindow.getMouse().setCursor(iHoverCursorShape);
+                    }
 
                     if(pEnterCallback != null && bIsHovering == false)
                         pEnterCallback.run(this);
