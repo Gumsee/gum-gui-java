@@ -105,9 +105,10 @@ public class Speechbubble extends RenderGUI
         removeChild(gui);
         pBackground.addGUI(gui);
     }
-    @Override public void destroyChildren()            { pBackground.destroyChildren(); }
-    @Override public void removeChild(RenderGUI child) { pBackground.removeChild(child); }
-    @Override public void removeChild(int index)       { pBackground.removeChild(index); }
+    @Override public void onClick(GUICallback callback) { pBackground.onClick(callback); }
+    @Override public void destroyChildren()             { pBackground.destroyChildren(); }
+    @Override public void removeChild(RenderGUI child)  { pBackground.removeChild(child); }
+    @Override public void removeChild(int index)        { pBackground.removeChild(index); }
 
     public void show()
     {
