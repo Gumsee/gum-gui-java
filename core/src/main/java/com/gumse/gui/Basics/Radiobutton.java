@@ -180,6 +180,11 @@ public class Radiobutton extends RenderGUI
         this.bSingleSelectMode = singleselect;
     }
 
+    public void select(int index)
+    {
+        ((Option)vChildren.get(index)).select();
+    }
+
     public void onSelect(OnSelectCallback callback)
     {
         for(RenderGUI child : vChildren)
