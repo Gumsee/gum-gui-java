@@ -65,17 +65,29 @@ public class MainPage extends RenderGUI
         Button themeButton = new Button(new ivec2(240, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
         mainScroller.addGUI(themeButton);
 
+        Button speechbubbleButton = new Button(new ivec2(240, 200), new ivec2(200, 40), "Speak", fonts.getDefaultFont());
+        mainScroller.addGUI(speechbubbleButton);
+
         Speechbubble testBubble = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.ABOVE);
         mainScroller.addGUI(testBubble);
+        Speechbubble testBubble2 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.BELOW);
+        mainScroller.addGUI(testBubble2);
+        //Speechbubble testBubble3 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.LEFT);
+        //testBubble3.setColor(new vec4(1,0,0,1));
+        //mainScroller.addGUI(testBubble3);
+        //Speechbubble testBubble4 = new Speechbubble(new ivec2(340, 240), new ivec2(70, 120), Side.RIGHT);
+        //testBubble4.setColor(new vec4(1,0,0,1));
+        //mainScroller.addGUI(testBubble4);
 
-        Button speechbubbleButton = new Button(new ivec2(240, 200), new ivec2(200, 40), "Speak", fonts.getDefaultFont());
         speechbubbleButton.onClick(new GUICallback() {
             @Override public void run(RenderGUI gui) 
             {
-
+                testBubble.show();
+                testBubble2.show();
+                //testBubble3.show();
+                //testBubble4.show();
             }
         });
-        mainScroller.addGUI(speechbubbleButton);
 
         Slider testSlider = new Slider(new ivec2(30, 200), 200, "Slider1", 0);
         testSlider.setViewMultiplier(666);
@@ -105,6 +117,7 @@ public class MainPage extends RenderGUI
 
         Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 20, 90, fonts.getDefaultFont(), new String[] {"Option 1", "Option 2" + lipsum, "Option 3"});
         radiobutton.setSizeInPercent(true, false);
+        radiobutton.singleSelect(true);
         mainScroller.addGUI(radiobutton);
 
         Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);

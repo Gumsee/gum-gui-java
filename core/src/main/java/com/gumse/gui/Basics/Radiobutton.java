@@ -3,6 +3,7 @@ package com.gumse.gui.Basics;
 import java.util.ArrayList;
 
 import com.gumse.gui.GUI;
+import com.gumse.gui.Basics.Switch.OnSwitchTicked;
 import com.gumse.gui.Basics.Switch.Shape;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.Font;
@@ -13,20 +14,35 @@ import com.gumse.system.filesystem.XML.XMLNode;
 
 public class Radiobutton extends RenderGUI
 {
+    public interface OnSelectCallback
+    {
+        public void run(int index, String content);
+    }
+
     class Option extends RenderGUI
     {
         private Switch pSwitch;
         private TextBox pTextBox;
         private int iFontSize;
+        private OnSelectCallback pCallback;
 
-        public Option(String str, Font font, int fontsize)
+        public Option(int index, String str, Font font, int fontsize)
         {
             this.sType = "RadiobuttonOption";
             this.iFontSize = fontsize;
+            this.pCallback = null;
 
             pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), 0);
             pSwitch.setShape(Shape.CIRCLE);
             pSwitch.tick(false);
+            pSwitch.onTick(new OnSwitchTicked() {
+                @Override public void run(boolean ticked) 
+                {
+                    select();
+                    if(pCallback != null)
+                        pCallback.run(index, str);
+                }
+            });
             addElement(pSwitch);
 
             int xoffset = iFontSize * 2;
@@ -53,25 +69,52 @@ public class Radiobutton extends RenderGUI
         {
             return pSwitch.isTicked();
         }
+
+        public void select()
+        {
+            if(((Radiobutton)pParent).bSingleSelectMode)
+            {
+                for(RenderGUI option : pParent.getChildren())
+                {
+                    if(option.getType().equals("RadiobuttonOption"))
+                    {
+                        ((Option)option).unselect();
+                    }
+                }
+            }
+            pSwitch.tick(true);
+        }
+
+        public void unselect()
+        {
+            pSwitch.tick(false);
+        }
+
+        public void setCallback(OnSelectCallback callback)
+        {
+            this.pCallback = callback;
+        }
     }
 
     private int iGapSize;
+    private boolean bSingleSelectMode;
 
     public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options)
     {
         this.sType = "Radiobutton";
         this.vPos.set(pos);
         this.iGapSize = fontsize / 2;
+        this.bSingleSelectMode = false;
 
         int maxheight = 0;
         for(int i = 0; i < options.length; i++)
         {
             int ypos = maxheight;
-            Option option = new Option(options[i], font, fontsize);
+            Option option = new Option(i, options[i], font, fontsize);
             option.setPosition(new ivec2(0, ypos));
             option.setSize(new ivec2(100, 30));
             option.setSizeInPercent(true, false);
-            addElement(option);
+            addGUI(option);
 
             maxheight += option.getSize().y + iGapSize;
         }
@@ -91,7 +134,7 @@ public class Radiobutton extends RenderGUI
     @Override
     protected void updateOnColorChange()
     {
-        for(RenderGUI child : vElements)
+        for(RenderGUI child : vChildren)
         {
             if(child.getType() == "TextBox")
                 ((TextBox)child).getText().setColor(this.getColor(GUI.getTheme().textColor));
@@ -104,7 +147,7 @@ public class Radiobutton extends RenderGUI
     protected void updateOnSizeChange()
     {
         int maxheight = 0;
-        for(RenderGUI child : vElements)
+        for(RenderGUI child : vChildren)
         {
             child.resize();
             child.setPosition(new ivec2(0, maxheight));
@@ -117,11 +160,22 @@ public class Radiobutton extends RenderGUI
     public ArrayList<Integer> getSelected()
     {
         ArrayList<Integer> retArr = new ArrayList<>();
-        for(int i = 0; i < vElements.size(); i++)
-            if(((Option)vElements.get(i)).isSelected())
+        for(int i = 0; i < vChildren.size(); i++)
+            if(((Option)vChildren.get(i)).isSelected())
                 retArr.add(i);
 
         return retArr;
+    }
+
+    public void singleSelect(boolean singleselect)
+    {
+        this.bSingleSelectMode = singleselect;
+    }
+
+    public void onSelect(OnSelectCallback callback)
+    {
+        for(RenderGUI child : vChildren)
+            ((Option)child).setCallback(callback);
     }
 
     public static Radiobutton createFromXMLNode(XMLNode node)

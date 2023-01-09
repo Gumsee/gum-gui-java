@@ -28,19 +28,56 @@ public class Speechbubble extends RenderGUI
         this.iSide = side;
 
 
-        pBackground = new Box(new ivec2(0, 15), new ivec2(100, 100));
-        pBackground.setMargin(new ivec2(0, 5));
-        pBackground.setOrigin(new ivec2(0, 0));
-        pBackground.setOriginInPercent(true, false);
+        pIndicator = new Box(new ivec2(0, 0), new ivec2(20, 20));
+        pIndicator.setColor(GUI.getTheme().accentColor);
+        pIndicator.setRotation(45.0f);
+        addElement(pIndicator);
+
+        pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
+        pBackground.setCornerRadius(new vec4(7));
         pBackground.setColor(GUI.getTheme().accentColor);
         addElement(pBackground);
 
-        pIndicator = new Box(new ivec2(-10, 10), new ivec2(20, 20));
-        pIndicator.setCornerRadius(new vec4(10, 0, 0, 0));
-        pIndicator.setColor(new vec4(1,0,0,1));
-        pIndicator.setRotation(-45.0f);
-        addElement(pIndicator);
+        switch(iSide)
+        {
+            case ABOVE:
+                pIndicator.setPosition(new ivec2(-10, -20));
+                pIndicator.setCornerRadius(new vec4(0, 0, 0, 10));
+
+                pBackground.setPosition(new ivec2(0, -30));
+                pBackground.setOrigin(new ivec2(50, 100));
+                pBackground.setOriginInPercent(true, false);
+                break;
+
+            case BELOW:
+                pIndicator.setPosition(new ivec2(-10, 5));
+                pIndicator.setCornerRadius(new vec4(0, 10, 0, 0));
+
+                pBackground.setPosition(new ivec2(0, 15));
+                pBackground.setOrigin(new ivec2(50, 0));
+                pBackground.setOriginInPercent(true, false);
+                break;
+
+            case LEFT:
+                pIndicator.setPosition(new ivec2(-20, -10));
+                pIndicator.setCornerRadius(new vec4(0, 0, 10, 0));
+
+                pBackground.setPosition(new ivec2(20, 0));
+                pBackground.setOrigin(new ivec2(100, 50));
+                pBackground.setOriginInPercent(false, true);
+                break;
+
+            case RIGHT:
+                pIndicator.setPosition(new ivec2(5, -10));
+                pIndicator.setCornerRadius(new vec4(10, 0, 0, 0));
+
+                pBackground.setPosition(new ivec2(15, 0));
+                pBackground.setOrigin(new ivec2(0, 50));
+                pBackground.setOriginInPercent(false, true);
+                break;
+            
+        }
 
         resize();
         reposition();
@@ -49,11 +86,28 @@ public class Speechbubble extends RenderGUI
     @Override
     public void updateextra() 
     {
-        if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick() && !isMouseInside())
+        if(Window.CurrentlyBoundWindow.getMouse().hasLeftClick() && !pBackground.isMouseInside())
         {
-            //this.hide(true);
+            this.hide(true);
         }
     }
+
+    @Override
+    protected void updateOnColorChange() 
+    {
+        pBackground.setColor(getColor(GUI.getTheme().accentColor));
+        pIndicator.setColor(getColor(GUI.getTheme().accentColor));
+    }
+
+    @Override
+    protected void updateOnAddGUI(RenderGUI gui) 
+    {
+        removeChild(gui);
+        pBackground.addGUI(gui);
+    }
+    @Override public void destroyChildren()            { pBackground.destroyChildren(); }
+    @Override public void removeChild(RenderGUI child) { pBackground.removeChild(child); }
+    @Override public void removeChild(int index)       { pBackground.removeChild(index); }
 
     public void show()
     {
