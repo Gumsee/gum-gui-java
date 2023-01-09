@@ -3,7 +3,7 @@ package com.gumse.gui.Font;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 
 public class FontManager
@@ -35,7 +35,7 @@ public class FontManager
 
 	public void cleanup()
 	{
-		Debug.debug("FontManager: Cleaning...");
+		Output.debug("FontManager: Cleaning...");
 		//for(auto font : mFonts)
 		//	Gum::_delete(font.second);
 		
@@ -58,7 +58,7 @@ public class FontManager
 	public Font getFont(String fontname)
 	{	
 		if(!mFonts.containsKey(fontname))
-			Debug.error("Font: " + fontname + " does not exist");
+			Output.error("Font: " + fontname + " does not exist");
 		return mFonts.get(fontname);
 	}
 

@@ -15,7 +15,7 @@ import com.gumse.pages.MainPage;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 
@@ -26,7 +26,7 @@ public class Example
         Globals.DEBUG_BUILD = true;
         System.setProperty("java.awt.headless", "true"); //for iCrap support
 
-        Debug.init();
+        Output.init();
         Display.init();
         
         //Window Options
@@ -66,28 +66,28 @@ public class Example
         AltMenuEntry fileEntry = new AltMenuEntry("File", null);
         altMenu.addEntry(fileEntry);
         fileEntry.addEntry(new AltMenuEntry("Open", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be opened"); }
+            @Override public void run() { Output.info("File should be opened"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Save", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be saved"); }
+            @Override public void run() { Output.info("File should be saved"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Save As", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be saved as"); }
+            @Override public void run() { Output.info("File should be saved as"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Exit", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Exit.."); pMainWindow.close(); }
+            @Override public void run() { Output.info("Exit.."); pMainWindow.close(); }
         }));
 
         AltMenuEntry editEntry = new AltMenuEntry("Edit", null);
         altMenu.addEntry(editEntry);
         editEntry.addEntry(new AltMenuEntry("Undo", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Undo"); }
+            @Override public void run() { Output.info("Undo"); }
         }));
         editEntry.addEntry(new AltMenuEntry("Redo", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Redo"); }
+            @Override public void run() { Output.info("Redo"); }
         }));
         editEntry.addEntry(new AltMenuEntry("Settings", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Settings"); }
+            @Override public void run() { Output.info("Settings"); }
         }));
 
         AltMenuEntry viewEntry = new AltMenuEntry("View", null);

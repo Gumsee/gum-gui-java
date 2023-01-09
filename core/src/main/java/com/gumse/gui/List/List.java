@@ -11,7 +11,7 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.maths.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class List <E> extends RenderGUI
 {
@@ -40,7 +40,7 @@ public class List <E> extends RenderGUI
 
         if(length != 100)
         {
-            Debug.error("List: column widths must add up to 100");
+            Output.error("List: column widths must add up to 100");
             return;
         }
     
@@ -107,7 +107,7 @@ public class List <E> extends RenderGUI
     {
         if(cells.length != alColumns.length)
         {
-            Debug.error("List: addEntry: data array length doesnt match column count");
+            Output.error("List: addEntry: data array length doesnt match column count");
             return;
         }
         ListEntry<E> entry = new ListEntry<>(cells, this, usrptr);

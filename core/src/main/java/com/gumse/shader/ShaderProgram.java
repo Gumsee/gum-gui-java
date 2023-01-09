@@ -8,7 +8,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL30;
 
 import com.gumse.maths.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class ShaderProgram
@@ -44,7 +44,7 @@ public class ShaderProgram
 		{
 			String errorLog = GL30.glGetProgramInfoLog(iProgramID, 1024);
 			GL30.glDeleteProgram(this.iProgramID); //We don't need the program anymore.
-			Debug.error("ShaderProgram: Linking Error: " + this.sName + ": " + errorLog);
+			Output.error("ShaderProgram: Linking Error: " + this.sName + ": " + errorLog);
 		}
 		
 
@@ -138,7 +138,7 @@ public class ShaderProgram
 	public void build(String name, Map<String, Integer> attributes)
 	{
 		this.sName = name;
-		Debug.debug("ShaderProgram: Creating Shader Program for " + sName);
+		Output.debug("ShaderProgram: Creating Shader Program for " + sName);
 		iProgramID = GL30.glCreateProgram();
 		compileShaders();
 		
@@ -146,19 +146,19 @@ public class ShaderProgram
 		for(Map.Entry<String, Integer> attribute : attributes.entrySet())
 		{
 			addAttribute(attribute.getKey(), attribute.getValue());
-			Debug.debug("Adding attribute " + attribute.getKey() + " (" + attribute.getValue() + ")");
+			Output.debug("Adding attribute " + attribute.getKey() + " (" + attribute.getValue() + ")");
 		}
 
 		if(attributes.size() > 0)
 		{
-			Debug.debug("");
+			Output.debug("");
 		}
 
-		Debug.debug("ShaderProgram: Linking " + name);
+		Output.debug("ShaderProgram: Linking " + name);
 		linkShaders();
 
 
-		Debug.debug("ShaderProgram: Adding default Uniforms " + name);
+		Output.debug("ShaderProgram: Adding default Uniforms " + name);
 		addUniform("transformationMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");

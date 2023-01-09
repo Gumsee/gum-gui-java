@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class mat3 {
 
@@ -110,7 +110,7 @@ public class mat3 {
             }
             output += "\n";
         }
-        Debug.info(output);
+        Output.info(output);
     }
 
     public void rotateX(float deg)

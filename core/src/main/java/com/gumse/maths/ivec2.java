@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class ivec2 
 {
@@ -88,6 +88,6 @@ public class ivec2
 
     public void print()
     {
-        Debug.info(toString());
+        Output.info(toString());
     }
 }

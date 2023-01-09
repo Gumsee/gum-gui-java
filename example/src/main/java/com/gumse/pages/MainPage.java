@@ -20,7 +20,7 @@ import com.gumse.gui.TagList.TagList;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 
@@ -130,7 +130,7 @@ public class MainPage extends RenderGUI
         Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);
         DropdownEntryCallback dropdowncallback = new DropdownEntryCallback() { 
             @Override public void run(String str) { 
-                Debug.info(str); 
+                Output.info(str); 
             } 
         };
         testDropdown.addEntry("Entry1", dropdowncallback, false);

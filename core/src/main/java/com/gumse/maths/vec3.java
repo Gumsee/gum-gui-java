@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class vec3 {
     public float x;
@@ -136,7 +136,7 @@ public class vec3 {
 
     public void print()
     {
-        Debug.info(toString());
+        Output.info(toString());
     }
 
     public vec2 xy()

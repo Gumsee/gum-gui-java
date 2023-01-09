@@ -7,7 +7,7 @@ import com.gumse.maths.ivec2;
 import com.gumse.maths.mat4;
 import com.gumse.system.Window;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -105,13 +105,13 @@ public class Framebuffer
 
     public Texture getTexture()
     {
-        if(this.pTexture == null) { Debug.error("Cannot get Texture from framebuffer, did you call addTextureAttachment?"); }
+        if(this.pTexture == null) { Output.error("Cannot get Texture from framebuffer, did you call addTextureAttachment?"); }
         return this.pTexture;
     }
 
     public Texture getDepthTexture()
     {
-        if(this.pDepthTexture == null) { Debug.error("Cannot get Depth Texture from framebuffer, did you call addDepthTextureAttachment?"); }
+        if(this.pDepthTexture == null) { Output.error("Cannot get Depth Texture from framebuffer, did you call addDepthTextureAttachment?"); }
         return this.pDepthTexture;
     }
 

@@ -10,7 +10,7 @@ import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class RenderGUI

@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class vec2 
 {
@@ -84,6 +84,6 @@ public class vec2
 
     public void print()
     {
-        Debug.info(toString());
+        Output.info(toString());
     }
 }

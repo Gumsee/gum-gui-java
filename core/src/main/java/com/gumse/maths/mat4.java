@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class mat4 {
 
@@ -124,7 +124,7 @@ public class mat4 {
             }
             output += "\n";
         }
-        Debug.info(output);
+        Output.info(output);
     }
 
     public void translate(vec3 transVector)

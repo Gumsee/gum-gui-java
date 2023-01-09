@@ -3,7 +3,7 @@ package com.gumse.shader;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL40;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class Shader
 {
@@ -48,7 +48,7 @@ public class Shader
     {
         if(!bIsCompiled)
         {
-            Debug.debug("Shader: Compiling " + sTypeName);
+            Output.debug("Shader: Compiling " + sTypeName);
             GL30.glShaderSource(iShaderID, sSource); //Pass sourceCode to OpenGL
             GL30.glCompileShader(iShaderID); //compile the shader
 
@@ -58,7 +58,7 @@ public class Shader
                 //The maxLength includes the NULL character
                 String errorLog = GL30.glGetShaderInfoLog(iShaderID, 1024);
                 GL30.glDeleteShader(iShaderID); //Don't leak the shader.
-                Debug.error("Shader Failed to compile: " + errorLog);
+                Output.error("Shader Failed to compile: " + errorLog);
 
                 return false;
             }

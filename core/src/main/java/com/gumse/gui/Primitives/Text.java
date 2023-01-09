@@ -16,7 +16,7 @@ import com.gumse.maths.*;
 import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
 import com.gumse.system.filesystem.XML.XMLNode;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class Text extends RenderGUI
 {
@@ -126,7 +126,7 @@ public class Text extends RenderGUI
                 Character ch = pFont.getCharacter(sRenderText.codePointAt(i));
                 if(ch == null)
                 {
-                    Debug.warn("Character '" + sRenderText.substring(i, i + 1) + "' ("+sRenderText.codePointAt(i)+") not available in font " + pFont.getName() + "!");
+                    Output.warn("Character '" + sRenderText.substring(i, i + 1) + "' ("+sRenderText.codePointAt(i)+") not available in font " + pFont.getName() + "!");
                     continue;
                 }
 

@@ -7,7 +7,7 @@ import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class AltMenuEntry extends RenderGUI
 {
@@ -137,7 +137,7 @@ public class AltMenuEntry extends RenderGUI
     public void addEntry(AltMenuEntry entry)
     {
         if(pParent == null)
-            Debug.error("Add the Menu Entry to its parent first before adding subentries to it!");
+            Output.error("Add the Menu Entry to its parent first before adding subentries to it!");
 
         if(entry.getSize().x > iWidestChild)
             iWidestChild = entry.getSize().x;

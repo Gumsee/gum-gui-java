@@ -11,7 +11,7 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.TagList.TagListEntry.TagRemoveCallback;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class TagList extends RenderGUI
 {

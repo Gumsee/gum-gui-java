@@ -9,7 +9,7 @@ import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class TextBox extends RenderGUI
 {
