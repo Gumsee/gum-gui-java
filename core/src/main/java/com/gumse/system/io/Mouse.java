@@ -340,6 +340,7 @@ public class Mouse
 
     void mouseLeftCallback()
     {
+        v2Position.set(new ivec2(-1000, -1000));
         if(leftCallback != null)
             leftCallback.run();
     }
