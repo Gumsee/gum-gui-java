@@ -10,7 +10,7 @@ import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.system.io.Mouse;
 
-public class TagListEntry extends RenderGUI
+public class TagListEntry <T> extends RenderGUI
 {
     public interface TagRemoveCallback
     {
@@ -21,15 +21,17 @@ public class TagListEntry extends RenderGUI
     private Cross pCross;
     private TagRemoveCallback pCallback;
     private String sName;
+    private T pUserPtr;
     private static final vec4 CROSS_COLOR = new vec4(0.7f, 0.22f, 0.22f, 1.0f);
 
 
-    public TagListEntry(ivec2 pos, String tagstr, Font font, TagRemoveCallback callback)
+    public TagListEntry(ivec2 pos, String tagstr, Font font, TagRemoveCallback callback, T userptr)
     {
         this.vPos.set(pos);
         this.vSize.set(new ivec2(0, 100));
         this.pCallback = callback;
         this.sName = tagstr;
+        this.pUserPtr = userptr;
 
 
         pTextBox = new TextBox(tagstr, font, new ivec2(0, 0), new ivec2(100, 100));
@@ -87,4 +89,5 @@ public class TagListEntry extends RenderGUI
     // Getter
     //
     public String getName() { return sName; }
+    public T getUserptr()   { return pUserPtr; }
 }
