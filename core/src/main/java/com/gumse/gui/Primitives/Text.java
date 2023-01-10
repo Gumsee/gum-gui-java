@@ -256,7 +256,7 @@ public class Text extends RenderGUI
         for(int i = begin; i < end; i++)
         {
             Character ch = pFont.getCharacter(str.codePointAt(i));
-            if(ch.texture == null) continue;
+            if(ch == null || ch.texture == null) continue;
             vTextSize.x += ch.texture.getSize().x * fScale;
 
             if(str.charAt(i) == '\n') 

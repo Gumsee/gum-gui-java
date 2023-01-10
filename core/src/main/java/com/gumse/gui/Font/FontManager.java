@@ -20,7 +20,7 @@ public class FontManager
 		FontLoader.init();
 		//Load Default Font from memory
 		//pDefaultFont = loadFontFromMemory("default", defaultFont, sizeof(defaultFont) * sizeof(unsigned char));
-		String germanKeyboard = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?`´²³#'*+~-_.:,;<>|°^\\ß{[]}@€µ öäü\n";
+		String germanKeyboard = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?`´²³#'*+~-_.:,;<>|°^\\ß{[]}@€µ öäüÖÄÜẞ\n";
 		pDefaultFont = Font.loadFontFromResource("fonts/opensans.ttf", germanKeyboard);
 		mFonts.put("default", pDefaultFont);
 		//Gum::_delete(pFreetypeLibrary);
