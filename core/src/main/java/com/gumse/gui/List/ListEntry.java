@@ -60,7 +60,7 @@ public class ListEntry <E> extends RenderGUI
                         @Override public void run(boolean ticked) 
                         {
                             if(cell.onclickcallback != null)
-                                cell.onclickcallback.run(boolGUI);
+                                cell.onclickcallback.run(item);
                         }
                     });
                     item.addGUI(boolGUI);
