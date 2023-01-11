@@ -95,21 +95,32 @@ public class TextField extends RenderGUI
 		Gum::_delete(pClock);*/
 	}
 	
+    @Override
 	protected void updateOnColorChange()
 	{
 		pBackgroundBox.setColor(v4Color);
 	}
 	
+    @Override
 	protected void updateOnPosChange()
 	{
 		updateText();
 	}
 	
+    @Override
 	protected void updateOnSizeChange()
 	{
 		pBackgroundBox.setTextSize((int)(getSize().y * 0.9f));
 		updateText();
 	}
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pBackgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        pBackgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
+		pIndicatorBox.setColor(GUI.getTheme().textColor);
+    }
 	
 	
 	public void renderextra()
