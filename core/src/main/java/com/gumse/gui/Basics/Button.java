@@ -60,6 +60,13 @@ public class Button extends RenderGUI
         backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));    
     }
 
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
+        backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+    }
+
     public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }
     public void setSecondColor(vec4 col)                 { this.backgroundBox.getBox().setSecondColor(col); }
     public void setHasGradient(boolean val)              { this.backgroundBox.getBox().setHasGradient(val); }

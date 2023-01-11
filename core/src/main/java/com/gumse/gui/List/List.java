@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import com.gumse.PostProcessing.Framebuffer;
+import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.TextBox;
@@ -18,7 +19,7 @@ public class List <E> extends RenderGUI
     private static final int TITLEBAR_HEIGHT = 30;
 
     private ArrayList<ListEntry<E> > vEntries;
-    private Box pBackground;
+    private RenderGUI pBackground;
     private Scroller pScroller;
     private ColumnInfo[] alColumns;
 
@@ -46,9 +47,9 @@ public class List <E> extends RenderGUI
     
 
         
-        pBackground = new Box(new ivec2(0,0), new ivec2(100, 100));
+        pBackground = new RenderGUI();
+        pBackground.setSize(new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
-        pBackground.hide(true);
         addElement(pBackground);
 
         int currentpos = 0;
@@ -60,10 +61,9 @@ public class List <E> extends RenderGUI
             //titleBox.setTextOffset(new ivec2(-10, 0));
             titleBox.setSizeInPercent(true, false);
             titleBox.setPositionInPercent(true, false);
-            titleBox.setColor(new vec4(0.1f, 0.1f, 0.1f, 1.0f));
-            titleBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1.0f));
+            titleBox.setColor(GUI.getTheme().primaryColorShade);
             titleBox.onClick(columns[i].onclickcallback);
-            addElement(titleBox);
+            pBackground.addGUI(titleBox);
             currentpos += columns[i].width;
         }
 
@@ -94,9 +94,9 @@ public class List <E> extends RenderGUI
         GUIShader.getStripesShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
         GUIShader.getStripesShaderProgram().loadUniform("patternoffset", (float)(vActualPos.y + pScroller.getOffset()));// + (float)pScroller.getOffset());
         GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
-        GUIShader.getStripesShaderProgram().loadUniform("color1", new vec4(0.16f, 0.16f, 0.16f, 1.0f));
-        GUIShader.getStripesShaderProgram().loadUniform("color2", new vec4(0.18f, 0.18f, 0.18f, 1.0f));
-        pBackground.renderCustom();
+        GUIShader.getStripesShaderProgram().loadUniform("color1", vec4.sub(GUI.getTheme().primaryColor, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+        GUIShader.getStripesShaderProgram().loadUniform("color2", GUI.getTheme().primaryColor);
+        Box.renderCustom();
         GUIShader.getStripesShaderProgram().unuse();
     
         renderchildren();
@@ -158,5 +158,14 @@ public class List <E> extends RenderGUI
         }
 
         return retList;
+    }
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        for(RenderGUI child : pBackground.getChildren())
+        {
+            child.setColor(GUI.getTheme().primaryColorShade);
+        }
     }
 };

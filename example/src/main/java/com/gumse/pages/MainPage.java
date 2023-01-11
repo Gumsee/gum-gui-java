@@ -78,7 +78,7 @@ public class MainPage extends RenderGUI
         themeButton.onClick((RenderGUI gui) -> {
             if(GUI.getTheme() == lightTheme) { GUI.setTheme(GUI.getDefaultTheme()); }
             else                             { GUI.setTheme(lightTheme); }
-            updateTheme();
+            getParent().getParent().updateTheme();
         });
         mainScroller.addGUI(themeButton);
 

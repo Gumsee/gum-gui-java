@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.basics.SmoothFloat;
+import com.gumse.gui.GUI;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -20,7 +21,6 @@ public class Tabs extends RenderGUI
     private Box pBackground;
     private ArrayList<TextBox> vTabs;
     private ivec2 vTabSize;
-    private vec4 v4ActiveColor, v4InactiveColor;
     private SmoothFloat sfOffset;
 
 
@@ -30,14 +30,12 @@ public class Tabs extends RenderGUI
         this.vPos.set(pos);
         this.vSize.set(size);
         this.vTabSize = tabsize;
-        this.v4ActiveColor = new vec4(0.14f,0.14f,0.14f, 1.0f);
-        this.v4InactiveColor = new vec4(0.4f,0.4f,0.4f, 1.0f);
         this.pActiveTab = null;
         this.sfOffset = new SmoothFloat();
         this.vTabs = new ArrayList<>();
 
         pBackground = new Box(new ivec2(0,0), new ivec2(100, tabsize.y));
-        pBackground.setColor(new vec4(0.25f,0.25f,0.25f,1.0f));
+        pBackground.setColor(GUI.getTheme().secondaryColor);
         pBackground.setSizeInPercent(true, false);
         pBackground.setOrigin(new ivec2(0, tabsize.y));
         addElement(pBackground);
@@ -68,10 +66,10 @@ public class Tabs extends RenderGUI
                 {
                     if(pActiveTab != null)
                     {
-                        pActiveTab.setColor(v4InactiveColor);
+                        pActiveTab.setColor(GUI.getTheme().primaryColor);
                         pActiveTab.hideChildren(true);
                     }
-                    vTabs.get(i).setColor(v4ActiveColor);
+                    vTabs.get(i).setColor(GUI.getTheme().primaryColorShade);
                     vTabs.get(i).hideChildren(false);
                     pActiveTab = vTabs.get(i);
                 }
@@ -94,6 +92,17 @@ public class Tabs extends RenderGUI
                 }
             }   
         }
+    }
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pBackground.setColor(GUI.getTheme().secondaryColor);
+        for(int i = 0; i < vTabs.size(); i++)
+            vTabs.get(i).setColor(GUI.getTheme().primaryColorShade);
+
+        if(pActiveTab != null)
+            pActiveTab.setColor(GUI.getTheme().primaryColorShade);
     }
 
     public void renderextra()
@@ -126,13 +135,13 @@ public class Tabs extends RenderGUI
         //tab.setTextSize(vTabSize.y - 10);
         if(active)
         {
-            tab.setColor(v4ActiveColor);
+            tab.setColor(GUI.getTheme().primaryColorShade);
             tab.hideChildren(false);
             pActiveTab = tab;
         }
         else
         {
-            tab.setColor(v4InactiveColor);
+            tab.setColor(GUI.getTheme().primaryColor);
             tab.hideChildren(true);
         }
         tab.setSize(new ivec2(tab.getTextSize().x + 30, vTabSize.y));

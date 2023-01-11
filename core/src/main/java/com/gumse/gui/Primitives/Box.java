@@ -115,7 +115,7 @@ public class Box extends RenderGUI
         renderchildren();
 	}
 
-	public void renderCustom()
+	public static void renderCustom()
 	{
 		pVAO.bind();
 		GL30.glDrawArrays(GL30.GL_TRIANGLE_STRIP, 0, 6);

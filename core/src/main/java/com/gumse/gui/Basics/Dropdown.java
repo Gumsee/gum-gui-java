@@ -70,6 +70,12 @@ public class Dropdown extends RenderGUI
             }
         }
 
+        @Override
+        protected void updateOnThemeChange() 
+        {
+            pBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        }
+
         public void setSelectCallback(DropdownSelectionCallback callback)
         {
             pGlobalCallback = callback;
@@ -176,8 +182,15 @@ public class Dropdown extends RenderGUI
     @Override
 	protected void updateOnTitleChange()
 	{
-		this.pPreviewTextbox.setString(sTitle);
+		pPreviewTextbox.setString(sTitle);
 	}
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
+        pPreviewTextbox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+    }
 	
 	public int numEntries()			  { return vElements.size() - 1; }
 	public boolean isCurrentClicked() { return bIsClicked; }

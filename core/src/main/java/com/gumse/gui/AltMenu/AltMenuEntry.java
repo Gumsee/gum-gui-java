@@ -134,6 +134,12 @@ public class AltMenuEntry extends RenderGUI
         }
     }
 
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pTextBox.setColor(GUI.getTheme().primaryColor);
+    }
+
     public void addEntry(AltMenuEntry entry)
     {
         if(pParent == null)
