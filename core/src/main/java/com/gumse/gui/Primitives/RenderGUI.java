@@ -35,6 +35,7 @@ public class RenderGUI
     protected void updateOnPosChange()  {};
     protected void updateOnSizeChange() {};
     protected void updateOnTitleChange() {};
+    protected void updateOnThemeChange() {};
     protected void updateOnColorChange() {};
     protected void updateOnCornerRadiusChange() {};
     protected void updateOnAddGUI(RenderGUI gui) {};
@@ -119,6 +120,13 @@ public class RenderGUI
         this.fAlphaOverride = alpha;
         for(int i = 0; i < this.numElements(); i++) { this.vElements.get(i).overrideAlpha(alpha); }
         for(int i = 0; i < this.numChildren(); i++) { this.vChildren.get(i).overrideAlpha(alpha); }
+    }
+
+    public void updateTheme()
+    {
+        updateOnThemeChange();
+        for(int i = 0; i < this.numElements(); i++) { this.vElements.get(i).updateTheme(); }
+        for(int i = 0; i < this.numChildren(); i++) { this.vChildren.get(i).updateTheme(); }
     }
 
 

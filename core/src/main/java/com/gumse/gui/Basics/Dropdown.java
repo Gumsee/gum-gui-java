@@ -96,7 +96,6 @@ public class Dropdown extends RenderGUI
 		pSmoothFloat = new SmoothFloat(0, 10, 0);
 		pPreviewTextbox = new TextBox(text, pFont, new ivec2(0,0), new ivec2(100, 100));
 		pPreviewTextbox.setTextSize(textsize);
-		pPreviewTextbox.setTextColor(GUI.getTheme().textColor);
         pPreviewTextbox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
@@ -120,7 +119,7 @@ public class Dropdown extends RenderGUI
         onLeave(new GUICallback() {
             @Override public void run(RenderGUI gui) 
             { 
-                pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
+                pPreviewTextbox.setColor(null);
             }
         });
 	

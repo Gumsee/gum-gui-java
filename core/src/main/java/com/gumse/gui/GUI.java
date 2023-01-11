@@ -103,6 +103,11 @@ public class GUI
         return pCurrentTheme;
     }
 
+    public static Theme getDefaultTheme()
+    {
+        return pDefaultTheme;
+    }
+
 
 	public ivec2 getSize()
 	{
@@ -121,7 +126,7 @@ public class GUI
 		WindowCanvas.resize();
 	}
 
-    public void setTheme(Theme theme)
+    public static void setTheme(Theme theme)
     {
         pCurrentTheme = theme;
     }

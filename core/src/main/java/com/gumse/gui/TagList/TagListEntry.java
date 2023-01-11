@@ -84,6 +84,13 @@ public class TagListEntry <T> extends RenderGUI
         vActualSize.x = pTextBox.getTextSize().x + 25;
     }
 
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pTextBox.setColor(GUI.getTheme().secondaryColor);
+        pCross.setColor(GUI.getTheme().accentColor);
+    }
+
     
     //
     // Getter

@@ -29,7 +29,7 @@ public class Button extends RenderGUI
         onLeave(new GUICallback() {
             @Override public void run(RenderGUI gui) 
             {
-                backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
+                backgroundBox.setColor(null);
             }
         });
 
@@ -57,7 +57,7 @@ public class Button extends RenderGUI
     @Override
     protected void updateOnColorChange() 
     {
-        backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));    
+        backgroundBox.setColor(v4Color);    
     }
 
     public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }

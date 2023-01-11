@@ -1,5 +1,7 @@
 package com.gumse.pages;
 
+import com.gumse.gui.GUI;
+import com.gumse.gui.Theme;
 import com.gumse.gui.Basics.Button;
 import com.gumse.gui.Basics.Dropdown;
 import com.gumse.gui.Basics.Graph;
@@ -17,6 +19,7 @@ import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
 import com.gumse.gui.TagList.TagList;
+import com.gumse.maths.Color;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.textures.Texture;
@@ -62,7 +65,21 @@ public class MainPage extends RenderGUI
         fpsBox.setAlignment(TextBox.Alignment.LEFT);
         mainScroller.addGUI(fpsBox);
 
+    
+        Theme lightTheme = new Theme();
+        lightTheme.backgroundColor   = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
+        lightTheme.primaryColor      = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
+        lightTheme.secondaryColor    = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
+        lightTheme.accentColor       = vec4.div(Color.HEXToRGBA("#0F79D9"), 255.0f);
+        lightTheme.accentColorShade1 = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
+        lightTheme.textColor         = vec4.div(Color.HEXToRGBA("#000000"), 255.0f);
+        lightTheme.borderThickness   = 1;
         Button themeButton = new Button(new ivec2(240, 150), new ivec2(200, 40), "Switch Theme", fonts.getDefaultFont());
+        themeButton.onClick((RenderGUI gui) -> {
+            if(GUI.getTheme() == lightTheme) { GUI.setTheme(GUI.getDefaultTheme()); }
+            else                             { GUI.setTheme(lightTheme); }
+            updateTheme();
+        });
         mainScroller.addGUI(themeButton);
 
 
