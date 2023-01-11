@@ -119,7 +119,7 @@ public class Dropdown extends RenderGUI
         onLeave(new GUICallback() {
             @Override public void run(RenderGUI gui) 
             { 
-                pPreviewTextbox.setColor(null);
+                pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
             }
         });
 	
