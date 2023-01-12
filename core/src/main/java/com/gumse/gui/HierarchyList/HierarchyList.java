@@ -68,11 +68,9 @@ public class HierarchyList extends RenderGUI
         reposition();
     }
 
-    public void cleanup()
+    public void reset()
     {
         pScroller.destroyChildren();
-        /*for(RenderGUI* gui : vElements)
-            Gum::_delete(gui);*/
     }
 
     public void updateextra()
