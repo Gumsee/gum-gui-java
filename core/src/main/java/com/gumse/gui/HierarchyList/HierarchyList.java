@@ -70,7 +70,7 @@ public class HierarchyList extends RenderGUI
 
     public void reset()
     {
-        pScroller.destroyChildren();
+        pRootEntry.destroyChildren();
     }
 
     public void updateextra()
