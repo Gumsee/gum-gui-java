@@ -163,8 +163,8 @@ public class RenderGUI
         if(pParent != null)
         {
             vActualPos = ivec2.add(pParent.getPosition(), vPos);
-            if(posInPercent.x) { vActualPos.x = (int)(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
-            if(posInPercent.y) { vActualPos.y = (int)(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
+            if(posInPercent.x) { vActualPos.x = (int)Math.ceil(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
+            if(posInPercent.y) { vActualPos.y = (int)Math.ceil(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
         }
         if(originInPercent.x)  { vActualPos.x -= (vActualSize.x * vOrigin.x) / 100; }
         else                   { vActualPos.x -= vOrigin.x; }
@@ -185,8 +185,8 @@ public class RenderGUI
         vActualSize.set(vSize);
         if(pParent != null)
         {
-            if(sizeInPercent.x) { vActualSize.x = (int)((float)(pParent.getSize().x) * ((float)vSize.x / 100.0f)); }
-            if(sizeInPercent.y) { vActualSize.y = (int)((float)(pParent.getSize().y) * ((float)vSize.y / 100.0f)); }
+            if(sizeInPercent.x) { vActualSize.x = (int)Math.ceil((float)(pParent.getSize().x) * ((float)vSize.x / 100.0f)); }
+            if(sizeInPercent.y) { vActualSize.y = (int)Math.ceil((float)(pParent.getSize().y) * ((float)vSize.y / 100.0f)); }
 
             if(vMinSize.x != 0)
             {
