@@ -66,14 +66,14 @@ public class Button extends RenderGUI
     {
         backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
         backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
-        backgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
+        backgroundBox.getBox().setCornerRadius(getCornerRadius());
     }
 
     public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }
     public void setSecondColor(vec4 col)                 { this.backgroundBox.getBox().setSecondColor(col); }
     public void setHasGradient(boolean val)              { this.backgroundBox.getBox().setHasGradient(val); }
     public void setGradientDirectionRight(boolean val)   { this.backgroundBox.getBox().setGradientDirectionRight(val); }
-    public void setCornerRadius(vec4 radius)             { this.backgroundBox.getBox().setCornerRadius(radius); }
+    public void setCornerRadius(vec4 radius)             { this.v4CornerRadius = radius; this.backgroundBox.getBox().setCornerRadius(radius); }
 
     public Texture getTexture()                          { return this.backgroundBox.getBox().getTexture(); }
     public vec4 getSecondColor()                         { return this.backgroundBox.getBox().getSecondColor(); }

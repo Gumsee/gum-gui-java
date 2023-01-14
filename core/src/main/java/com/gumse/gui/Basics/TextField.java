@@ -118,7 +118,7 @@ public class TextField extends RenderGUI
     protected void updateOnThemeChange() 
     {
         pBackgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
-        pBackgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
+        pBackgroundBox.getBox().setCornerRadius(getCornerRadius());
 		pIndicatorBox.setColor(GUI.getTheme().textColor);
     }
 	
@@ -371,7 +371,7 @@ public class TextField extends RenderGUI
 	public void setIndicatorColor(vec4 color) 						   { this.pIndicatorBox.setColor(color); }
 	public void setTextColor(vec4 color) 	  						   { this.pBackgroundBox.setTextColor(color); }
 	public void setCallback(TextFieldInputCallback func)               { this.pCallback = func; }
-	public void setCornerRadius(vec4 radius)						   { this.pBackgroundBox.setCornerRadius(radius); }
+	public void setCornerRadius(vec4 radius)						   { this.v4CornerRadius = radius; this.pBackgroundBox.setCornerRadius(radius); }
     public void setHint(String hint)                                   { this.sHint = hint; }	
 	
 	//
