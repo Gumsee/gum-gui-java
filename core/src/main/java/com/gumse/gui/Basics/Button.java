@@ -23,6 +23,7 @@ public class Button extends RenderGUI
         backgroundBox.setSizeInPercent(true, true);
         backgroundBox.setAlignment(TextBox.Alignment.CENTER);
         backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        backgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
         backgroundBox.setTextSize(size.y - 5);
         addGUI(backgroundBox);
 
@@ -65,6 +66,7 @@ public class Button extends RenderGUI
     {
         backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
         backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        backgroundBox.getBox().setCornerRadius(GUI.getTheme().cornerRadius);
     }
 
     public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }
