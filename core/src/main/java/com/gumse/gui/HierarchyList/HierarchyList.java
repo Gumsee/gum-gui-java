@@ -35,8 +35,7 @@ public class HierarchyList extends RenderGUI
         pTitleBox.setTextSize(20);
         pTitleBox.setTextOffset(new ivec2(-10, 0));
         pTitleBox.setSizeInPercent(true, false);
-        pTitleBox.setColor(new vec4(0.1f, 0.1f, 0.1f, 1));
-        pTitleBox.setTextColor(new vec4(0.76f, 0.76f, 0.76f, 1));
+        pTitleBox.setColor(GUI.getTheme().primaryColorShade);
 
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
@@ -49,7 +48,7 @@ public class HierarchyList extends RenderGUI
 
         pSelectedEntryIndicator = new Box(new ivec2(0,0), new ivec2(100, 30));
         pSelectedEntryIndicator.setSizeInPercent(true, false);
-        pSelectedEntryIndicator.setColor(new vec4(0.34f, 0.5f, 0.76f, 1));
+        pSelectedEntryIndicator.setColor(GUI.getTheme().accentColor);
         pSelectedEntryIndicator.hide(true);
         pScroller.addGUI(pSelectedEntryIndicator);
 
@@ -79,6 +78,13 @@ public class HierarchyList extends RenderGUI
         {
             pSelectedEntryIndicator.setPosition(new ivec2(0, pSelectedEntry.getPosition().y - pScroller.getPosition().y));
         }
+    }
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pTitleBox.setColor(GUI.getTheme().primaryColorShade);
+        pSelectedEntryIndicator.setColor(GUI.getTheme().accentColor);
     }
 
     public void renderextra()

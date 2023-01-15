@@ -117,6 +117,11 @@ public class TextField extends RenderGUI
     @Override
     protected void updateOnThemeChange() 
     {
+        if(sCurrentText.equals(""))
+            pBackgroundBox.setTextColor(GUI.getTheme().secondaryColor);
+        else
+            pBackgroundBox.setTextColor(GUI.getTheme().textColor);
+            
         pBackgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
         pBackgroundBox.getBox().setCornerRadius(getCornerRadius());
 		pIndicatorBox.setColor(GUI.getTheme().textColor);

@@ -95,7 +95,7 @@ public class Box extends RenderGUI
         GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
         GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
         GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
-        GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
+        GUIShader.getShaderProgram().loadUniform("radius", getCornerRadius());
         GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

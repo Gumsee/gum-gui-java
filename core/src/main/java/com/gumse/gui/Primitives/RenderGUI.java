@@ -10,7 +10,6 @@ import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class RenderGUI
@@ -66,9 +65,9 @@ public class RenderGUI
 
     public RenderGUI() 
     {
-        this.v4Color = null;
-        this.v4CornerRadius = new vec4(0,0,0,0);
-        this.pParent = null;
+        this.v4Color        = null;
+        this.v4CornerRadius = null;
+        this.pParent        = null;
         this.pClickCallback = null;
         this.pHoverCallback = null;
         this.pEnterCallback = null;
