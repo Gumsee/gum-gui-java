@@ -20,26 +20,23 @@ public class Dropdown extends RenderGUI
 		void run(String str);
 	}
 
-	public class MenuEntry extends RenderGUI
+	public class MenuEntry extends TextBox
 	{
-		private TextBox pBox;
 		private DropdownEntryCallback pCallback;
         private DropdownSelectionCallback pGlobalCallback;
         private Dropdown pParent;
 
 		public MenuEntry(String name, Font font, int offset, DropdownEntryCallback callback, Dropdown parent)
 		{
-			this.vPos = new ivec2(0, offset);
-			this.vSize = new ivec2(100, 100);
+			super(name, font, new ivec2(0, offset), new ivec2(100, 100));
             this.pParent = parent;
-			setSizeInPercent(true, true);
-
-			pBox = new TextBox(name, font, new ivec2(0, 0), new ivec2(100, 100));
-			pBox.setSizeInPercent(true, true);
-			pBox.setTextSize(iTextSize);
-            pBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
-			addElement(pBox);
 			this.pCallback = callback;
+            
+            setColor(getColor(GUI.getTheme().primaryColor));
+			setSizeInPercent(true, true);
+			setTextSize(iTextSize);
+            getBox().setBorderThickness(GUI.getTheme().borderThickness);
+            setCornerRadius(new vec4(0,0,0,0));
 		}
 
         @Override
@@ -49,31 +46,31 @@ public class Dropdown extends RenderGUI
             {
                 Mouse.setActiveHovering(true);
                 Window.CurrentlyBoundWindow.getMouse().setCursor(Mouse.GUM_CURSOR_HAND);
-                pBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
+                setColor(vec4.sub(GUI.getTheme().primaryColor, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
                 if(isHoldingLeftClick())
-                    pBox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
+                    setColor(vec4.sub(GUI.getTheme().primaryColor, new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
 
                 if(isClicked())
                 {
-                    pParent.setTitle(pBox.getTitle());
+                    pParent.setTitle(getTitle());
                     pParent.close();
 
                     if(pCallback != null)
-                        pCallback.run(pBox.getTitle());
+                        pCallback.run(getTitle());
                     if(pGlobalCallback != null)
-                        pGlobalCallback.run(pBox.getTitle());
+                        pGlobalCallback.run(getTitle());
                 }
             }
             else
             {
-                pBox.setColor(getColor(GUI.getTheme().primaryColor));
+                setColor(GUI.getTheme().primaryColor);
             }
         }
 
         @Override
         protected void updateOnThemeChange() 
         {
-            pBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+            getBox().setBorderThickness(GUI.getTheme().borderThickness);
         }
 
         public void setSelectCallback(DropdownSelectionCallback callback)
@@ -190,6 +187,7 @@ public class Dropdown extends RenderGUI
     {
         pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
         pPreviewTextbox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
+        setCornerRadius();
     }
 	
 	public int numEntries()			  { return vElements.size() - 1; }
@@ -197,9 +195,22 @@ public class Dropdown extends RenderGUI
 	public boolean isOpen()			  { return pSmoothFloat.getTarget() > 0; }
 	
 	public void clearMenu() 		  { this.destroyChildren(); }
-	public void close() 			  { bIsOpen = false;    pSmoothFloat.setTarget(0); }
-	public void open() 				  { bIsOpen = true;     pSmoothFloat.setTarget(1); }
-	public void Switch() 			  { bIsOpen = !bIsOpen; pSmoothFloat.setTarget(bIsOpen ? 1 : 0); }
+	public void close() 			  { bIsOpen = false;    pSmoothFloat.setTarget(0); setCornerRadius(); }
+	public void open() 				  { bIsOpen = true;     pSmoothFloat.setTarget(1); setCornerRadius(); }
+	public void Switch() 			  { bIsOpen = !bIsOpen; pSmoothFloat.setTarget(bIsOpen ? 1 : 0); setCornerRadius(); }
+
+    public void setCornerRadius()
+    {
+        if(bIsOpen)
+        {
+            pPreviewTextbox.setCornerRadius(new vec4(GUI.getTheme().cornerRadius.x, GUI.getTheme().cornerRadius.y, 0, 0));
+            vElements.get(numElements() - 1).setCornerRadius(new vec4(0, 0, GUI.getTheme().cornerRadius.z, GUI.getTheme().cornerRadius.w));
+        }
+        else
+        {
+            pPreviewTextbox.setCornerRadius(GUI.getTheme().cornerRadius);
+        }
+    }
 	
 	public static Dropdown createFromXMLNode(XMLNode node)
 	{

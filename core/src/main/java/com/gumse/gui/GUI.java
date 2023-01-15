@@ -34,6 +34,7 @@ public class GUI
             pDefaultTheme.textColor           = new vec4(0.90f, 0.90f, 0.90f, 1.0f);
             pDefaultTheme.accentColor         = new vec4(0.61f, 0.53f, 1.00f, 1.0f);
             pDefaultTheme.accentColorShade1   = new vec4(0.73f, 0.74f, 0.96f, 1.0f);
+            pDefaultTheme.cornerRadius        = new vec4(7.00f, 7.00f, 7.00f, 7.0f);
             pCurrentTheme = pDefaultTheme;
         }
 
