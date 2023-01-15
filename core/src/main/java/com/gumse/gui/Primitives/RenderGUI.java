@@ -35,7 +35,7 @@ public class RenderGUI
     protected void updateOnSizeChange() {};
     protected void updateOnTitleChange() {};
     protected void updateOnThemeChange() {};
-    protected void updateOnColorChange() {};
+    protected void updateOnColorChange() {}; // is probably obsolete
     protected void updateOnCornerRadiusChange() {};
     protected void updateOnAddGUI(RenderGUI gui) {};
 

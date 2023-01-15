@@ -100,6 +100,13 @@ public class Speechbubble extends RenderGUI
     }
 
     @Override
+    protected void updateOnThemeChange() 
+    {
+        pBackground.setColor(getColor(GUI.getTheme().primaryColor));
+        pIndicator.setColor(getColor(GUI.getTheme().primaryColor));
+    }
+
+    @Override
     protected void updateOnAddGUI(RenderGUI gui) 
     {
         removeChild(gui);
