@@ -226,8 +226,7 @@ public class HierarchyListEntry extends RenderGUI
     {
         bChildrenHidden = hidden;
         updateOnPosChange();
-        if(pParent != null && pParent.getType() == "HierarchyListEntry")
-            ((HierarchyListEntry)pParent).repositionEntries();
+        pParentList.getRootEntry().repositionEntries();
     }
 
     public void openAll()
