@@ -19,6 +19,7 @@ import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class HierarchyListEntry extends RenderGUI
@@ -47,23 +48,17 @@ public class HierarchyListEntry extends RenderGUI
         }
     }
 
-    private void repositionEntries() { repositionEntries(false); }
-    private void repositionEntries(boolean checkforselectedentry)
+    private void repositionEntries() { repositionEntries(0); }
+    private void repositionEntries(int offset)
     {
-        if(checkforselectedentry)
-            pParentList.selectEntry(null);
+        setPosition(new ivec2(INDENT_SIZE, offset));
 
+        int nextoffset = getSize().y;
         for(int i = 0; i < numChildren(); i++)
         {
             HierarchyListEntry entry = (HierarchyListEntry)getChild(i);
-            entry.repositionEntries(bChildrenHidden);
-            int ypos = (i+1) * entry.getSize().y;
-            if(i > 0)
-            {
-                ypos += ((HierarchyListEntry)getChild(i - 1)).getHeight();
-            }
-
-            entry.setPosition(new ivec2(INDENT_SIZE, ypos));
+            entry.repositionEntries(nextoffset);
+            nextoffset += entry.getHeight();
         }
     }
 
@@ -199,8 +194,8 @@ public class HierarchyListEntry extends RenderGUI
     { 
         if(bKeepTrackOfBoundingBox || override)
         {
-            bBoundingBox.pos = vActualPos;
-            bBoundingBox.size = getSize();
+            bBoundingBox.pos.set(vActualPos);
+            bBoundingBox.size.set(getSize());
 
             if(!bChildrenHidden)
             {
@@ -218,8 +213,15 @@ public class HierarchyListEntry extends RenderGUI
     public int getHeight()
     {
         if(!bChildrenHidden)
-            return getSize().y * (numChildren());
-        return 0;
+        {
+            int height = getSize().y;
+            for(RenderGUI child : vChildren)
+                height += ((HierarchyListEntry)child).getHeight();
+            return height;
+        }
+
+        
+        return getSize().y;
     }
 
     public void hiddenState(boolean hidden)

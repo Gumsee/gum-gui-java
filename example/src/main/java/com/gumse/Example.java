@@ -42,9 +42,9 @@ public class Example
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
         ListsPage listsPage = new ListsPage();
-        mainPage.hide(false);
+        mainPage.hide(true);
         loginPage.hide(true);
-        listsPage.hide(true);
+        listsPage.hide(false);
 
         //
         // ALWAYS ADD ENTRIES BEFORE ANYTHING ELSE

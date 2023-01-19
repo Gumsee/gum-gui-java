@@ -22,8 +22,8 @@ public class ListsPage extends RenderGUI
         //Add Hierarchylist and normal list
         Tabs listTabs = new Tabs(new ivec2(0, 30), new ivec2(100, 100), new ivec2(100, 20));
         listTabs.setSizeInPercent(true, true);
-        listTabs.addTab("List", true);
-        listTabs.addTab("HierarchyList", false);
+        listTabs.addTab("List", false);
+        listTabs.addTab("HierarchyList", true);
         listTabs.addTab("Some other tab", false);
         listTabs.addTab("Scroll here", false);
         listTabs.addTab("Reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeally long tab", false);
@@ -52,12 +52,23 @@ public class ListsPage extends RenderGUI
 
         HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false);
         testHierarchyList.setSizeInPercent(true, true);
-        HierarchyListEntry childEntry = new HierarchyListEntry("Some entry", testHierarchyList, null);
+        HierarchyListEntry childEntry = new HierarchyListEntry("Someee entry", testHierarchyList, null);
         childEntry.addEntry(new HierarchyListEntry("Child of another Child :O", testHierarchyList, null));
         childEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
         childEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        childEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        HierarchyListEntry subChildEntry = new HierarchyListEntry("Sub child", testHierarchyList, null);
+        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        childEntry.addEntry(subChildEntry);
         testHierarchyList.addEntry(childEntry);
+
+        HierarchyListEntry child2Entry = new HierarchyListEntry("eeh entry", testHierarchyList, null);
+        child2Entry.addEntry(new HierarchyListEntry("Child of another Child :O", testHierarchyList, null));
+        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        testHierarchyList.addEntry(child2Entry);
         listTabs.addGUIToTab(testHierarchyList, "HierarchyList");
 
         this.setSizeInPercent(true, true);

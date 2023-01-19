@@ -1,7 +1,5 @@
 package com.gumse.gui.Basics;
 
-import java.util.ArrayList;
-
 import org.lwjgl.opengl.GL11;
 
 import com.gumse.PostProcessing.Framebuffer;
@@ -13,13 +11,13 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
-import com.gumse.tools.Toolbox;
+import com.gumse.system.io.Mouse;
+import com.gumse.tools.Output;
 
 public class Tabs extends RenderGUI
 {
-    private TextBox pActiveTab;
+    private RenderGUI pActiveTab;
     private Box pBackground;
-    private ArrayList<TextBox> vTabs;
     private ivec2 vTabSize;
     private SmoothFloat sfOffset;
 
@@ -32,7 +30,6 @@ public class Tabs extends RenderGUI
         this.vTabSize = tabsize;
         this.pActiveTab = null;
         this.sfOffset = new SmoothFloat();
-        this.vTabs = new ArrayList<>();
 
         pBackground = new Box(new ivec2(0,0), new ivec2(100, tabsize.y));
         pBackground.setColor(GUI.getTheme().secondaryColor);
@@ -53,31 +50,14 @@ public class Tabs extends RenderGUI
     public void cleanup()
     {
         pBackground.destroyChildren();
-        //Gum::_delete(pBackground);
     }
 
     public void updateextra()
     {
-        if(vTabs.size() > 0)
+        if(pBackground.numChildren() > 0)
         {
-            for(int i = 0; i < vTabs.size(); i++)
-            {
-                if(vTabs.get(i).isClicked())
-                {
-                    if(pActiveTab != null)
-                    {
-                        pActiveTab.setColor(GUI.getTheme().primaryColor);
-                        pActiveTab.hideChildren(true);
-                    }
-                    vTabs.get(i).setColor(GUI.getTheme().primaryColorShade);
-                    vTabs.get(i).hideChildren(false);
-                    pActiveTab = vTabs.get(i);
-                }
-            }
-
-            TextBox lastTab = vTabs.get(vTabs.size() - 1);
-            if(lastTab.getPosition().x + lastTab.getSize().x > vActualSize.x &&
-                Toolbox.checkPointInBox(Window.CurrentlyBoundWindow.getMouse().getPosition(), new bbox2i(ivec2.sub(vActualPos, new ivec2(0, vTabSize.y)), new ivec2(vActualSize.x, vTabSize.y))))
+            TextBox lastTab = (TextBox)pBackground.getChild(pBackground.numChildren() - 1);
+            if(pBackground.isMouseInsideSkipChildren())
             {
                 sfOffset.setMax(lastTab.getRelativePosition().x + lastTab.getSize().x - vActualSize.x + lastTab.getOrigin().x);
                 sfOffset.increaseTarget(-50 * Window.CurrentlyBoundWindow.getMouse().getMouseWheelState());
@@ -98,81 +78,104 @@ public class Tabs extends RenderGUI
     protected void updateOnThemeChange() 
     {
         pBackground.setColor(GUI.getTheme().secondaryColor);
-        for(int i = 0; i < vTabs.size(); i++)
-            vTabs.get(i).setColor(GUI.getTheme().primaryColorShade);
+        for(int i = 0; i < vElements.size(); i++)
+            vElements.get(i).setColor(GUI.getTheme().primaryColorShade);
 
-        if(pActiveTab != null)
-            pActiveTab.setColor(GUI.getTheme().primaryColorShade);
+        if(getTab(pActiveTab.getTitle()) != null)
+            getTab(pActiveTab.getTitle()).setColor(GUI.getTheme().primaryColorShade);
     }
 
     public void renderextra()
     {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor(vActualPos.x, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y + vTabSize.y, vActualSize.x, vActualSize.y);
-        pBackground.render();
+        renderchildren();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
     }
 
     public void addGUIToTab(RenderGUI gui, String tabName)
     {
-        TextBox tab = getTab(tabName);
+        RenderGUI tab = getTabContent(tabName);
         if(tab != null)
-        {
             tab.addGUI(gui);
-            gui.setParent(this); //Overwrite parent
-            gui.reposition();
-            gui.resize();
-        }
     }
 
-    public void addTab(String name, boolean active)
+    public void addTab(final String name, final boolean active)
     {
-        float width = 0.0f;
-        for(TextBox tab : vTabs)
-            width += tab.getSize().x;
+        RenderGUI tabContent = new RenderGUI();
+        tabContent.setTitle(name);
+        tabContent.setSize(new ivec2(100, 100));
+        tabContent.setSizeInPercent(true, true);
+        addElement(tabContent);
 
-        TextBox tab = new TextBox(name, FontManager.getInstance().getDefaultFont(), new ivec2((int)width, 0), vTabSize);
-        //tab.setTextSize(vTabSize.y - 10);
+        int xoffset = 0;
+        for(RenderGUI tab : pBackground.getChildren())
+            xoffset += tab.getSize().x;
+
+        TextBox tabSelector = new TextBox(name, FontManager.getInstance().getDefaultFont(), new ivec2(xoffset, 0), vTabSize);
+        tabSelector.setSize(new ivec2(tabSelector.getTextSize().x + 30, vTabSize.y));
+        tabSelector.setCornerRadius(new vec4(0,0,0,0));
+        tabSelector.onClick((RenderGUI thisselector) -> {
+            setActiveTab(name);
+        });
+        tabSelector.onHover(null, Mouse.GUM_CURSOR_HAND);
+        pBackground.addGUI(tabSelector);
+
         if(active)
-        {
-            tab.setColor(GUI.getTheme().primaryColorShade);
-            tab.hideChildren(false);
-            pActiveTab = tab;
-        }
-        else
-        {
-            tab.setColor(GUI.getTheme().primaryColor);
-            tab.hideChildren(true);
-        }
-        tab.setSize(new ivec2(tab.getTextSize().x + 30, vTabSize.y));
-        //tab.setTextOffset(new ivec2(5, 3));
-        pBackground.addGUI(tab);
-        vTabs.add(tab);
+            setActiveTab(name);
     }
 
     public void setActiveTab(String tabname)
     {
-        TextBox pFoundTab = getTab(tabname);
-        if(pFoundTab != null)
-            this.pActiveTab = pFoundTab;
+        TextBox tab = getTab(tabname);
+        RenderGUI content = getTabContent(tabname);
+        if(tab != null)
+        {
+            //Disable all other tabs
+            for(RenderGUI othertab : pBackground.getChildren())
+                othertab.setColor(GUI.getTheme().primaryColor);
+
+            for(RenderGUI othercontent : vElements)
+            {
+                if(!othercontent.getType().equals("box"))
+                    othercontent.hide(true);
+            }
+
+            tab.setColor(GUI.getTheme().primaryColorShade);
+            this.pActiveTab = content;
+            content.hide(false);
+        }
     }
 
     public boolean isActiveTab(String tabname)
     {
-        TextBox pFoundTab = getTab(tabname);
+        RenderGUI pFoundTab = getTabContent(tabname);
         return pFoundTab != null && pActiveTab == pFoundTab;
     }
 
-    public TextBox getTab(String name)
+    private TextBox getTab(String name)
     {
-        for(int i = 0; i < vTabs.size(); i++)
-            if(vTabs.get(i).getTitle().toString() == name)
-                return vTabs.get(i);
+        for(RenderGUI child : pBackground.getChildren())
+        {
+            if(child.getTitle().equals(name))
+                return (TextBox)child;
+        }
         return null;
     }
 
-    public TextBox getActiveTab()    { return pActiveTab; }
-    public int numTabs()             { return vTabs.size(); }
+    public RenderGUI getTabContent(String name)
+    {
+        for(RenderGUI child : vElements)
+        {
+            if(child.getTitle().equals(name))
+                return child;
+        }
+        return null;
+    }
+
+    public RenderGUI getActiveTabContent() { return pActiveTab; }
+    public int numTabs()                   { return vElements.size(); }
 
     public static Tabs createFromXMLNode(XMLNode node)
     {
