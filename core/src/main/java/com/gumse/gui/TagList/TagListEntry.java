@@ -43,7 +43,7 @@ public class TagListEntry <T> extends RenderGUI
         addElement(pTextBox);
 
         pCross = new Cross(new ivec2(100, 50), new ivec2(15, 15));
-        pCross.setOrigin(new ivec2(18, 7));
+        pCross.setOrigin(new ivec2(10, 4));
         pCross.setPositionInPercent(true, true);
         addElement(pCross);
 

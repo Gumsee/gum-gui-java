@@ -48,13 +48,13 @@ public class Box extends RenderGUI
 
 			
 			pPositionVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] {
-				-1.0f, 1.0f, 0.0f,
-				-1.0f,-1.0f, 0.0f,
+				0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,
 				1.0f, 1.0f, 0.0f,
 
 				1.0f, 1.0f, 0.0f,
-				1.0f,-1.0f, 0.0f,
-				-1.0f,-1.0f, 0.0f
+				1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f
 			})));
 
 			pVAO.addAttribute(pPositionVBO, 0, 3, GL30.GL_FLOAT, 0, 0);

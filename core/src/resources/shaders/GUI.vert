@@ -12,7 +12,7 @@ void main()
     vec2 finalPos = vertexPosition.xy;
     gl_Position = orthomat * transmat * vec4(finalPos, 0.0f, 1.0f);
     vertexPos = finalPos;
-    Texcoord = vec2((vertexPosition.x+1.0)/2.0 * 1, (vertexPosition.y+1.0)/2.0 * 1);
+    Texcoord = vertexPosition.xy;
     if(!invertY) { Texcoord.y = 1 - Texcoord.y; }
     guisize = resolution;
 }

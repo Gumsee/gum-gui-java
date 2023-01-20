@@ -30,6 +30,8 @@ public class Speechbubble extends RenderGUI
 
         pIndicator = new Box(new ivec2(0, 0), new ivec2(20, 20));
         pIndicator.setColor(GUI.getTheme().primaryColor);
+        pIndicator.setRotationOrigin(new ivec2(10, 10));
+        pIndicator.setOrigin(new ivec2(0, 10));
         pIndicator.setRotation(45.0f);
         addElement(pIndicator);
 
@@ -42,7 +44,7 @@ public class Speechbubble extends RenderGUI
         switch(iSide)
         {
             case ABOVE:
-                pIndicator.setPosition(new ivec2(-10, -20));
+                pIndicator.setPosition(new ivec2(0, -20));
                 pIndicator.setCornerRadius(new vec4(0, 0, 0, 10));
 
                 pBackground.setPosition(new ivec2(0, -10));
@@ -51,7 +53,7 @@ public class Speechbubble extends RenderGUI
                 break;
 
             case BELOW:
-                pIndicator.setPosition(new ivec2(-10, 5));
+                pIndicator.setPosition(new ivec2(0, 5));
                 pIndicator.setCornerRadius(new vec4(0, 10, 0, 0));
 
                 pBackground.setPosition(new ivec2(0, 15));
@@ -60,7 +62,7 @@ public class Speechbubble extends RenderGUI
                 break;
 
             case LEFT:
-                pIndicator.setPosition(new ivec2(-20, -10));
+                pIndicator.setPosition(new ivec2(-10, -10));
                 pIndicator.setCornerRadius(new vec4(0, 0, 10, 0));
 
                 pBackground.setPosition(new ivec2(-10, 0));
@@ -69,7 +71,7 @@ public class Speechbubble extends RenderGUI
                 break;
 
             case RIGHT:
-                pIndicator.setPosition(new ivec2(5, -10));
+                pIndicator.setPosition(new ivec2(15, -10));
                 pIndicator.setCornerRadius(new vec4(10, 0, 0, 0));
 
                 pBackground.setPosition(new ivec2(15, 0));

@@ -1,6 +1,7 @@
 package com.gumse.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL30;
 
@@ -33,8 +34,8 @@ public class VertexBufferObject
         GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
     }
 
-    public void setData(ArrayList<Float> data) { setData(data, GL30.GL_STATIC_DRAW); }
-    public void setData(ArrayList<Float> data, int usage)
+    public void setData(List<Float> data) { setData(data, GL30.GL_STATIC_DRAW); }
+    public void setData(List<Float> data, int usage)
     {
         bind();
         GL30.glBufferData(GL30.GL_ARRAY_BUFFER, Toolbox.arrayList2FloatBuffer(data), usage);

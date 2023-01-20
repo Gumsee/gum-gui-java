@@ -94,6 +94,7 @@ public class VertexArrayObject
         return index;
     }
 
-    public int numVertices() { return this.iVertexCount; }
-    public int getID()       { return this.ivaoID; }
+    public void setVertexCount(int count) { this.iVertexCount = count; }
+    public int numVertices()              { return this.iVertexCount; }
+    public int getID()                    { return this.ivaoID; }
 };

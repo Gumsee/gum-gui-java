@@ -1,25 +1,17 @@
 package com.gumse.gui.HierarchyList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.lwjgl.opengl.GL11;
-
-import com.gumse.PostProcessing.Framebuffer;
-import com.gumse.gui.GUI;
-import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Basics.TextField;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.TextField.TextFieldInputCallback;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Shape;
 import com.gumse.maths.*;
-import com.gumse.model.VertexArrayObject;
-import com.gumse.model.VertexBufferObject;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class HierarchyListEntry extends RenderGUI
@@ -29,24 +21,14 @@ public class HierarchyListEntry extends RenderGUI
     private boolean bHasChildEntries;
     private GUICallback pCallback;
     private int iIndent = 0;
-    private static VertexArrayObject pArrowVAO; 
-    private mat4 m4ArrowMatrix;
     private HierarchyList pParentList;
 
-    private static void initVAO()
-    {
-        if(pArrowVAO == null)
-        {
-            pArrowVAO = new VertexArrayObject();
-            VertexBufferObject pArrowVBO = new VertexBufferObject();
-            pArrowVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] { 
-                 0.5f,  0.0f, 0.0f,
-                -0.5f,  0.0f, 0.0f,
-                 0.0f, -0.5f, 0.0f,
-            })));
-            pArrowVAO.addAttribute(pArrowVBO, 0, 3, GL11.GL_FLOAT, 0, 0);
-        }
-    }
+    private Shape pArrowShape;
+    private static final Float[] faArrowVertices = new Float[] { 
+        0.5f,  1.0f, 0.0f,
+        0.5f,  0.0f, 0.0f,
+        1.0f,  0.5f, 0.0f,
+    };
 
     private void repositionEntries() { repositionEntries(0); }
     private void repositionEntries(int offset)
@@ -95,7 +77,10 @@ public class HierarchyListEntry extends RenderGUI
 
         pTitleBox.setSizeInPercent(true, true);
         addElement(pTitleBox);
-        initVAO();
+        
+        pArrowShape = new Shape("hierarchylistentryarrow", new ivec2(4, 0), new ivec2(16), Arrays.asList(faArrowVertices));
+        pArrowShape.setRotationOrigin(new ivec2(8));
+        addElement(pArrowShape);
         updateOnPosChange();
 
         setSize(new ivec2(100, 30));
@@ -146,36 +131,10 @@ public class HierarchyListEntry extends RenderGUI
         }
     }
 
-    protected void updateOnPosChange()
-    {
-        vec3 rot = new vec3();
-        if(bChildrenHidden)
-            rot.set(new vec3(0, 0, 90));
-
-        mat4 model = new mat4();
-        model.translate(new vec3(vActualPos.x + 5, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - 15, 0));
-        model.scale(new vec3(15));
-        model.rotate(rot);
-        model.transpose();
-        
-        m4ArrowMatrix = model;
-    }
-
     public void renderextra()
     {
         if(bHasChildEntries)
-        {
-            GUIShader.getShaderProgram().use();
-            GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
-            GUIShader.getShaderProgram().loadUniform("transmat", m4ArrowMatrix);
-            GUIShader.getShaderProgram().loadUniform("Uppercolor", GUI.getTheme().textColor);
-            GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
-            GUIShader.getShaderProgram().loadUniform("hasTexture", false);
-            pArrowVAO.bind();
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-            pArrowVAO.unbind();
-            GUIShader.getShaderProgram().unuse();
-        }
+            pArrowShape.render();
 
         pTitleBox.render();
         if(!bChildrenHidden)
@@ -227,6 +186,11 @@ public class HierarchyListEntry extends RenderGUI
     public void hiddenState(boolean hidden)
     {
         bChildrenHidden = hidden;
+        if(bChildrenHidden)
+            pArrowShape.setRotation(0.0f);
+        else
+            pArrowShape.setRotation(-90.0f);
+
         updateOnPosChange();
         pParentList.getRootEntry().repositionEntries();
     }

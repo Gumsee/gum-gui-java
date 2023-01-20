@@ -3,6 +3,7 @@ package com.gumse.tools;
 import java.nio.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.lwjgl.BufferUtils;
@@ -75,7 +76,7 @@ public class Toolbox
     }
 
 
-    public static FloatBuffer arrayList2FloatBuffer(ArrayList<Float> arrList)
+    public static FloatBuffer arrayList2FloatBuffer(List<Float> arrList)
     {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(arrList.size());
         for(int i = 0; i < arrList.size(); i++)
@@ -94,7 +95,7 @@ public class Toolbox
         return buffer;
     }
 
-    public static IntBuffer arrayList2IntBuffer(ArrayList<Integer> arrList)
+    public static IntBuffer arrayList2IntBuffer(List<Integer> arrList)
     {
         IntBuffer buffer = BufferUtils.createIntBuffer(arrList.size());
         for(int i = 0; i < arrList.size(); i++)

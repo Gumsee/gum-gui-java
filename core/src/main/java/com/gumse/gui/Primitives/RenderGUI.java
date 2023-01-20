@@ -39,7 +39,7 @@ public class RenderGUI
     protected void updateOnCornerRadiusChange() {};
     protected void updateOnAddGUI(RenderGUI gui) {};
 
-    protected ivec2 vPos, vActualPos, vOrigin;
+    protected ivec2 vPos, vActualPos, vActualOrigin, vOrigin, vRotationOrigin;
     protected ivec2 vSize, vActualSize, vMargin, vMinSize, vMaxSize;
     protected float fRotation;
     protected float fAlphaOverride;
@@ -89,6 +89,8 @@ public class RenderGUI
         this.vPos = new ivec2();
         this.vActualPos = new ivec2();
         this.vOrigin = new ivec2();
+        this.vActualOrigin = new ivec2();
+        this.vRotationOrigin = new ivec2();
         this.vSize = new ivec2();
         this.vActualSize = new ivec2();
         this.vMargin = new ivec2();
@@ -165,12 +167,14 @@ public class RenderGUI
             if(posInPercent.x) { vActualPos.x = (int)Math.ceil(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
             if(posInPercent.y) { vActualPos.y = (int)Math.ceil(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
         }
-        if(originInPercent.x)  { vActualPos.x -= (vActualSize.x * vOrigin.x) / 100; }
-        else                   { vActualPos.x -= vOrigin.x; }
+        if(originInPercent.x)  { vActualOrigin.x = (vActualSize.x * vOrigin.x) / 100; }
+        else                   { vActualOrigin.x = vOrigin.x; }
 
-        if(originInPercent.y)  { vActualPos.y -= (vActualSize.y * vOrigin.y) / 100; }
-        else                   { vActualPos.y -= vOrigin.y; }
+        if(originInPercent.y)  { vActualOrigin.y = (vActualSize.y * vOrigin.y) / 100; }
+        else                   { vActualOrigin.y = vOrigin.y; }
         
+        vActualPos.sub(vActualOrigin);
+
 
         updateOnPosChange();
         updateMatrix();
@@ -373,11 +377,26 @@ public class RenderGUI
     public void updateMatrix()
     {
         mat4 model = new mat4();
-        ivec2 modelPos = ivec2.add(vActualPos, ivec2.mul(vActualSize, 0.5f));
-        modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y;
-        model.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
-        model.scale(new vec3(vActualSize.x * 0.5f, vActualSize.y * 0.5f, 1.0f));
-        model.rotate(new vec3(0, 0, fRotation));
+        ivec2 modelPos = new ivec2(vActualPos);
+        modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y - vActualSize.y;
+
+        mat4 posMatrix = new mat4();
+        posMatrix.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
+
+        mat4 rotMatrix = new mat4();
+        rotMatrix.rotate(new vec3(0, 0, fRotation));
+
+        mat4 rotOriginMatrix = new mat4();
+        rotOriginMatrix.translate(new vec3(-vRotationOrigin.x, -vRotationOrigin.y, 0.0f));
+        rotMatrix.mul(rotOriginMatrix);
+
+        mat4 scaleMatrix = new mat4();
+        scaleMatrix.scale(new vec3(vActualSize.x, vActualSize.y, 1.0f));
+
+        model.mul(posMatrix);
+        model.mul(rotMatrix);
+        //model.mul(rotOriginMatrix);
+        model.mul(scaleMatrix);
         model.transpose();
         
         mTransformationMatrix = model;
@@ -455,6 +474,7 @@ public class RenderGUI
     public void onClick(GUICallback callback)                   { this.pClickCallback = callback; }
     public void onHover(GUICallback callback, int shape)        { this.pHoverCallback = callback; this.iHoverCursorShape = shape; }
     public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
+    public void setRotationOrigin(ivec2 orig)                   { this.vRotationOrigin.set(orig); }
     public void setPosition(ivec2 pos)                          { this.vPos.set(pos); reposition(); }
     public void setPositionX(int pos)                           { this.vPos.x = pos; reposition(); }
     public void setPositionY(int pos)                           { this.vPos.y = pos; reposition(); }
