@@ -78,7 +78,7 @@ public class Mouse
 
     public Mouse(Window context)
     {
-        this.v2Position = new ivec2(0,0);
+        this.v2Position = new ivec2(-1000, -1000);
         this.v2PreviousPosition = new ivec2(0,0);
         this.v2PositionDelta = new ivec2(0,0);
         this.pContextWindow = context;
@@ -340,6 +340,7 @@ public class Mouse
 
     void mouseLeftCallback()
     {
+        v2Position.set(new ivec2(-1000, -1000));
         if(leftCallback != null)
             leftCallback.run();
     }

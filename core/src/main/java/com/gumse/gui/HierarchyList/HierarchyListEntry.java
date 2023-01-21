@@ -1,72 +1,46 @@
 package com.gumse.gui.HierarchyList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.lwjgl.opengl.GL11;
-
-import com.gumse.PostProcessing.Framebuffer;
-import com.gumse.gui.GUI;
-import com.gumse.gui.GUIShader;
+import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Basics.TextField;
+import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.TextField.TextFieldInputCallback;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Shape;
 import com.gumse.maths.*;
-import com.gumse.model.VertexArrayObject;
-import com.gumse.model.VertexBufferObject;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
 import com.gumse.tools.Toolbox;
 
 public class HierarchyListEntry extends RenderGUI
 {
-    public interface HierarchyListCallback {
-        void run();
-    }
-
     private static final int INDENT_SIZE = 10;
-    private TextField title;
-    private boolean bIsOpen;
+    private RenderGUI pTitleBox;
     private boolean bHasChildEntries;
-    private HierarchyListCallback pCallback;
-    private int indent = 0;
-    private static VertexArrayObject pArrowVAO; 
-    private mat4 m4ArrowMatrix;
+    private GUICallback pCallback;
+    private int iIndent = 0;
     private HierarchyList pParentList;
 
-    private static void initVAO()
-    {
-        if(pArrowVAO == null)
-        {
-            pArrowVAO = new VertexArrayObject();
-            VertexBufferObject pArrowVBO = new VertexBufferObject();
-            pArrowVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] { 
-                 0.5f,  0.0f, 0.0f,
-                -0.5f,  0.0f, 0.0f,
-                 0.0f, -0.5f, 0.0f,
-            })));
-            pArrowVAO.addAttribute(pArrowVBO, 0, 3, GL11.GL_FLOAT, 0, 0);
-        }
-    }
+    private Shape pArrowShape;
+    private static final Float[] faArrowVertices = new Float[] { 
+        0.5f,  1.0f, 0.0f,
+        0.5f,  0.0f, 0.0f,
+        1.0f,  0.5f, 0.0f,
+    };
 
-    private void repositionEntries() { repositionEntries(false); }
-    private void repositionEntries(boolean checkforselectedentry)
+    private void repositionEntries() { repositionEntries(0); }
+    private void repositionEntries(int offset)
     {
-        if(checkforselectedentry)
-            pParentList.selectEntry(null);
+        setPosition(new ivec2(INDENT_SIZE, offset));
 
+        int nextoffset = getSize().y;
         for(int i = 0; i < numChildren(); i++)
         {
             HierarchyListEntry entry = (HierarchyListEntry)getChild(i);
-            entry.repositionEntries(!bIsOpen);
-            int ypos = (i+1) * entry.getSize().y;
-            if(i > 0)
-            {
-                ypos += ((HierarchyListEntry)getChild(i - 1)).getHeight();
-            }
-
-            entry.setPosition(new ivec2(INDENT_SIZE, ypos));
+            entry.repositionEntries(nextoffset);
+            nextoffset += entry.getHeight();
         }
     }
 
@@ -74,30 +48,43 @@ public class HierarchyListEntry extends RenderGUI
     //
     // List Entry
     //
-    public HierarchyListEntry(String name, HierarchyList parentlist, HierarchyListCallback callback)
+    public HierarchyListEntry(String name, HierarchyList parentlist, GUICallback callback)
     {
-        this.bIsOpen = false;
+        this.bChildrenHidden = true;
         this.bHasChildEntries = false;
         this.pCallback = callback;
         this.sType = "HierarchyListEntry";
         this.pParentList = parentlist;
 
-        this.title = new TextField(name, FontManager.getInstance().getDefaultFont(), new ivec2(20,0), new ivec2(100, 100));
-        this.title.setSizeInPercent(true, true);
-        this.title.shouldActivateOnDoubleclick(true);
-        this.title.getBox().getBox().hide(true);
-        this.title.getBox().getText().setCharacterHeight(20);
-        //this.title.getBox().setTextOffset(new ivec2(0, 3));
-        this.title.setCursorShapeOnHover(Mouse.GUM_CURSOR_DEFAULT);
+        if(parentlist.isEditable())
+        {
+            TextField titlefield = new TextField(name, FontManager.getInstance().getDefaultFont(), new ivec2(20,0), new ivec2(100, 100));
+            titlefield.shouldActivateOnDoubleclick(true);
+            titlefield.getBox().getBox().hide(true);
+            titlefield.getBox().getText().setCharacterHeight(20);
+            titlefield.setCursorShapeOnHover(Mouse.GUM_CURSOR_DEFAULT);
+            pTitleBox = titlefield;
+        }
+        else
+        {
+            TextBox titlebox = new TextBox(name, FontManager.getInstance().getDefaultFont(), new ivec2(20,0), new ivec2(100, 100));
+            titlebox.setAlignment(Alignment.LEFT);
+            titlebox.getBox().hide(true);
+            titlebox.getText().setCharacterHeight(20);
+            //titlebox.setCursorShapeOnHover(Mouse.GUM_CURSOR_DEFAULT);
+            pTitleBox = titlebox;
+        }
 
-        addElement(title);
-        initVAO();
+        pTitleBox.setSizeInPercent(true, true);
+        addElement(pTitleBox);
+        
+        pArrowShape = new Shape("hierarchylistentryarrow", new ivec2(4, 0), new ivec2(16), Arrays.asList(faArrowVertices));
+        pArrowShape.setRotationOrigin(new ivec2(8));
+        addElement(pArrowShape);
         updateOnPosChange();
 
         setSize(new ivec2(100, 30));
         setSizeInPercent(true, false);
-
-        resize();
         reposition();
     }
 
@@ -109,11 +96,9 @@ public class HierarchyListEntry extends RenderGUI
 
     public void updateextra()
     {
-        //if(bIsOpen)
-        //    updatechildren();
-        
         Mouse mouse = Window.CurrentlyBoundWindow.getMouse();
-        if(!title.isEditing() && isMouseInside() && !RenderGUI.somethingHasBeenClicked())
+        if((!pParentList.isEditable() || !((TextField)pTitleBox).isEditing()) && 
+           isMouseInside() && !RenderGUI.somethingHasBeenClicked())
         {
             if(bHasChildEntries)
             {
@@ -123,7 +108,8 @@ public class HierarchyListEntry extends RenderGUI
                     mouse.setCursor(Mouse.GUM_CURSOR_HAND);
                     if(mouse.hasLeftRelease() && Toolbox.checkPointInBox(mouse.getLeftClickPosition(), new bbox2i(vActualPos, new ivec2(20, 30))))
                     {
-                        openState(!bIsOpen);
+                        hiddenState(!bChildrenHidden);
+                        pParentList.selectEntry(null);
                     }
                 }
             }
@@ -135,7 +121,7 @@ public class HierarchyListEntry extends RenderGUI
                 {
                     pParentList.selectEntry(this);
                     if(pCallback != null)
-                        pCallback.run();
+                        pCallback.run(this);
                 }
                 if(mouse.hasLeftDoubleClick())
                 {
@@ -143,49 +129,21 @@ public class HierarchyListEntry extends RenderGUI
                 }
             }
         }
-        title.update();
-    }
-
-    protected void updateOnPosChange()
-    {
-        vec3 rot = new vec3();
-        if(!bIsOpen)
-            rot.set(new vec3(0, 0, 90));
-
-        mat4 model = new mat4();
-        model.translate(new vec3(vActualPos.x + 5, Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - 15, 0));
-        model.scale(new vec3(15));
-        model.rotate(rot);
-        model.transpose();
-        
-        m4ArrowMatrix = model;
     }
 
     public void renderextra()
     {
         if(bHasChildEntries)
-        {
-            GUIShader.getShaderProgram().use();
-            GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
-            GUIShader.getShaderProgram().loadUniform("transmat", m4ArrowMatrix);
-            GUIShader.getShaderProgram().loadUniform("Uppercolor", new vec4(0.76f, 0.76f, 0.76f,1.0f));
-            GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
-            GUIShader.getShaderProgram().loadUniform("hasTexture", false);
-            pArrowVAO.bind();
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-            pArrowVAO.unbind();
-            GUIShader.getShaderProgram().unuse();
-        }
+            pArrowShape.render();
 
-        title.render();
-        
-        if(bIsOpen)
+        pTitleBox.render();
+        if(!bChildrenHidden)
             renderchildren();
     }
 
     public void addEntry(HierarchyListEntry entry)
     {
-        entry.setIndent(indent + INDENT_SIZE);
+        entry.setIndent(iIndent + INDENT_SIZE);
         addGUI(entry);
         repositionEntries();
         bHasChildEntries = true;
@@ -195,10 +153,10 @@ public class HierarchyListEntry extends RenderGUI
     { 
         if(bKeepTrackOfBoundingBox || override)
         {
-            bBoundingBox.pos = vActualPos;
-            bBoundingBox.size = getSize();
+            bBoundingBox.pos.set(vActualPos);
+            bBoundingBox.size.set(getSize());
 
-            if(bIsOpen)
+            if(!bChildrenHidden)
             {
                 //bBoundingBox.size.y += getSize().y * (numChildren());
                 for(int i = 0; i < numChildren(); i++)
@@ -213,22 +171,33 @@ public class HierarchyListEntry extends RenderGUI
 
     public int getHeight()
     {
-        if(bIsOpen)
-            return getSize().y * (numChildren());
-        return 0;
+        if(!bChildrenHidden)
+        {
+            int height = getSize().y;
+            for(RenderGUI child : vChildren)
+                height += ((HierarchyListEntry)child).getHeight();
+            return height;
+        }
+
+        
+        return getSize().y;
     }
 
-    public void openState(boolean opn)
+    public void hiddenState(boolean hidden)
     {
-        bIsOpen = opn;
+        bChildrenHidden = hidden;
+        if(bChildrenHidden)
+            pArrowShape.setRotation(0.0f);
+        else
+            pArrowShape.setRotation(-90.0f);
+
         updateOnPosChange();
-        if(pParent != null && pParent.getType() == "HierarchyListEntry")
-            ((HierarchyListEntry)pParent).repositionEntries();
+        pParentList.getRootEntry().repositionEntries();
     }
 
     public void openAll()
     {
-        bIsOpen = true;
+        bChildrenHidden = false;
         for(int i = 0; i < numChildren(); i++)
         {
             HierarchyListEntry entry = (HierarchyListEntry)getChild(i);
@@ -240,12 +209,13 @@ public class HierarchyListEntry extends RenderGUI
 
     public void setIndent(int indent)
     {
-        this.indent = indent;
+        this.iIndent = indent;
         //this.title.setPosition(ivec2(indent, title.getPosition().y));
     }
     public void setRenameCallback(TextFieldInputCallback callback)
     {
-        this.title.setCallback(callback);
+        if(pParentList.isEditable())
+            ((TextField)pTitleBox).setCallback(callback);
     }
 
     public static void cleanupAll()

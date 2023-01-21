@@ -48,13 +48,13 @@ public class Box extends RenderGUI
 
 			
 			pPositionVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] {
-				-1.0f, 1.0f, 0.0f,
-				-1.0f,-1.0f, 0.0f,
+				0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,
 				1.0f, 1.0f, 0.0f,
 
 				1.0f, 1.0f, 0.0f,
-				1.0f,-1.0f, 0.0f,
-				-1.0f,-1.0f, 0.0f
+				1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f
 			})));
 
 			pVAO.addAttribute(pPositionVBO, 0, 3, GL30.GL_FLOAT, 0, 0);
@@ -95,7 +95,7 @@ public class Box extends RenderGUI
         GUIShader.getShaderProgram().loadUniform("invertY", bInvertY);
         GUIShader.getShaderProgram().loadUniform("transmat", mTransformationMatrix);
         GUIShader.getShaderProgram().loadUniform("resolution", vActualSize);
-        GUIShader.getShaderProgram().loadUniform("radius", v4CornerRadius);
+        GUIShader.getShaderProgram().loadUniform("radius", getCornerRadius());
         GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -115,7 +115,7 @@ public class Box extends RenderGUI
         renderchildren();
 	}
 
-	public void renderCustom()
+	public static void renderCustom()
 	{
 		pVAO.bind();
 		GL30.glDrawArrays(GL30.GL_TRIANGLE_STRIP, 0, 6);

@@ -3,7 +3,7 @@ package com.gumse.gui.Font;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 
 public class FontManager
@@ -20,7 +20,7 @@ public class FontManager
 		FontLoader.init();
 		//Load Default Font from memory
 		//pDefaultFont = loadFontFromMemory("default", defaultFont, sizeof(defaultFont) * sizeof(unsigned char));
-		String germanKeyboard = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?`´²³#'*+~-_.:,;<>|°^\\ß{[]}@€µ öäü\n";
+		String germanKeyboard = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"§$%&/()=?`´²³#'*+~-_.:,;<>|°^\\ß{[]}@€µ öäüÖÄÜẞ\n";
 		pDefaultFont = Font.loadFontFromResource("fonts/opensans.ttf", germanKeyboard);
 		mFonts.put("default", pDefaultFont);
 		//Gum::_delete(pFreetypeLibrary);
@@ -35,7 +35,7 @@ public class FontManager
 
 	public void cleanup()
 	{
-		Debug.debug("FontManager: Cleaning...");
+		Output.debug("FontManager: Cleaning...");
 		//for(auto font : mFonts)
 		//	Gum::_delete(font.second);
 		
@@ -58,7 +58,7 @@ public class FontManager
 	public Font getFont(String fontname)
 	{	
 		if(!mFonts.containsKey(fontname))
-			Debug.error("Font: " + fontname + " does not exist");
+			Output.error("Font: " + fontname + " does not exist");
 		return mFonts.get(fontname);
 	}
 

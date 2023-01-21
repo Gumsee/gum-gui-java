@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class bvec2 
 {
@@ -42,6 +42,6 @@ public class bvec2
     public void print()
     {
         String vecstr = "bvec2(" + Boolean.toString(this.x) + ", " + Boolean.toString(this.y) + ")";
-        Debug.info(vecstr);
+        Output.info(vecstr);
     }
 }

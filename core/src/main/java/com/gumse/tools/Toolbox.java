@@ -3,6 +3,7 @@ package com.gumse.tools;
 import java.nio.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.lwjgl.BufferUtils;
@@ -12,9 +13,9 @@ import com.gumse.maths.*;
 
 public class Toolbox 
 {
-    public static int StringToInt(String str)        { int ret = 0;      try { ret = Integer.parseInt(str);   } catch(NumberFormatException e) { Debug.error("StringToInt: couldn't convert string, invalid argument!");    } return ret; }
-    public static float StringToFloat(String str)    { float ret = 0.0f; try { ret = Float.parseFloat(str);   } catch(NumberFormatException e) { Debug.error("StringToFloat: couldn't convert string, invalid argument!");  } return ret; }
-    public static double StringToDouble(String str)  { double ret = 0.0; try { ret = Double.parseDouble(str); } catch(NumberFormatException e) { Debug.error("StringToDouble: couldn't convert string, invalid argument!"); } return ret; }
+    public static int StringToInt(String str)        { int ret = 0;      try { ret = Integer.parseInt(str);   } catch(NumberFormatException e) { Output.error("StringToInt: couldn't convert string, invalid argument!");    } return ret; }
+    public static float StringToFloat(String str)    { float ret = 0.0f; try { ret = Float.parseFloat(str);   } catch(NumberFormatException e) { Output.error("StringToFloat: couldn't convert string, invalid argument!");  } return ret; }
+    public static double StringToDouble(String str)  { double ret = 0.0; try { ret = Double.parseDouble(str); } catch(NumberFormatException e) { Output.error("StringToDouble: couldn't convert string, invalid argument!"); } return ret; }
 
     public static vec2 StringToVec2(String str)
     {
@@ -75,7 +76,7 @@ public class Toolbox
     }
 
 
-    public static FloatBuffer arrayList2FloatBuffer(ArrayList<Float> arrList)
+    public static FloatBuffer arrayList2FloatBuffer(List<Float> arrList)
     {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(arrList.size());
         for(int i = 0; i < arrList.size(); i++)
@@ -94,7 +95,7 @@ public class Toolbox
         return buffer;
     }
 
-    public static IntBuffer arrayList2IntBuffer(ArrayList<Integer> arrList)
+    public static IntBuffer arrayList2IntBuffer(List<Integer> arrList)
     {
         IntBuffer buffer = BufferUtils.createIntBuffer(arrList.size());
         for(int i = 0; i < arrList.size(); i++)
@@ -121,7 +122,7 @@ public class Toolbox
         }
         catch(Exception e)
         {
-            Debug.error("Failed to read resource \"" + resource + "\" into bytebuffer: " + e.getMessage());
+            Output.error("Failed to read resource \"" + resource + "\" into bytebuffer: " + e.getMessage());
         }
 
         return buffer;
@@ -144,7 +145,7 @@ public class Toolbox
         }
         catch(Exception e)
         {
-            Debug.error("Failed to read file \"" + filepath + "\" into bytebuffer: " + e.getMessage());
+            Output.error("Failed to read file \"" + filepath + "\" into bytebuffer: " + e.getMessage());
         }
 
         return buffer;
@@ -157,7 +158,7 @@ public class Toolbox
             retstr = new Scanner(classtouse.getClassLoader().getResourceAsStream(resource), "UTF-8").useDelimiter("\\A").next();
         }
         //catch(IOException e) { Debug.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }
-        catch(Exception e) { Debug.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }
+        catch(Exception e) { Output.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }
 
         return retstr;
     }

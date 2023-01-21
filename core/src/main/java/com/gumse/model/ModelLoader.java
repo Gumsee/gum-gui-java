@@ -58,11 +58,11 @@ public class ModelLoader
         // check for errors
         if(pScene == null || (pScene.mFlags() & Assimp.AI_SCENE_FLAGS_INCOMPLETE) == 1) // if is Not Zero
         {
-            Debug.error("ObjectLoader: " + filename + " ERROR::ASSIMP:: " + Assimp.aiGetErrorString());
+            Output.error("ObjectLoader: " + filename + " ERROR::ASSIMP:: " + Assimp.aiGetErrorString());
             return;
         }
         this.processNode(pScene.mRootNode());
-        Debug.info("Loaded Object: " + filename + ", numMeshes: " + Integer.toString(alMeshes.size()) + ", Children: " + Integer.toString(pScene.mRootNode().mNumChildren()));
+        Output.info("Loaded Object: " + filename + ", numMeshes: " + Integer.toString(alMeshes.size()) + ", Children: " + Integer.toString(pScene.mRootNode().mNumChildren()));
 
         MemoryUtil.memFree(modelBuffer);
     }

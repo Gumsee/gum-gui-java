@@ -134,6 +134,13 @@ public class Switch extends RenderGUI
     }
 
     @Override
+    protected void updateOnThemeChange() 
+    {
+        pBackground.setColor(getColor(GUI.getTheme().secondaryColor));
+        pTickbox.setColor(GUI.getTheme().accentColor);
+    }
+
+    @Override
     public void renderextra() 
     {
         pBackground.render();

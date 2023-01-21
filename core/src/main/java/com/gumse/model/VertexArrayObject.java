@@ -3,7 +3,7 @@ package com.gumse.model;
 import java.util.ArrayList;
 import org.lwjgl.opengl.*;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
 public class VertexArrayObject
@@ -66,7 +66,7 @@ public class VertexArrayObject
         
         if(vAttributes.contains(index))
         {
-            Debug.warn("VertexArrayObject: Attribute " + index + " has already been added! (Not doing anything..)");
+            Output.warn("VertexArrayObject: Attribute " + index + " has already been added! (Not doing anything..)");
         }
         else
         {
@@ -94,6 +94,7 @@ public class VertexArrayObject
         return index;
     }
 
-    public int numVertices() { return this.iVertexCount; }
-    public int getID()       { return this.ivaoID; }
+    public void setVertexCount(int count) { this.iVertexCount = count; }
+    public int numVertices()              { return this.iVertexCount; }
+    public int getID()                    { return this.ivaoID; }
 };

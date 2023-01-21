@@ -15,7 +15,7 @@ import com.gumse.pages.MainPage;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 
@@ -26,7 +26,7 @@ public class Example
         Globals.DEBUG_BUILD = true;
         System.setProperty("java.awt.headless", "true"); //for iCrap support
 
-        Debug.init();
+        Output.init();
         Display.init();
         
         //Window Options
@@ -38,16 +38,6 @@ public class Example
                 testGUI.setSize(val);
             }
         });
-
-        /*Theme lightTheme = new Theme();
-        lightTheme.backgroundColor   = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
-        lightTheme.primaryColor      = vec4.div(Color.HEXToRGBA("#FFFFFF"), 255.0f);
-        lightTheme.secondaryColor    = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
-        lightTheme.accentColor       = vec4.div(Color.HEXToRGBA("#0F79D9"), 255.0f);
-        lightTheme.accentColorShade1 = vec4.div(Color.HEXToRGBA("#A6C7E5"), 255.0f);
-        lightTheme.textColor         = vec4.div(Color.HEXToRGBA("#000000"), 255.0f);
-        lightTheme.borderThickness   = 1;
-        testGUI.setTheme(lightTheme);*/
 
         MainPage mainPage = new MainPage();
         LoginPage loginPage = new LoginPage();
@@ -66,28 +56,28 @@ public class Example
         AltMenuEntry fileEntry = new AltMenuEntry("File", null);
         altMenu.addEntry(fileEntry);
         fileEntry.addEntry(new AltMenuEntry("Open", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be opened"); }
+            @Override public void run() { Output.info("File should be opened"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Save", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be saved"); }
+            @Override public void run() { Output.info("File should be saved"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Save As", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("File should be saved as"); }
+            @Override public void run() { Output.info("File should be saved as"); }
         }));
         fileEntry.addEntry(new AltMenuEntry("Exit", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Exit.."); pMainWindow.close(); }
+            @Override public void run() { Output.info("Exit.."); pMainWindow.close(); }
         }));
 
         AltMenuEntry editEntry = new AltMenuEntry("Edit", null);
         altMenu.addEntry(editEntry);
         editEntry.addEntry(new AltMenuEntry("Undo", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Undo"); }
+            @Override public void run() { Output.info("Undo"); }
         }));
         editEntry.addEntry(new AltMenuEntry("Redo", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Redo"); }
+            @Override public void run() { Output.info("Redo"); }
         }));
         editEntry.addEntry(new AltMenuEntry("Settings", new AltMenuEntryCallback() {
-            @Override public void run() { Debug.info("Settings"); }
+            @Override public void run() { Output.info("Settings"); }
         }));
 
         AltMenuEntry viewEntry = new AltMenuEntry("View", null);

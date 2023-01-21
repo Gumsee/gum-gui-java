@@ -10,7 +10,6 @@ import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Debug;
 import com.gumse.tools.Toolbox;
 
 public class RenderGUI
@@ -35,11 +34,12 @@ public class RenderGUI
     protected void updateOnPosChange()  {};
     protected void updateOnSizeChange() {};
     protected void updateOnTitleChange() {};
-    protected void updateOnColorChange() {};
+    protected void updateOnThemeChange() {};
+    protected void updateOnColorChange() {}; // is probably obsolete
     protected void updateOnCornerRadiusChange() {};
     protected void updateOnAddGUI(RenderGUI gui) {};
 
-    protected ivec2 vPos, vActualPos, vOrigin;
+    protected ivec2 vPos, vActualPos, vActualOrigin, vOrigin, vRotationOrigin;
     protected ivec2 vSize, vActualSize, vMargin, vMinSize, vMaxSize;
     protected float fRotation;
     protected float fAlphaOverride;
@@ -66,9 +66,9 @@ public class RenderGUI
 
     public RenderGUI() 
     {
-        this.v4Color = null;
-        this.v4CornerRadius = new vec4(0,0,0,0);
-        this.pParent = null;
+        this.v4Color        = null;
+        this.v4CornerRadius = null;
+        this.pParent        = null;
         this.pClickCallback = null;
         this.pHoverCallback = null;
         this.pEnterCallback = null;
@@ -91,6 +91,8 @@ public class RenderGUI
         this.vPos = new ivec2();
         this.vActualPos = new ivec2();
         this.vOrigin = new ivec2();
+        this.vActualOrigin = new ivec2();
+        this.vRotationOrigin = new ivec2();
         this.vSize = new ivec2();
         this.vActualSize = new ivec2();
         this.vMargin = new ivec2();
@@ -121,6 +123,13 @@ public class RenderGUI
         this.fAlphaOverride = alpha;
         for(int i = 0; i < this.numElements(); i++) { this.vElements.get(i).overrideAlpha(alpha); }
         for(int i = 0; i < this.numChildren(); i++) { this.vChildren.get(i).overrideAlpha(alpha); }
+    }
+
+    public void updateTheme()
+    {
+        updateOnThemeChange();
+        for(int i = 0; i < this.numElements(); i++) { this.vElements.get(i).updateTheme(); }
+        for(int i = 0; i < this.numChildren(); i++) { this.vChildren.get(i).updateTheme(); }
     }
 
 
@@ -157,15 +166,17 @@ public class RenderGUI
         if(pParent != null)
         {
             vActualPos = ivec2.add(pParent.getPosition(), vPos);
-            if(posInPercent.x) { vActualPos.x = (int)(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
-            if(posInPercent.y) { vActualPos.y = (int)(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
+            if(posInPercent.x) { vActualPos.x = (int)Math.ceil(pParent.getPosition().x + pParent.getSize().x * ((float)vPos.x / 100.0f)); }
+            if(posInPercent.y) { vActualPos.y = (int)Math.ceil(pParent.getPosition().y + pParent.getSize().y * ((float)vPos.y / 100.0f)); }
         }
-        if(originInPercent.x)  { vActualPos.x -= (vActualSize.x * vOrigin.x) / 100; }
-        else                   { vActualPos.x -= vOrigin.x; }
+        if(originInPercent.x)  { vActualOrigin.x = (vActualSize.x * vOrigin.x) / 100; }
+        else                   { vActualOrigin.x = vOrigin.x; }
 
-        if(originInPercent.y)  { vActualPos.y -= (vActualSize.y * vOrigin.y) / 100; }
-        else                   { vActualPos.y -= vOrigin.y; }
+        if(originInPercent.y)  { vActualOrigin.y = (vActualSize.y * vOrigin.y) / 100; }
+        else                   { vActualOrigin.y = vOrigin.y; }
         
+        vActualPos.sub(vActualOrigin);
+
 
         updateOnPosChange();
         updateMatrix();
@@ -179,8 +190,8 @@ public class RenderGUI
         vActualSize.set(vSize);
         if(pParent != null)
         {
-            if(sizeInPercent.x) { vActualSize.x = (int)((float)(pParent.getSize().x) * ((float)vSize.x / 100.0f)); }
-            if(sizeInPercent.y) { vActualSize.y = (int)((float)(pParent.getSize().y) * ((float)vSize.y / 100.0f)); }
+            if(sizeInPercent.x) { vActualSize.x = (int)Math.ceil((float)(pParent.getSize().x) * ((float)vSize.x / 100.0f)); }
+            if(sizeInPercent.y) { vActualSize.y = (int)Math.ceil((float)(pParent.getSize().y) * ((float)vSize.y / 100.0f)); }
 
             if(vMinSize.x != 0)
             {
@@ -256,14 +267,18 @@ public class RenderGUI
         if(bIsHidden) 
             return;
 
+        updatechildren(); 
         if(!bHasClickedSomething)
         {
             if(pHoverCallback != null || iHoverCursorShape != Mouse.GUM_CURSOR_DEFAULT || pEnterCallback != null || pLeaveCallback != null)
             {
-                if(/*!Mouse.isActiveHovering() &&*/ isMouseInside())
+                if(isMouseInside())
                 {
-                    Mouse.setActiveHovering(true);
-                    Window.CurrentlyBoundWindow.getMouse().setCursor(iHoverCursorShape);
+                    if(!Mouse.isActiveHovering())
+                    {
+                        Mouse.setActiveHovering(true);
+                        Window.CurrentlyBoundWindow.getMouse().setCursor(iHoverCursorShape);
+                    }
 
                     if(pEnterCallback != null && bIsHovering == false)
                         pEnterCallback.run(this);
@@ -283,9 +298,7 @@ public class RenderGUI
             if(pClickCallback != null && isClicked())
                 pClickCallback.run(this);
         }
-
         updateextra();
-        updatechildren(); 
     }
     public final void renderchildren() 
     { 
@@ -300,11 +313,11 @@ public class RenderGUI
     { 
         if(bUpdateFromFirstToLast)
         {
-            for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
             if(!bChildrenHidden)
             {
                 for(int i = 0; i < numChildren(); i++) { vChildren.get(i).update(); } 
             }
+            for(int i = 0; i < numElements(); i++) { vElements.get(i).update(); }
         }
         else
         {
@@ -366,10 +379,26 @@ public class RenderGUI
     public void updateMatrix()
     {
         mat4 model = new mat4();
-        ivec2 modelPos = ivec2.add(vActualPos, ivec2.mul(vActualSize, 0.5f));
-        modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y;
-        model.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
-        model.scale(new vec3(vActualSize.x * 0.5f, vActualSize.y * 0.5f, 1.0f));
+        ivec2 modelPos = new ivec2(vActualPos);
+        modelPos.y = Framebuffer.CurrentlyBoundFramebuffer.getSize().y - modelPos.y - vActualSize.y;
+
+        mat4 posMatrix = new mat4();
+        posMatrix.translate(new vec3(modelPos.x, modelPos.y, 0.0f));
+
+        mat4 rotMatrix = new mat4();
+        rotMatrix.rotate(new vec3(0, 0, fRotation));
+
+        mat4 rotOriginMatrix = new mat4();
+        rotOriginMatrix.translate(new vec3(-vRotationOrigin.x, -vRotationOrigin.y, 0.0f));
+        rotMatrix.mul(rotOriginMatrix);
+
+        mat4 scaleMatrix = new mat4();
+        scaleMatrix.scale(new vec3(vActualSize.x, vActualSize.y, 1.0f));
+
+        model.mul(posMatrix);
+        model.mul(rotMatrix);
+        //model.mul(rotOriginMatrix);
+        model.mul(scaleMatrix);
         model.transpose();
         
         mTransformationMatrix = model;
@@ -447,6 +476,7 @@ public class RenderGUI
     public void onClick(GUICallback callback)                   { this.pClickCallback = callback; }
     public void onHover(GUICallback callback, int shape)        { this.pHoverCallback = callback; this.iHoverCursorShape = shape; }
     public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
+    public void setRotationOrigin(ivec2 orig)                   { this.vRotationOrigin.set(orig); }
     public void setPosition(ivec2 pos)                          { this.vPos.set(pos); reposition(); }
     public void setPositionX(int pos)                           { this.vPos.x = pos; reposition(); }
     public void setPositionY(int pos)                           { this.vPos.y = pos; reposition(); }
@@ -454,6 +484,7 @@ public class RenderGUI
     public void setMaxSize(ivec2 size)                          { this.vMaxSize.set(size); resize(); }
     public void setMinSize(ivec2 size)                          { this.vMinSize.set(size); resize(); }
     public void setMargin(ivec2 margin)                         { this.vMargin.set(margin); resize(); }
+    public void setRotation(float rot)                          { this.fRotation = rot; updateMatrix(); }
     public void setPositionInPercent(boolean x, boolean y)      { this.posInPercent = new bvec2(x, y); reposition(); }
     public void setOriginInPercent(boolean x, boolean y)        { this.originInPercent = new bvec2(x, y); reposition(); }
     public void setSizeInPercent(boolean x, boolean y)          { this.sizeInPercent = new bvec2(x, y); resize(); }
@@ -477,10 +508,12 @@ public class RenderGUI
     //
     // Getter
     //
+    public ivec2 getRelativeMousePosition()                   { return ivec2.sub(vActualPos, Window.CurrentlyBoundWindow.getMouse().getPosition()); }
     public ivec2 getOrigin()                                  { return this.vOrigin; }
     public ivec2 getMargin()                                  { return this.vMargin; }
     public ivec2 getPosition()                                { return this.vActualPos; }
     public ivec2 getSize()                                    { return this.vActualSize; }
+    public float getRotation()                                { return this.fRotation; }
     public mat4 getTransformation()                           { return this.mTransformationMatrix; }
     public bvec2 isPositionInPercent()                        { return this.posInPercent; }
     public bvec2 isSizeInPercent()                            { return this.sizeInPercent; }

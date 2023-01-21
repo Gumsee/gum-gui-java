@@ -1,6 +1,6 @@
 package com.gumse.maths;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class mat4 {
 
@@ -124,21 +124,21 @@ public class mat4 {
             }
             output += "\n";
         }
-        Debug.info(output);
+        Output.info(output);
     }
 
     public void translate(vec3 transVector)
     {
-        fMatrix[0][3] = transVector.x;
-        fMatrix[1][3] = transVector.y;
-        fMatrix[2][3] = transVector.z;
+        fMatrix[0][3] += transVector.x;
+        fMatrix[1][3] += transVector.y;
+        fMatrix[2][3] += transVector.z;
     }
 
     public void scale(vec3 scaleVector)
     {
-        fMatrix[0][0] = scaleVector.x;
-        fMatrix[1][1] = scaleVector.y;
-        fMatrix[2][2] = scaleVector.z;
+        fMatrix[0][0] *= scaleVector.x;
+        fMatrix[1][1] *= scaleVector.y;
+        fMatrix[2][2] *= scaleVector.z;
     }
 
     public void rotate(vec3 rotationVector)

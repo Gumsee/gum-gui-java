@@ -57,4 +57,10 @@ public class AltMenu extends RenderGUI
         addGUI(entry);
         vEntries.add(entry);
     }
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        pBackground.setColor(GUI.getTheme().secondaryColor);
+    }
 };

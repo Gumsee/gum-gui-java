@@ -45,8 +45,9 @@ void main(void)
         fragColor = color; 
     }
 
+    float borderThicknessf = borderThickness + 0.1;
 
-    vec2 borderSize = guisize - vec2(borderThickness*2);
+    vec2 borderSize = guisize - vec2(borderThicknessf*2);
 
 
     if(circleMode)
@@ -58,22 +59,22 @@ void main(void)
     else
     {
         float dist, distBorder;
-        vec2 borderCenter = Texcoord * guisize - (borderSize/2.0f) - vec2(borderThickness);
+        vec2 borderCenter = Texcoord * guisize - (borderSize/2.0f) - vec2(borderThicknessf);
         vec2 cornerCenter = Texcoord * guisize - (guisize/2.0f);
         if(Texcoord.x < 0.5)
         {
             if(Texcoord.y > 0.5)
             {
                 //Bottom Left
-                if(borderThickness > 0)
-                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.w - borderThickness);
+                if(borderThicknessf > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.w - borderThicknessf);
                 dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.w); 
             }
             else
             {
                 //Top Left
-                if(borderThickness > 0)
-                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.x - borderThickness);
+                if(borderThicknessf > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.x - borderThicknessf);
                 dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.x); 
             }
         }
@@ -82,15 +83,15 @@ void main(void)
             if(Texcoord.y < 0.5)
             {
                 //Bottom Right
-                if(borderThickness > 0)
-                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.y - borderThickness);
+                if(borderThicknessf > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.y - borderThicknessf);
                 dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.y); 
             }
             else
             {
                 //Top Right
-                if(borderThickness > 0)
-                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.z - borderThickness);
+                if(borderThicknessf > 0)
+                    distBorder = roundedBoxSDF(borderCenter, borderSize/2.0f, radius.z - borderThicknessf);
                 dist = roundedBoxSDF(cornerCenter, guisize/2.0f, radius.z); 
             }
         }

@@ -27,13 +27,14 @@ public class GUI
         if(pDefaultTheme == null)
         {
             pDefaultTheme = new Theme();
-            pDefaultTheme.backgroundColor   = new vec4(0.09f, 0.10f, 0.11f, 1.0f);
-            pDefaultTheme.primaryColor      = new vec4(0.20f, 0.20f, 0.20f, 1.0f);
-            pDefaultTheme.secondaryColor    = new vec4(0.24f, 0.24f, 0.24f, 1.0f);
-            pDefaultTheme.textColor         = new vec4(0.90f, 0.90f, 0.90f, 1.0f);
-            pDefaultTheme.accentColor       = new vec4(0.60f, 0.58f, 0.85f, 1.0f);
-            pDefaultTheme.accentColorShade1 = new vec4(0.73f, 0.74f, 0.96f, 1.0f);
-
+            pDefaultTheme.backgroundColor     = new vec4(0.09f, 0.10f, 0.11f, 1.0f);
+            pDefaultTheme.primaryColor        = new vec4(0.20f, 0.20f, 0.20f, 1.0f);
+            pDefaultTheme.primaryColorShade   = new vec4(0.14f, 0.14f, 0.14f, 1.0f);
+            pDefaultTheme.secondaryColor      = new vec4(0.26f, 0.26f, 0.31f, 1.0f);
+            pDefaultTheme.textColor           = new vec4(0.90f, 0.90f, 0.90f, 1.0f);
+            pDefaultTheme.accentColor         = new vec4(0.61f, 0.53f, 1.00f, 1.0f);
+            pDefaultTheme.accentColorShade1   = new vec4(0.73f, 0.74f, 0.96f, 1.0f);
+            pDefaultTheme.cornerRadius        = new vec4(7.00f, 7.00f, 7.00f, 7.0f);
             pCurrentTheme = pDefaultTheme;
         }
 
@@ -103,6 +104,11 @@ public class GUI
         return pCurrentTheme;
     }
 
+    public static Theme getDefaultTheme()
+    {
+        return pDefaultTheme;
+    }
+
 
 	public ivec2 getSize()
 	{
@@ -121,7 +127,7 @@ public class GUI
 		WindowCanvas.resize();
 	}
 
-    public void setTheme(Theme theme)
+    public static void setTheme(Theme theme)
     {
         pCurrentTheme = theme;
     }

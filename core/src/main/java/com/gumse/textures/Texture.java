@@ -12,7 +12,7 @@ import java.lang.Exception;
 
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec2;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 import org.apache.commons.io.IOUtils;
 
@@ -98,7 +98,7 @@ public class Texture {
 
         if(!stbi_info_from_memory(imageBuffer, x, y, channels)) 
         {
-            Debug.warn(stbi_failure_reason());
+            Output.warn(stbi_failure_reason());
             return false;
         }
 
@@ -106,7 +106,7 @@ public class Texture {
 
         if (bImageData == null) 
         {
-            Debug.warn("Failed to load Texture file " + sName + ": " + stbi_failure_reason());
+            Output.warn("Failed to load Texture file " + sName + ": " + stbi_failure_reason());
             return false;
         }
 
@@ -128,7 +128,7 @@ public class Texture {
             {
                 case 4: format = GL11.GL_RGBA; break;
                 case 3: format = GL11.GL_RGB; break;
-                case 2: Debug.error("Texture: 2 components not supported"); break;
+                case 2: Output.error("Texture: 2 components not supported"); break;
                 case 1: format = GL11.GL_RED; break;
             }
             
@@ -144,7 +144,7 @@ public class Texture {
         msg += " with " + Integer.toString(iComponents) + " compontents,";
         //msg += " has HDR = " + (stbi_is_hdr_from_memory(bImageData) ? "true" : "false");
 
-        Debug.debug(msg);
+        Output.debug(msg);
     }
 
     public ByteBuffer getData()

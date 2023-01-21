@@ -9,7 +9,7 @@ import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 
 public class TextBox extends RenderGUI
 {
@@ -136,15 +136,16 @@ public class TextBox extends RenderGUI
             {
                 wordStart = wordEnd;
                 wordEnd = i;
+                
 
                 int wordWidth = pText.getTextSize(sActualText, wordStart, wordEnd).x;
-                currentOffset += wordWidth;
-
-                if(currentOffset > vActualSize.x * 0.9f)
+                if(currentOffset + wordWidth > vActualSize.x * 0.95f)
                 {
                     chars[wordStart] = '\n';
-                    currentOffset = wordWidth;
+                    currentOffset = 0;
                 }
+
+                currentOffset += wordWidth;
             }
             else if(sActualText.charAt(i) == '\n')
             {

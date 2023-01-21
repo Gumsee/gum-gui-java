@@ -11,9 +11,8 @@ import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.TagList.TagListEntry.TagRemoveCallback;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
-import com.gumse.tools.Debug;
 
-public class TagList extends RenderGUI
+public class TagList <T> extends RenderGUI
 {
     public interface TagCallback
     {
@@ -43,7 +42,7 @@ public class TagList extends RenderGUI
         pTextField.setCallback(new TextFieldInputCallback() {
             @Override public void enter(String str) 
             {
-                addTag(str);
+                addTag(str, null);
                 pTextField.setString("");
             } 
             
@@ -56,7 +55,7 @@ public class TagList extends RenderGUI
                         String[] words = complete.split(" ");
                         for(String word : words)
                         {
-                            addTag(word);
+                            addTag(word, null);
                         }
                         pTextField.setString("");
                     }
@@ -106,18 +105,18 @@ public class TagList extends RenderGUI
         vSize.y = pTagContainer.getPosition().y + offset.y + extraoffset;
     }
 
-    public void addTag(String str)
+    public void addTag(String str, T userptr)
     {
         //Skip duplicates
         for(RenderGUI child : pTagContainer.getChildren())
         {
-            TagListEntry entry = (TagListEntry)child;
+            TagListEntry<T> entry = (TagListEntry)child;
             if(entry.getName().equals(str))
                 return;
         }
         
         ivec2 pos = new ivec2(0, 0);
-        TagListEntry entry = new TagListEntry(pos, str, pFont, pRemoveCallback);
+        TagListEntry<T> entry = new TagListEntry(pos, str, pFont, pRemoveCallback, userptr);
         pTagContainer.addGUI(entry);
 
         updateOnSizeChange();
@@ -135,8 +134,21 @@ public class TagList extends RenderGUI
 
         for(RenderGUI child : pTagContainer.getChildren())
         {
-            TagListEntry entry = (TagListEntry)child;
+            TagListEntry<T> entry = (TagListEntry)child;
             retList.add(entry.getName());
+        }
+
+        return retList;
+    }
+
+    public List<T> getTagUserptrs()
+    {
+        List<T> retList = new ArrayList<>();
+
+        for(RenderGUI child : pTagContainer.getChildren())
+        {
+            TagListEntry<T> entry = (TagListEntry)child;
+            retList.add(entry.getUserptr());
         }
 
         return retList;
@@ -151,12 +163,12 @@ public class TagList extends RenderGUI
     public void onlyAllowWords(boolean allow)        { this.bOnlyWords = allow; }
 
 
-	public static TagList createFromXMLNode(XMLNode node)
+	public static TagList<Object> createFromXMLNode(XMLNode node)
 	{
         String fontName = node.getAttribute("font");
         Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-		TagList taglistgui = new TagList(new ivec2(0,0), new ivec2(100,30), font);
+		TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font);
 		return taglistgui;
 	}
 }

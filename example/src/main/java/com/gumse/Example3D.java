@@ -10,7 +10,7 @@ import com.gumse.model.Model3D;
 import com.gumse.system.Display;
 import com.gumse.system.Window;
 import com.gumse.system.Window.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 
@@ -21,7 +21,7 @@ public class Example3D
         Globals.DEBUG_BUILD = true;
         System.setProperty("java.awt.headless", "true"); //for iCrap support
 
-        Debug.init();
+        Output.init();
         Display.init();
         
         //Window Options

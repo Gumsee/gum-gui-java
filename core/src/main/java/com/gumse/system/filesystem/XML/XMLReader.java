@@ -8,7 +8,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.Stack;
 
 public class XMLReader
@@ -103,16 +103,16 @@ public class XMLReader
                 reader.next();
             }
         }
-        catch(IOException e)        { Debug.error("XMLReader: " + e.getMessage()); return; }
-        catch(XMLStreamException e) { Debug.error("XMLReader: " + e.getMessage()); return; }
+        catch(IOException e)        { Output.error("XMLReader: " + e.getMessage()); return; }
+        catch(XMLStreamException e) { Output.error("XMLReader: " + e.getMessage()); return; }
 
         if(pRootNode == null)
-            Debug.warn("Document " + filename + " doesnt have a document start");
+            Output.warn("Document " + filename + " doesnt have a document start");
         else
             pNodeStack.pop();
         
         if(pNodeStack.getLength() > 0)
-            Debug.warn("Some XML Tags are still in the stack! (" + pNodeStack.getLength() + ")");
+            Output.warn("Some XML Tags are still in the stack! (" + pNodeStack.getLength() + ")");
 
 
         runTree(pRootNode, allowedtypes, func, 0);

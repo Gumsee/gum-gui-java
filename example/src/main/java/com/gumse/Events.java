@@ -10,7 +10,7 @@ import com.gumse.system.io.Mouse;
 import com.gumse.system.io.Mouse.*;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Keyboard.*;
-import com.gumse.tools.Debug;
+import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 
@@ -26,93 +26,93 @@ public class Events {
         pMainWindow.onFocused(new WindowFocusCallback() {
             @Override
             public void run(boolean hasfocus) {
-                if(hasfocus) Debug.info("Window gained Focus");
-                else         Debug.info("Window lost Focus");
+                if(hasfocus) Output.info("Window gained Focus");
+                else         Output.info("Window lost Focus");
             }
         });
 
         pMainWindow.onMoved(new WindowResizePosCallback() {
             @Override
             public void run(ivec2 position) {
-                Debug.info("Window moved: " + position.toString());
+                Output.info("Window moved: " + position.toString());
             }
         });
 
         pMainWindow.onResized(new WindowResizePosCallback() {
             @Override
             public void run(ivec2 size) {
-                Debug.info("Window resized: " + size.toString());
+                Output.info("Window resized: " + size.toString());
             }
         });
 
         pMainWindow.getMouse().onMoved(new MouseMovedCallback() {
             @Override
             public void run(ivec2 position) {
-                Debug.info("Mouse moved: " + position.toString());
+                Output.info("Mouse moved: " + position.toString());
             }
         });
 
         pMainWindow.getMouse().onPress(new MouseButtonCallback() {
             @Override
             public void run(int button, int mod) {
-                if     (button == Mouse.GUM_MOUSE_BUTTON_LEFT)     Debug.info("Mouse Left Clicked");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_RIGHT)    Debug.info("Mouse Right Clicked");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_MIDDLE)   Debug.info("Mouse Middle Clicked");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_NEXT)     Debug.info("Mouse Next Clicked");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_PREVIOUS) Debug.info("Mouse Previous Clicked");
+                if     (button == Mouse.GUM_MOUSE_BUTTON_LEFT)     Output.info("Mouse Left Clicked");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_RIGHT)    Output.info("Mouse Right Clicked");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_MIDDLE)   Output.info("Mouse Middle Clicked");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_NEXT)     Output.info("Mouse Next Clicked");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_PREVIOUS) Output.info("Mouse Previous Clicked");
             }
         });
 
         pMainWindow.getMouse().onRelease(new MouseButtonCallback() {
             @Override
             public void run(int button, int mod) {
-                if     (button == Mouse.GUM_MOUSE_BUTTON_LEFT)     Debug.info("Mouse Left Released");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_RIGHT)    Debug.info("Mouse Right Released");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_MIDDLE)   Debug.info("Mouse Middle Released");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_NEXT)     Debug.info("Mouse Next Released");
-                else if(button == Mouse.GUM_MOUSE_BUTTON_PREVIOUS) Debug.info("Mouse Previous Released");
+                if     (button == Mouse.GUM_MOUSE_BUTTON_LEFT)     Output.info("Mouse Left Released");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_RIGHT)    Output.info("Mouse Right Released");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_MIDDLE)   Output.info("Mouse Middle Released");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_NEXT)     Output.info("Mouse Next Released");
+                else if(button == Mouse.GUM_MOUSE_BUTTON_PREVIOUS) Output.info("Mouse Previous Released");
             }
         });
 
         pMainWindow.getMouse().onScroll(new MouseMovedCallback() {
             @Override
             public void run(ivec2 scroll) {
-                Debug.info("Mouse Scrolled: " + scroll.toString());
+                Output.info("Mouse Scrolled: " + scroll.toString());
             }
         });
 
         pMainWindow.getMouse().onLeft(new MouseEnteredLeftCallback() {
             @Override
             public void run() {
-                Debug.info("Mouse Left");
+                Output.info("Mouse Left");
             }
         });
 
         pMainWindow.getMouse().onEntered(new MouseEnteredLeftCallback() {
             @Override
             public void run() {
-                Debug.info("Mouse Entered");
+                Output.info("Mouse Entered");
             }
         });
 
         pMainWindow.getKeyboard().onKeyPress(new KeyboardButtonCallback() {
             @Override
             public void run(int key, int mod) {
-                Debug.info("Keyboard key Pressed: " + Keyboard.key2string(key));
+                Output.info("Keyboard key Pressed: " + Keyboard.key2string(key));
             }
         });
 
         pMainWindow.getKeyboard().onKeyRelease(new KeyboardButtonCallback() {
             @Override
             public void run(int key, int mod) {
-                Debug.info("Keyboard key Released: " + Keyboard.key2string(key));
+                Output.info("Keyboard key Released: " + Keyboard.key2string(key));
             }
         });
 
         pMainWindow.getKeyboard().onTextEntered(new KeyboardTextCallback() {
             @Override
             public void run(String str, int codepoint) {
-                Debug.info("Keyboard text entered: " + str);
+                Output.info("Keyboard text entered: " + str);
             }
         });
 
