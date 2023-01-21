@@ -1,24 +1,18 @@
 package com.gumse.gui.Basics;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.lwjgl.opengl.GL11;
-
-import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
-import com.gumse.gui.GUIShader;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Shape;
 import com.gumse.maths.*;
-import com.gumse.model.VertexArrayObject;
-import com.gumse.model.VertexBufferObject;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 
 public class Switch extends RenderGUI
 {
-    public enum Shape
+    public enum SwitchShape
     {
         SQUARE,
         CIRCLE,
@@ -30,58 +24,41 @@ public class Switch extends RenderGUI
 
     private Box pBackground;
     private Box pTickbox;
-    private Shape iShape;
-    private mat4 m4CheckMatrix;
-    private static VertexArrayObject pVAO;
+    private SwitchShape iShape;
+    private Shape pTickShape;
     private boolean bIsTicked;
     private OnSwitchTicked pOnTickedCallback;
 
-    static void initVAO()
-    {
-        if(pVAO == null)
-        {
-            float thickness = 0.3f;
-            pVAO = new VertexArrayObject();
-            VertexBufferObject pArrowVBO = new VertexBufferObject();
-
-            pArrowVBO.setData(new ArrayList<Float>(Arrays.asList(new Float[] { 
-                1.0f,             -1.0f,               0.0f,
-                1.0f - thickness, -1.0f,               0.0f,
-                1.0f - thickness, -(1.0f - thickness), 0.0f,
-
-                1.0f - thickness, -(1.0f - thickness), 0.0f,
-                1.0f,             -(1.0f - thickness), 0.0f,
-                1.0f,             -1.0f,               0.0f,
-
-                -thickness,       -(1.0f - thickness), 0.0f,
-                1.0f - thickness, -(1.0f - thickness), 0.0f,
-                -thickness,       -1.0f,               0.0f,
-
-                -thickness,       -1.0f,               0.0f,
-                1.0f - thickness, -(1.0f - thickness), 0.0f,
-                1.0f - thickness, -1.0f,               0.0f,
-
-                1.0f,             -(1.0f - thickness), 0.0f,
-                1.0f - thickness, -(1.0f - thickness), 0.0f,
-                1.0f - thickness,  1.0f,               0.0f,
-
-                1.0f - thickness,  1.0f,               0.0f,
-                1.0f,              1.0f,               0.0f,
-                1.0f,             -(1.0f - thickness), 0.0f
-            })));
-            pVAO.addAttribute(pArrowVBO, 0, 3, GL11.GL_FLOAT, 0, 0);
-        }
-    }   
+    private static final float thickness = 0.3f;
+    private static final Float[] afTickVertices = new Float[] { 
+        (1.0f             + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f             + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f             + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (     - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (     - thickness + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (     - thickness + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (- 1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f             + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (  1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f - thickness + 1.0f) / 2.0f, (  1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f             + 1.0f) / 2.0f, (  1.0f              + 1.0f) / 2.0f, 0.0f,
+        (1.0f             + 1.0f) / 2.0f, (-(1.0f - thickness) + 1.0f) / 2.0f, 0.0f
+    };
 
     public Switch(ivec2 pos, ivec2 size, float radius) 
     {
         this.sType = "Switch";
         this.vPos.set(pos);
         this.vSize.set(size);
-        this.iShape = Shape.CHECK;
+        this.iShape = SwitchShape.CHECK;
         this.bIsTicked = false;
         this.pOnTickedCallback = null;
-        initVAO();
 
         pBackground = new Box(new ivec2(0,0), new ivec2(100, 100));
         pBackground.setCornerRadius(new vec4(radius));
@@ -100,6 +77,13 @@ public class Switch extends RenderGUI
         //pTickbox.setColor(vec4(Gum::Maths::HSVToRGB(vec3(rand() % 360, 100, 70)),1.0));
         addElement(pTickbox);
 
+        pTickShape = new Shape("switchtick", new ivec2(0, 5), new ivec2(75, 75), Arrays.asList(afTickVertices));
+        pTickShape.setSizeInPercent(true, true);
+        pTickShape.setOriginInPercent(true, true);
+        pTickShape.setOrigin(new ivec2(5, 100));
+        pTickShape.setRotation(-45.0f);
+        addElement(pTickShape);
+
         onHover(null, Mouse.GUM_CURSOR_HAND);
         onClick(new GUICallback() {
             @Override public void run(RenderGUI gui) 
@@ -117,23 +101,6 @@ public class Switch extends RenderGUI
     public void cleanup() {};
 
     @Override
-    protected void updateOnPosChange()
-    {
-        vec3 rot = new vec3(0,0,-45);
-
-        mat4 model = new mat4();
-        model.translate(new vec3(
-            vActualPos.x + vActualSize.x * 0.5f - 1, 
-            Framebuffer.CurrentlyBoundFramebuffer.getSize().y - vActualPos.y - vActualSize.y * 0.25f, 
-            0));
-        model.scale(new vec3(vActualSize.x * 0.35f, vActualSize.y * 0.35f, 1.0f));
-        model.rotate(rot);
-        model.transpose();
-        
-        m4CheckMatrix = model;
-    }
-
-    @Override
     protected void updateOnThemeChange() 
     {
         pBackground.setColor(getColor(GUI.getTheme().secondaryColor));
@@ -148,24 +115,10 @@ public class Switch extends RenderGUI
         {
             switch(iShape)
             {
-                case CHECK: renderCheck();     break;
-                default:    pTickbox.render(); break;
+                case CHECK: pTickShape.render(); break;
+                default:    pTickbox.render();   break;
             }
         }
-    }
-
-    private void renderCheck()
-    {
-        GUIShader.getShaderProgram().use();
-        GUIShader.getShaderProgram().loadUniform("orthomat", Framebuffer.CurrentlyBoundFramebuffer.getScreenMatrix());
-        GUIShader.getShaderProgram().loadUniform("transmat", m4CheckMatrix);
-        GUIShader.getShaderProgram().loadUniform("Uppercolor", GUI.getTheme().accentColor);
-        GUIShader.getShaderProgram().loadUniform("borderThickness", 0.0f);
-        GUIShader.getShaderProgram().loadUniform("hasTexture", false);
-        pVAO.bind();
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 18);
-        pVAO.unbind();
-        GUIShader.getShaderProgram().unuse();
     }
 
 
@@ -173,7 +126,7 @@ public class Switch extends RenderGUI
     // Setter
     //
     public void tick(boolean state)   { bIsTicked = state; }
-    public void setShape(Shape shape) 
+    public void setShape(SwitchShape shape) 
     { 
         this.iShape = shape; 
         switch(iShape)

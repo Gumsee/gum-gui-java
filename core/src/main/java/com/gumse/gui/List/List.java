@@ -67,6 +67,9 @@ public class List <E> extends RenderGUI
             currentpos += columns[i].width;
         }
 
+        pBackground.getChild(0).setCornerRadius(new vec4(GUI.getDefaultTheme().cornerRadius.x, 0, 0, 0));
+        pBackground.getChild(pBackground.numChildren() - 1).setCornerRadius(new vec4(0, GUI.getDefaultTheme().cornerRadius.y, 0, 0));
+
         pScroller = new Scroller(new ivec2(0, TITLEBAR_HEIGHT), new ivec2(100, 100));
         pScroller.setSizeInPercent(true, true);
         pScroller.setMargin(new ivec2(0, -TITLEBAR_HEIGHT));
@@ -96,6 +99,7 @@ public class List <E> extends RenderGUI
         GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
         GUIShader.getStripesShaderProgram().loadUniform("color1", vec4.sub(GUI.getTheme().primaryColor, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
         GUIShader.getStripesShaderProgram().loadUniform("color2", GUI.getTheme().primaryColor);
+        GUIShader.getShaderProgram().loadUniform("radius", GUI.getDefaultTheme().cornerRadius);
         Box.renderCustom();
         GUIShader.getStripesShaderProgram().unuse();
     
@@ -167,5 +171,7 @@ public class List <E> extends RenderGUI
         {
             child.setColor(GUI.getTheme().primaryColorShade);
         }
+        pBackground.getChild(0).setCornerRadius(new vec4(GUI.getDefaultTheme().cornerRadius.x, 0, 0, 0));
+        pBackground.getChild(pBackground.numChildren() - 1).setCornerRadius(new vec4(0, GUI.getDefaultTheme().cornerRadius.y, 0, 0));
     }
 };
