@@ -20,7 +20,8 @@ public class Locale
     //
     // Setter
     //
-    void setString(String id, String str) { mStrings.put(id, str); }
+    public void setString(String id, String str)       { mStrings.put(id, str); }
+    public static void setCurrentLocale(Locale locale) { pCurrentLocale = locale; }
 
 
     //
