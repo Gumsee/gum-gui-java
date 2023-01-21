@@ -51,6 +51,7 @@ public class RenderGUI
     protected vec4 v4CornerRadius;
     protected String sType = "unset";
     protected String sID;
+    protected String sLocaleID;
     protected String sTitle;
     protected String value;
     protected String sToolTip;
@@ -75,6 +76,7 @@ public class RenderGUI
         this.iHoverCursorShape = Mouse.GUM_CURSOR_DEFAULT;
         this.sTitle = "";
         this.sID = "";
+        this.sLocaleID = "";
         this.fRotation = 0.0f;
         this.fAlphaOverride = 1.0f;
         this.bIsHidden = false;
@@ -460,6 +462,7 @@ public class RenderGUI
     public void setParent(RenderGUI parent)                     { this.pParent = parent; }
     public void setType(String type)                            { this.sType = type; }
     public void setID(String id)                                { this.sID = id; }
+    public void setLocaleID(String id)                          { this.sLocaleID = id; }
     public void setTitle(String title)                          { this.sTitle = title; updateOnTitleChange(); }
     public void setValuePtr(String value)                       { this.value = value; }
     public void setColor(vec4 col)                              { this.v4Color = col; updateOnColorChange(); }
