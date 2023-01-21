@@ -1,6 +1,7 @@
 package com.gumse.gui.Basics;
 
 import com.gumse.gui.GUI;
+import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -106,9 +107,16 @@ public class TextBox extends RenderGUI
 		//ivec2.sub(getPosition(), pText.getPosition()).print();
 	}
 
+	@Override
 	protected void updateOnColorChange()
 	{
 		this.pBackgroundBox.setColor(v4Color);
+	}
+
+	@Override
+	protected void updateOnThemeChange() {
+        if(!sLocaleID.isEmpty())
+			setString(Locale.getCurrentLocale().getString(sLocaleID));
 	}
 
 	public void setString(String str)

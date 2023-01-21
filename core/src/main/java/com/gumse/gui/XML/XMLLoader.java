@@ -120,6 +120,7 @@ public class XMLLoader
             }
             else if(name.equals("color"))         { gui.setColor(vec4.div(Color.HEXToRGBA(valueStr), 255.0f)); }
             else if(name.equals("id"))            { gui.setID(new String(values[0])); }
+            else if(name.equals("locale-id"))     { gui.setLocaleID(new String(values[0])); }
             else if(name.equals("border-radius")) { gui.setCornerRadius(Toolbox.StringToVec4(valueStr)); }
             else if(name.equals("tooltip"))       { gui.setToolTip(values[0]); }
             else                                  { gui.addAttribute(name, valueStr); }

@@ -1,6 +1,7 @@
 package com.gumse.gui.Basics;
 
 import com.gumse.gui.GUI;
+import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -67,6 +68,8 @@ public class Button extends RenderGUI
         backgroundBox.setColor(getColor(GUI.getTheme().primaryColor));
         backgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
         backgroundBox.getBox().setCornerRadius(getCornerRadius());
+        if(!sLocaleID.isEmpty())
+            setTitle(Locale.getCurrentLocale().getString(sLocaleID));
     }
 
     public void setTexture(Texture newtex)               { this.backgroundBox.setTexture(newtex); }
