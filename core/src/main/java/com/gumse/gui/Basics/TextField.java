@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
+import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
@@ -125,6 +126,9 @@ public class TextField extends RenderGUI
         pBackgroundBox.getBox().setBorderThickness(GUI.getTheme().borderThickness);
         pBackgroundBox.getBox().setCornerRadius(getCornerRadius());
 		pIndicatorBox.setColor(GUI.getTheme().textColor);
+		
+        if(!sLocaleID.isEmpty())
+			setHint(Locale.getCurrentLocale().getString(sLocaleID));
     }
 	
 	
