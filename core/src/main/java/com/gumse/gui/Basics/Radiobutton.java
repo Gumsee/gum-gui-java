@@ -27,7 +27,7 @@ public class Radiobutton extends RenderGUI
         private int iFontSize;
         private OnSelectCallback pCallback;
 
-        public Option(int index, String str, Font font, int fontsize)
+        public Option(int index, String str, Font font, int fontsize, String localeid)
         {
             this.sType = "RadiobuttonOption";
             this.iFontSize = fontsize;
@@ -48,6 +48,7 @@ public class Radiobutton extends RenderGUI
 
             int xoffset = iFontSize * 2;
             pTextBox = new TextBox(str, font, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
+            pTextBox.setLocaleID(localeid);
             pTextBox.setTextSize(fontsize);
             pTextBox.setAutoInsertLinebreaks(true);
             pTextBox.setAlignment(Alignment.LEFT);
@@ -125,11 +126,14 @@ public class Radiobutton extends RenderGUI
         for(int i = 0; i < options.length; i++)
         {
             int ypos = maxheight;
-            Option option = new Option(i, options[i], font, fontsize);
+            Option option = new Option(i, 
+                                        options[i] == null ? "" : options[i], 
+                                        font, 
+                                        fontsize, 
+                                        localeids[i] == null ? "" : localeids[i]);
             option.setPosition(new ivec2(0, ypos));
             option.setSize(new ivec2(100, 30));
             option.setSizeInPercent(true, false);
-            option.setLocaleID(localeids[i]);
             addGUI(option);
 
             maxheight += option.getSize().y + iGapSize;
