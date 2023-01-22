@@ -139,7 +139,7 @@ public class MainPage extends RenderGUI
         textBox.setAlignment(Alignment.LEFT);
         mainScroller.addGUI(textBox);
 
-        Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 20, 90, fonts.getDefaultFont(), new String[] {"Option 1", "Option 2" + lipsum, "Option 3"});
+        Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 20, 90, fonts.getDefaultFont(), new String[] {"Option 1", "Option 2" + lipsum, "Option 3"}, new String[] {"", "", ""});
         radiobutton.setSizeInPercent(true, false);
         radiobutton.singleSelect(true);
         mainScroller.addGUI(radiobutton);

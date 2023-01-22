@@ -11,6 +11,7 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
+import com.gumse.tools.Output;
 
 public class Radiobutton extends RenderGUI
 {
@@ -107,12 +108,18 @@ public class Radiobutton extends RenderGUI
     private int iGapSize;
     private boolean bSingleSelectMode;
 
-    public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options)
+    public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options, String[] localeids)
     {
         this.sType = "Radiobutton";
         this.vPos.set(pos);
         this.iGapSize = fontsize / 2;
         this.bSingleSelectMode = false;
+
+        if(localeids.length != options.length)
+        {
+            Output.error("Radiobutton: Options length doesnt match localeid list length");
+            return;
+        }
 
         int maxheight = 0;
         for(int i = 0; i < options.length; i++)
@@ -122,6 +129,7 @@ public class Radiobutton extends RenderGUI
             option.setPosition(new ivec2(0, ypos));
             option.setSize(new ivec2(100, 30));
             option.setSizeInPercent(true, false);
+            option.setLocaleID(localeids[i]);
             addGUI(option);
 
             maxheight += option.getSize().y + iGapSize;
@@ -193,7 +201,7 @@ public class Radiobutton extends RenderGUI
 
     public static Radiobutton createFromXMLNode(XMLNode node)
     {
-        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, 20, FontManager.getInstance().getDefaultFont(), new String[] {});
+        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, 20, FontManager.getInstance().getDefaultFont(), new String[] {}, new String[] {});
         return radiobuttongui;
     }
 };
