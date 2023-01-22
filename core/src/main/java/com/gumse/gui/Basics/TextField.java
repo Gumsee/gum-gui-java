@@ -381,7 +381,7 @@ public class TextField extends RenderGUI
 	public void setTextColor(vec4 color) 	  						   { this.pBackgroundBox.setTextColor(color); }
 	public void setCallback(TextFieldInputCallback func)               { this.pCallback = func; }
 	public void setCornerRadius(vec4 radius)						   { this.v4CornerRadius = radius; this.pBackgroundBox.setCornerRadius(radius); }
-    public void setHint(String hint)                                   { this.sHint = hint; }	
+    public void setHint(String hint)                                   { this.sHint = hint; updateText(); }	
 	
 	//
 	// Getter
