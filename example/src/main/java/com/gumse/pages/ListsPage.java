@@ -50,7 +50,7 @@ public class ListsPage extends RenderGUI
         testList.setMargin(new ivec2(-50, -50));
         listTabs.addGUIToTab(testList, "List");
 
-        HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false);
+        HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false, "");
         testHierarchyList.setSizeInPercent(true, true);
         HierarchyListEntry childEntry = new HierarchyListEntry("Someee entry", testHierarchyList, null);
         childEntry.addEntry(new HierarchyListEntry("Child of another Child :O", testHierarchyList, null));

@@ -22,7 +22,7 @@ public class HierarchyList extends RenderGUI
     private boolean bEditable;
 
 
-    public HierarchyList(ivec2 pos, ivec2 size, String title, String rootname, boolean editable)
+    public HierarchyList(ivec2 pos, ivec2 size, String title, String rootname, boolean editable, String localeid)
     {
         this.vPos.set(pos);
         this.vSize.set(size);
@@ -36,6 +36,7 @@ public class HierarchyList extends RenderGUI
         pTitleBox.setTextOffset(new ivec2(-10, 0));
         pTitleBox.setSizeInPercent(true, false);
         pTitleBox.setColor(GUI.getTheme().primaryColorShade);
+        pTitleBox.setLocaleID(localeid);
 
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
