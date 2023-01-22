@@ -33,11 +33,11 @@ public class ListsPage extends RenderGUI
             new ivec2(0, 0), 
             new ivec2(100, 100), 
             new ColumnInfo[] {
-                new ColumnInfo("Column1", ColumnType.STRING,  30),
-                new ColumnInfo("Column2", ColumnType.STRING,  30),
-                new ColumnInfo("Bool",    ColumnType.BOOLEAN, 10),
-                new ColumnInfo("Num",     ColumnType.INTEGER, 10),
-                new ColumnInfo("Column5", ColumnType.TIME,    20),
+                new ColumnInfo("Column1", ColumnType.STRING,  30, ""),
+                new ColumnInfo("Column2", ColumnType.STRING,  30, ""),
+                new ColumnInfo("Bool",    ColumnType.BOOLEAN, 10, ""),
+                new ColumnInfo("Num",     ColumnType.INTEGER, 10, ""),
+                new ColumnInfo("Column5", ColumnType.TIME,    20, ""),
             }
         );
         testList.setSizeInPercent(true, true);
