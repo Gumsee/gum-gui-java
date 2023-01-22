@@ -1,7 +1,6 @@
 package com.gumse.gui.List;
 
 import com.gumse.gui.Basics.TextBox.Alignment;
-import com.gumse.gui.Font.Font;
 import com.gumse.gui.Primitives.RenderGUI.GUICallback;
 
 public class ListCell 

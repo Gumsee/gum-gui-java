@@ -17,16 +17,17 @@ public class ColumnInfo
         BOOLEAN,
     };
 
-    public String title;
+    public String title, localeid;
     public ColumnType type;
     public int width;
     public Font font;
     public GUICallback onclickcallback;
     public Alignment alignment;
 
-    public ColumnInfo(String title, ColumnType type, int width)
+    public ColumnInfo(String title, ColumnType type, int width, String localeid)
     {
         this.title = title;
+        this.localeid = localeid;
         this.type  = type;
         this.width = width;
         this.font  = FontManager.getInstance().getDefaultFont();

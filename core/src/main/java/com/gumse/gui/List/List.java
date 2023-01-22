@@ -63,6 +63,8 @@ public class List <E> extends RenderGUI
             titleBox.setPositionInPercent(true, false);
             titleBox.setColor(GUI.getTheme().primaryColorShade);
             titleBox.onClick(columns[i].onclickcallback);
+            if(columns[i].localeid != null)
+                titleBox.setLocaleID(columns[i].localeid);
             pBackground.addGUI(titleBox);
             currentpos += columns[i].width;
         }
