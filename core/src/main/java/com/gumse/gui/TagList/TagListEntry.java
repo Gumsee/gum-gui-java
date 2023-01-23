@@ -12,24 +12,17 @@ import com.gumse.system.io.Mouse;
 
 public class TagListEntry <T> extends RenderGUI
 {
-    public interface TagRemoveCallback
-    {
-        public void run(TagListEntry entry);
-    }
-
     private TextBox pTextBox;
     private Cross pCross;
-    private TagRemoveCallback pCallback;
     private String sName;
     private T pUserPtr;
     private static final vec4 CROSS_COLOR = new vec4(0.7f, 0.22f, 0.22f, 1.0f);
 
 
-    public TagListEntry(ivec2 pos, String tagstr, Font font, TagRemoveCallback callback, T userptr)
+    public TagListEntry(ivec2 pos, String tagstr, Font font, GUICallback removecallback, T userptr)
     {
         this.vPos.set(pos);
         this.vSize.set(new ivec2(0, 100));
-        this.pCallback = callback;
         this.sName = tagstr;
         this.pUserPtr = userptr;
 
@@ -64,12 +57,13 @@ public class TagListEntry <T> extends RenderGUI
                 pCross.setColor(GUI.getTheme().accentColor);
             }
         });
-        TagListEntry thisEntry = this;
+
+        TagListEntry<T> thisEntry = this;
         onClick(new GUICallback() {
             @Override public void run(RenderGUI gui) 
             {
-                if(pCallback != null)
-                    pCallback.run(thisEntry);
+                if(removecallback != null)
+                    removecallback.run(thisEntry);
             }
         });
 

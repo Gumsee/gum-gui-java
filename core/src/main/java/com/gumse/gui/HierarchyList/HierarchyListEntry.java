@@ -2,6 +2,7 @@ package com.gumse.gui.HierarchyList;
 
 import java.util.Arrays;
 
+import com.gumse.gui.Basics.Switch;
 import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Basics.TextField;
 import com.gumse.gui.Basics.TextBox.Alignment;
@@ -12,16 +13,17 @@ import com.gumse.gui.Primitives.Shape;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
 
-public class HierarchyListEntry extends RenderGUI
+public class HierarchyListEntry <T> extends RenderGUI
 {
     private static final int INDENT_SIZE = 10;
     private RenderGUI pTitleBox;
-    private boolean bHasChildEntries;
     private GUICallback pCallback;
-    private int iIndent = 0;
-    private HierarchyList pParentList;
+    private HierarchyList<T> pParentList;
+    private Switch pSelectSwitch;
+    private T pUserPtr;
 
     private Shape pArrowShape;
     private static final Float[] faArrowVertices = new Float[] { 
@@ -30,16 +32,18 @@ public class HierarchyListEntry extends RenderGUI
         1.0f,  0.5f, 0.0f,
     };
 
-    private void repositionEntries() { repositionEntries(0); }
-    private void repositionEntries(int offset)
+    private void repositionEntries() { repositionEntries(0, false); }
+    private void repositionEntries(int offset, boolean untick)
     {
         setPosition(new ivec2(INDENT_SIZE, offset));
+        if(pSelectSwitch != null && untick)
+            pSelectSwitch.tick(false);
 
         int nextoffset = getSize().y;
         for(int i = 0; i < numChildren(); i++)
         {
-            HierarchyListEntry entry = (HierarchyListEntry)getChild(i);
-            entry.repositionEntries(nextoffset);
+            HierarchyListEntry<T> entry = (HierarchyListEntry<T>)getChild(i);
+            entry.repositionEntries(nextoffset, untick || bChildrenHidden);
             nextoffset += entry.getHeight();
         }
     }
@@ -48,13 +52,14 @@ public class HierarchyListEntry extends RenderGUI
     //
     // List Entry
     //
-    public HierarchyListEntry(String name, HierarchyList parentlist, GUICallback callback)
+    public HierarchyListEntry(String name, HierarchyList<T> parentlist, T userptr, GUICallback callback)
     {
         this.bChildrenHidden = true;
-        this.bHasChildEntries = false;
         this.pCallback = callback;
         this.sType = "HierarchyListEntry";
         this.pParentList = parentlist;
+        this.pSelectSwitch = null;
+        this.pUserPtr = userptr;
 
         if(parentlist.isEditable())
         {
@@ -76,13 +81,25 @@ public class HierarchyListEntry extends RenderGUI
         }
 
         pTitleBox.setSizeInPercent(true, true);
+        pTitleBox.onClick(pParentList.getClickCallback());
         addElement(pTitleBox);
         
         pArrowShape = new Shape("hierarchylistentryarrow", new ivec2(4, 0), new ivec2(16), Arrays.asList(faArrowVertices));
         pArrowShape.setRotationOrigin(new ivec2(8));
         addElement(pArrowShape);
+
+        if(parentlist.isSelectable())
+        {
+            pSelectSwitch = new Switch(new ivec2(100, 5), new ivec2(20, 20), 0);
+            pSelectSwitch.setPositionInPercent(true, false);
+            pSelectSwitch.setOrigin(new ivec2(25, 0));
+            pSelectSwitch.onTick(pParentList.getTickCallback());
+            pTitleBox.addGUI(pSelectSwitch);
+        }
+
         updateOnPosChange();
 
+        setMargin(new ivec2(-INDENT_SIZE, 0));
         setSize(new ivec2(100, 30));
         setSizeInPercent(true, false);
         reposition();
@@ -100,7 +117,7 @@ public class HierarchyListEntry extends RenderGUI
         if((!pParentList.isEditable() || !((TextField)pTitleBox).isEditing()) && 
            isMouseInside() && !RenderGUI.somethingHasBeenClicked())
         {
-            if(bHasChildEntries)
+            if(numChildren() > 0)
             {
                 if(Toolbox.checkPointInBox(mouse.getPosition(), new bbox2i(vActualPos, new ivec2(20, 30))))
                 {
@@ -133,20 +150,32 @@ public class HierarchyListEntry extends RenderGUI
 
     public void renderextra()
     {
-        if(bHasChildEntries)
+        if(numChildren() > 0)
             pArrowShape.render();
 
         pTitleBox.render();
         if(!bChildrenHidden)
-            renderchildren();
+        {
+            for(RenderGUI child : getChildren())
+                child.render();
+        }
     }
 
-    public void addEntry(HierarchyListEntry entry)
+    @Override
+    protected void updateOnAddGUI(RenderGUI gui) 
     {
-        entry.setIndent(iIndent + INDENT_SIZE);
-        addGUI(entry);
+        if(!gui.getType().equals("HierarchyListEntry"))
+        {
+            Output.error("Cannot add GUI of type " + gui.getType() + " to HierarchyList");
+            removeChild(gui);
+            return;
+        }
         repositionEntries();
-        bHasChildEntries = true;
+    }
+
+    public void addEntry(HierarchyListEntry<T> entry)
+    {
+        addGUI(entry);
     }
 
     public void updateBoundingBox(boolean override)
@@ -161,7 +190,7 @@ public class HierarchyListEntry extends RenderGUI
                 //bBoundingBox.size.y += getSize().y * (numChildren());
                 for(int i = 0; i < numChildren(); i++)
                 {
-                    HierarchyListEntry child = ((HierarchyListEntry)getChild(i));
+                    HierarchyListEntry<T> child = ((HierarchyListEntry<T>)getChild(i));
                     child.updateBoundingBox(true);
                     bBoundingBox.size.y += child.getBoundingBox().size.y;
                 }
@@ -175,7 +204,7 @@ public class HierarchyListEntry extends RenderGUI
         {
             int height = getSize().y;
             for(RenderGUI child : vChildren)
-                height += ((HierarchyListEntry)child).getHeight();
+                height += ((HierarchyListEntry<T>)child).getHeight();
             return height;
         }
 
@@ -200,18 +229,13 @@ public class HierarchyListEntry extends RenderGUI
         bChildrenHidden = false;
         for(int i = 0; i < numChildren(); i++)
         {
-            HierarchyListEntry entry = (HierarchyListEntry)getChild(i);
+            HierarchyListEntry<T> entry = (HierarchyListEntry<T>)getChild(i);
             entry.openAll();
         }
         if(pParent != null && pParent.getType() == "HierarchyListEntry")
-            ((HierarchyListEntry)pParent).repositionEntries();
+            ((HierarchyListEntry<T>)pParent).repositionEntries();
     }
 
-    public void setIndent(int indent)
-    {
-        this.iIndent = indent;
-        //this.title.setPosition(ivec2(indent, title.getPosition().y));
-    }
     public void setRenameCallback(TextFieldInputCallback callback)
     {
         if(pParentList.isEditable())
@@ -221,5 +245,10 @@ public class HierarchyListEntry extends RenderGUI
     public static void cleanupAll()
     {
         //_delete(pArrowVAO);
+    }
+
+    public T getUserPtr()
+    {
+        return pUserPtr;
     }
 };

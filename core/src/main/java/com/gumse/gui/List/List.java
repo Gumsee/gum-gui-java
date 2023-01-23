@@ -8,7 +8,6 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.TextBox;
-import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.maths.*;
