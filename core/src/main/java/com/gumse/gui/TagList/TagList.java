@@ -64,7 +64,7 @@ public class TagList <T> extends RenderGUI
                         String[] words = complete.split(" ");
                         for(String word : words)
                         {
-                            addTag(word, null);
+                            addTag(word, typeclass.getDeclaredConstructor().newInstance());
                         }
                         pTextField.setString("");
                     }
