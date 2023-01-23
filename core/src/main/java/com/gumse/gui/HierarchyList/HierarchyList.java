@@ -60,7 +60,7 @@ public class HierarchyList <T> extends RenderGUI
         pScroller.addGUI(pSelectedEntryIndicator);
 
 
-        pRootEntry = new HierarchyListEntry<T>(rootname, this, null, null);
+        pRootEntry = new HierarchyListEntry<T>(rootname, this, null);
         pRootEntry.setPosition(new ivec2(10, 0));
         pRootEntry.shouldKeepTrackOfBoundingbox(true);
         pRootEntry.setMargin(new ivec2(-30, 0));

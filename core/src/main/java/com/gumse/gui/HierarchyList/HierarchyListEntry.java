@@ -22,7 +22,6 @@ public class HierarchyListEntry <T> extends RenderGUI
 {
     private static final int INDENT_SIZE = 10;
     private RenderGUI pTitleBox;
-    private GUICallback pCallback;
     private HierarchyList<T> pParentList;
     private Switch pSelectSwitch;
     private T pUserPtr;
@@ -54,10 +53,9 @@ public class HierarchyListEntry <T> extends RenderGUI
     //
     // List Entry
     //
-    public HierarchyListEntry(String name, HierarchyList<T> parentlist, T userptr, GUICallback callback)
+    public HierarchyListEntry(String name, HierarchyList<T> parentlist, T userptr)
     {
         this.bChildrenHidden = true;
-        this.pCallback = callback;
         this.sType = "HierarchyListEntry";
         this.pParentList = parentlist;
         this.pSelectSwitch = null;
@@ -139,8 +137,8 @@ public class HierarchyListEntry <T> extends RenderGUI
                 if(mouse.hasLeftRelease())
                 {
                     pParentList.selectEntry(this);
-                    if(pCallback != null)
-                        pCallback.run(this);
+                    if(pParentList.getClickCallback() != null)
+                        pParentList.getClickCallback().run(this);
                 }
                 if(mouse.hasLeftDoubleClick())
                 {
