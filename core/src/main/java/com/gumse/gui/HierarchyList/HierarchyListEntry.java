@@ -259,8 +259,12 @@ public class HierarchyListEntry <T> extends RenderGUI
         //_delete(pArrowVAO);
     }
 
-    public T getUserPtr()
+    public void tick(boolean tick) 
     {
-        return pUserPtr;
+        if(pSelectSwitch != null)
+            pSelectSwitch.tick(tick);
     }
+
+    public T getUserPtr()     { return pUserPtr; }
+    public boolean isTicked() { return pSelectSwitch != null && pSelectSwitch.isTicked(); }
 };
