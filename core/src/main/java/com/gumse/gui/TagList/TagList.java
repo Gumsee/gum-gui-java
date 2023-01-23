@@ -64,7 +64,15 @@ public class TagList <T> extends RenderGUI
                         String[] words = complete.split(" ");
                         for(String word : words)
                         {
-                            addTag(word, typeclass.getDeclaredConstructor().newInstance());
+                            try 
+                            {
+                                addTag(word, typeclass.getDeclaredConstructor().newInstance());
+                            } 
+                            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                                    | InvocationTargetException | NoSuchMethodException | SecurityException e) 
+                            {
+                                        Output.error("Failed to create an instance of type " + typeclass.getName());
+                            }
                         }
                         pTextField.setString("");
                     }
