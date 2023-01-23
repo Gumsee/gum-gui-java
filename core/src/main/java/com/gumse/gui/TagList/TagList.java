@@ -71,7 +71,7 @@ public class TagList <T> extends RenderGUI
                             catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                                     | InvocationTargetException | NoSuchMethodException | SecurityException e) 
                             {
-                                        Output.error("Failed to create an instance of type " + typeclass.getName());
+                                Output.error("Failed to create an instance of type " + typeclass.getName());
                             }
                         }
                         pTextField.setString("");

@@ -1,6 +1,8 @@
 package com.gumse.gui.HierarchyList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.gumse.gui.Basics.Switch;
 import com.gumse.gui.Basics.TextBox;
@@ -159,6 +161,18 @@ public class HierarchyListEntry <T> extends RenderGUI
             for(RenderGUI child : getChildren())
                 child.render();
         }
+    }
+
+    public List<HierarchyListEntry<T> > getTickedEntries()
+    {
+        List<HierarchyListEntry<T> > retList = new ArrayList<HierarchyListEntry<T> >();
+        if(pSelectSwitch.isTicked())
+            retList.add(this);
+
+        for(RenderGUI child : getChildren())
+            retList.addAll(((HierarchyListEntry<T>)child).getTickedEntries());
+
+        return retList;
     }
 
     @Override

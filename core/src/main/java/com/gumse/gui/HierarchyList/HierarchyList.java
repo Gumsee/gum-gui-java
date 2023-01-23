@@ -1,5 +1,7 @@
 package com.gumse.gui.HierarchyList;
 
+import java.util.List;
+
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
@@ -129,10 +131,11 @@ public class HierarchyList <T> extends RenderGUI
     //
     // Getter
     //
-    public HierarchyListEntry<T> getRootEntry()     { return this.pRootEntry; }
-    public HierarchyListEntry<T> getSelectedEntry() { return this.pSelectedEntry; }
-    public boolean isEditable()                     { return this.bEditable; }
-    public boolean isSelectable()                   { return this.bSelectable; }
-    public OnSwitchTicked getTickCallback()         { return this.pTickCallback; }
-    public GUICallback getClickCallback()           { return this.pClickCallback; }
+    public HierarchyListEntry<T> getRootEntry()            { return this.pRootEntry; }
+    public HierarchyListEntry<T> getSelectedEntry()        { return this.pSelectedEntry; }
+    public boolean isEditable()                            { return this.bEditable; }
+    public boolean isSelectable()                          { return this.bSelectable; }
+    public OnSwitchTicked getTickCallback()                { return this.pTickCallback; }
+    public GUICallback getClickCallback()                  { return this.pClickCallback; }
+    public List<HierarchyListEntry<T> > getTickedEntries() { return this.pRootEntry.getTickedEntries(); }
 };
