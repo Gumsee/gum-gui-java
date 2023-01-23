@@ -24,6 +24,7 @@ public class HierarchyList <T> extends RenderGUI
     private Box pSelectedEntryIndicator;
     private boolean bEditable, bSelectable;
     private OnSwitchTicked pTickCallback;
+    private GUICallback pEntryClickCallback;
 
 
     public HierarchyList(ivec2 pos, ivec2 size, String title, String rootname, boolean editable, boolean selectable, String localeid)
@@ -128,6 +129,11 @@ public class HierarchyList <T> extends RenderGUI
         this.pTickCallback = callback;
     }
 
+    public void onEntryClick(GUICallback callback)
+    {
+        this.pEntryClickCallback = callback;
+    }
+
     //
     // Getter
     //
@@ -136,6 +142,6 @@ public class HierarchyList <T> extends RenderGUI
     public boolean isEditable()                            { return this.bEditable; }
     public boolean isSelectable()                          { return this.bSelectable; }
     public OnSwitchTicked getTickCallback()                { return this.pTickCallback; }
-    public GUICallback getClickCallback()                  { return this.pClickCallback; }
+    public GUICallback getClickCallback()                  { return this.pEntryClickCallback; }
     public List<HierarchyListEntry<T> > getTickedEntries() { return this.pRootEntry.getTickedEntries(); }
 };
