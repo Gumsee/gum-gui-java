@@ -81,7 +81,6 @@ public class HierarchyListEntry <T> extends RenderGUI
         }
 
         pTitleBox.setSizeInPercent(true, true);
-        pTitleBox.onClick(pParentList.getClickCallback());
         addElement(pTitleBox);
         
         pArrowShape = new Shape("hierarchylistentryarrow", new ivec2(4, 0), new ivec2(16), Arrays.asList(faArrowVertices));
