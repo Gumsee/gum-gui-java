@@ -502,6 +502,7 @@ public class RenderGUI
     public void setToolTip(String tooltip)                      { this.sToolTip = tooltip; }
     public void setCornerRadius(vec4 radius)                    { this.v4CornerRadius = radius; updateOnCornerRadiusChange(); }
     public void shouldKeepTrackOfBoundingbox(boolean keeptrack) { this.bKeepTrackOfBoundingBox = keeptrack; }
+    public void shouldUpdateFromFirstToLast(boolean f2l)        { this.bUpdateFromFirstToLast = f2l; }
     public static void clickedSomething(boolean hasclicked)     { bHasClickedSomething = hasclicked; }
 
 

@@ -224,6 +224,11 @@ public class Scroller extends RenderGUI
 		this.pMainChildContainer = gui;
 	}
 
+	public RenderGUI getMainChildContainer()
+	{
+		return this.pMainChildContainer;
+	}
+
 
 	public int getOffset()
 	{
