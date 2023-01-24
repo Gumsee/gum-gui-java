@@ -21,6 +21,11 @@ public class TagList <T> extends RenderGUI
         public void removed(String tag);
     }
 
+    public interface TagCreateFunction <T>
+    {
+        T create(String str);
+    }
+
     private TextField pTextField;
     private RenderGUI pTagContainer;
     private Font pFont;
@@ -29,7 +34,7 @@ public class TagList <T> extends RenderGUI
     private boolean bOnlyWords;
     private static final int TAG_GAP = 5;
 
-    public TagList(ivec2 pos, ivec2 size, Font font, Class<T> typeclass)
+    public TagList(ivec2 pos, ivec2 size, Font font, TagCreateFunction<T> createfunc)
     {
         this.vPos.set(pos);
         this.vSize.set(size);
@@ -43,15 +48,7 @@ public class TagList <T> extends RenderGUI
         pTextField.setCallback(new TextFieldInputCallback() {
             @Override public void enter(String str) 
             {
-                try 
-                {
-                    addTag(str, typeclass.getDeclaredConstructor().newInstance());
-                } 
-                catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException | NoSuchMethodException | SecurityException e) 
-                {
-                    Output.error("Failed to create an instance of type " + typeclass.getName());
-                }
+                addTag(str, createfunc.create(str));
                 pTextField.setString("");
             } 
             
@@ -64,15 +61,7 @@ public class TagList <T> extends RenderGUI
                         String[] words = complete.split(" ");
                         for(String word : words)
                         {
-                            try 
-                            {
-                                addTag(word, typeclass.getDeclaredConstructor().newInstance());
-                            } 
-                            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                                    | InvocationTargetException | NoSuchMethodException | SecurityException e) 
-                            {
-                                Output.error("Failed to create an instance of type " + typeclass.getName());
-                            }
+                            addTag(word, createfunc.create(word));
                         }
                         pTextField.setString("");
                     }
@@ -186,7 +175,7 @@ public class TagList <T> extends RenderGUI
         String fontName = node.getAttribute("font");
         Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-		TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font, Object.class);
+		TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font, (String str) -> { return new Object(); });
 		return taglistgui;
 	}
 }
