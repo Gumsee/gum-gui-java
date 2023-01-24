@@ -60,6 +60,7 @@ public class HierarchyListEntry <T> extends RenderGUI
         this.pParentList = parentlist;
         this.pSelectSwitch = null;
         this.pUserPtr = userptr;
+        this.sTitle = name;
 
         if(parentlist.isEditable())
         {

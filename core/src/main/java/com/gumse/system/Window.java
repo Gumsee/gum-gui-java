@@ -88,7 +88,7 @@ public class Window
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        if(System.getProperty("os.name") == "Mac OS X")
+        if(Display.getOSType() == Display.GUM_OS_MAC)
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Apple bullshit
 
         //Create the window

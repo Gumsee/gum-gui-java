@@ -175,7 +175,6 @@ public class TextBox extends RenderGUI
     public void setAutoInsertLinebreaks(boolean ins) { this.bAutoInsertLinebreaks = ins; pText.setFadeOverride(ins, ins); }
 
 	public ivec2 getTextSize()					  { return this.pText.getSize(); }
-	public boolean isMouseInside() 				  { return this.pBackgroundBox.isMouseInside(); }
 	public Texture getTexture() 				  { return this.pBackgroundBox.getTexture(); }
 	public Text getText()						  { return this.pText; }
 	public ivec2 getTextOffset()				  { return this.v2TextOffset; }
