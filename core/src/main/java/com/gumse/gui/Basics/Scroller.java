@@ -205,10 +205,8 @@ public class Scroller extends RenderGUI
 	{
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor(vActualPos.x, Window.CurrentlyBoundWindow.getSize().y - vActualPos.y - vActualSize.y, vActualSize.x, vActualSize.y);
-        for(int i = 0; i < pContent.numChildren(); i++)
-        {
-            pContent.getChild(i).render();
-        }
+        for(int i = pContent.numChildren(); i --> 0;) { pContent.getChild(i).render();  }
+        //for(int i = 0; i < pContent.numChildren(); i++) { pContent.getChild(i).render(); }
         Window.CurrentlyBoundWindow.resetViewport();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
