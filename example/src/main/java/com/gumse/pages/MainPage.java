@@ -158,7 +158,7 @@ public class MainPage extends RenderGUI
         //TextBox textBox = new TextBox("Some test text", fonts.getDefaultFont(), new ivec2(100, 650), new ivec2(200, 40));
         //mainScroller.addGUI(textBox);
 
-        TagList<String> tagList = new TagList<String>(new ivec2(30, 700), new ivec2(90, 30), fonts.getDefaultFont(), String.class);
+        TagList<String> tagList = new TagList<String>(new ivec2(30, 700), new ivec2(90, 30), fonts.getDefaultFont(), (String str) -> { return str; });
         tagList.setSizeInPercent(true, false);
         mainScroller.addGUI(tagList);
 
