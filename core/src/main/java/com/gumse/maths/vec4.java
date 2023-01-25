@@ -40,6 +40,14 @@ public class vec4 {
         this.w = x;
     }
 
+    public void set(vec4 vec)
+    {
+        this.x = vec.x;
+        this.y = vec.y;
+        this.z = vec.z;
+        this.w = vec.w;
+    }
+
 
     public static vec4 add(vec4 a, vec4 b)          { return new vec4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w); }
     public static vec4 sub(vec4 a, vec4 b)          { return new vec4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w); }

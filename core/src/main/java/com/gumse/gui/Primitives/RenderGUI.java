@@ -498,11 +498,11 @@ public class RenderGUI
     public void setLocaleID(String id)                          { this.sLocaleID = id; }
     public void setTitle(String title)                          { this.sTitle = title; updateOnTitleChange(); }
     public void setValuePtr(String value)                       { this.value = value; }
-    public void setColor(vec4 col)                              { this.v4Color = col; updateOnColorChange(); }
+    public void setColor(vec4 col)                              { this.v4Color.set(col); updateOnColorChange(); }
     public void hide(boolean hidden)                            { this.bIsHidden = hidden; }
     public void hideChildren(boolean hidden)                    { this.bChildrenHidden = hidden; }
     public void setToolTip(String tooltip)                      { this.sToolTip = tooltip; }
-    public void setCornerRadius(vec4 radius)                    { this.v4CornerRadius = radius; updateOnCornerRadiusChange(); }
+    public void setCornerRadius(vec4 radius)                    { this.v4CornerRadius.set(radius); updateOnCornerRadiusChange(); }
     public void shouldKeepTrackOfBoundingbox(boolean keeptrack) { this.bKeepTrackOfBoundingBox = keeptrack; }
     public void shouldUpdateFromFirstToLast(boolean f2l)        { this.bUpdateFromFirstToLast = f2l; }
     public static void clickedSomething(boolean hasclicked)     { bHasClickedSomething = hasclicked; }
