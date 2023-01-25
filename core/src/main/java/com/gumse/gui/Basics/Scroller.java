@@ -43,6 +43,8 @@ public class Scroller extends RenderGUI
 		int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
         int upperlimit = vActualSize.y - indicatorSize - 5;
 		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
+        if(iIndicatorPos == pScrollIndicator.getRelativePosition().y)
+            return;
 
         if(pOnTopHitCallback != null && iIndicatorPos == 0)
             pOnTopHitCallback.run(this);

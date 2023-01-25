@@ -10,6 +10,7 @@ import com.gumse.gui.List.ListCell;
 import com.gumse.gui.List.ColumnInfo.ColumnType;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
+import com.gumse.tools.Output;
 
 
 public class ListsPage extends RenderGUI
@@ -48,6 +49,9 @@ public class ListsPage extends RenderGUI
         for(int i = 0; i < 200; i++)
             testList.addEntry(new ListCell[] { new ListCell("kek" + i), new ListCell("eegg"),  new ListCell(false), new ListCell(42),  new ListCell(123)  }, "userdata");
         testList.setMargin(new ivec2(-50, -50));
+        testList.onBottomHit((RenderGUI gui) -> {
+            Output.info("Hit Bottom");
+        });
         listTabs.addGUIToTab(testList, "List");
 
         HierarchyList<String> testHierarchyList = new HierarchyList<>(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false, true, "");
