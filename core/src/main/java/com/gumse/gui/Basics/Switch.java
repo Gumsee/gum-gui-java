@@ -5,11 +5,8 @@ import java.util.Arrays;
 import com.gumse.gui.GUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
-<<<<<<< HEAD
 import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
-=======
 import com.gumse.gui.Primitives.Shape;
->>>>>>> 706c4fd4c1829b0e9beacfa0f6afede3d6403133
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
