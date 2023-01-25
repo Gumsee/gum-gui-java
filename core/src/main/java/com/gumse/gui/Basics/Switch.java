@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.gumse.gui.GUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.gui.Primitives.Shape;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -147,9 +148,12 @@ public class Switch extends RenderGUI
     //
     public boolean isTicked()       { return bIsTicked; }
 
-    public static Switch createFromXMLNode(XMLNode node)
+
+    public static XMLGUICreator createFromXMLNode() 
     {
-        float borderRadius = node.getFloatAttribute("border-radius", 0.0f);
-        return new Switch(new ivec2(0,0), new ivec2(1,1), borderRadius);
-    }
+        return (XMLNode node) -> { 
+            float borderRadius = node.getFloatAttribute("border-radius", 0.0f);
+            return new Switch(new ivec2(0,0), new ivec2(1,1), borderRadius);
+        };
+    };
 };

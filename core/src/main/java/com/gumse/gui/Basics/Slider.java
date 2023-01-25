@@ -5,6 +5,7 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.GumMath;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
@@ -196,21 +197,22 @@ public class Slider extends RenderGUI
 	public void setCallbackFunction(SliderCallbackFunction func) { this.callbackFunction = func; }
 
 
-
-	public static Slider createFromXMLNode(XMLNode node)
-	{
-		int length             = node.getIntAttribute("length", 100);
-		int precision          = node.getIntAttribute("precision", 1);
-		float multiplier       = node.getFloatAttribute("multiplier", 1.0f);
-		boolean infiniteslider = node.hasAttribute("infinite");
-		String unit            = node.getAttribute("unit");
-		String name            = node.getAttribute("title");
-
-		Slider slidergui = new Slider(new ivec2(0,0), length, name, precision);
-		slidergui.setSizeInPercent(node.getAttribute("length").contains("%"), false);
-		slidergui.setViewMultiplier(multiplier);
-		slidergui.setInfinite(infiniteslider);
-		slidergui.setUnit(unit);
-		return slidergui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+			int length             = node.getIntAttribute("length", 100);
+			int precision          = node.getIntAttribute("precision", 1);
+			float multiplier       = node.getFloatAttribute("multiplier", 1.0f);
+			boolean infiniteslider = node.hasAttribute("infinite");
+			String unit            = node.getAttribute("unit");
+			String name            = node.getAttribute("title");
+	
+			Slider slidergui = new Slider(new ivec2(0,0), length, name, precision);
+			slidergui.setSizeInPercent(node.getAttribute("length").contains("%"), false);
+			slidergui.setViewMultiplier(multiplier);
+			slidergui.setInfinite(infiniteslider);
+			slidergui.setUnit(unit);
+			return slidergui;
+        };
+    };
 };

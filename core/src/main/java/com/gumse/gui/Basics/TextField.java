@@ -9,6 +9,7 @@ import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -390,20 +391,23 @@ public class TextField extends RenderGUI
 	public boolean isEditing() { return this.bIsEditing; }
     public String getString()  { return this.sCurrentText; }
 
-	public static TextField createFromXMLNode(XMLNode node)
-	{
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-        String hint = node.getAttribute("hint");
-        int fontsize  = node.getIntAttribute("fontsize", 0);
-        //int maxlength = node.getIntAttribute("maxlength", 0);
-        
-		TextField textfieldgui = new TextField(node.content, font, new ivec2(0,0), new ivec2(0,0));
-        textfieldgui.setHint(hint);
-        if(fontsize > 0)
-            textfieldgui.getBox().setTextSize(fontsize);
-                
-		return textfieldgui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+			String fontName = node.getAttribute("font");
+			Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+	
+			String hint = node.getAttribute("hint");
+			int fontsize  = node.getIntAttribute("fontsize", 0);
+			//int maxlength = node.getIntAttribute("maxlength", 0);
+			
+			TextField textfieldgui = new TextField(node.content, font, new ivec2(0,0), new ivec2(0,0));
+			textfieldgui.setHint(hint);
+			if(fontsize > 0)
+				textfieldgui.getBox().setTextSize(fontsize);
+					
+			return textfieldgui;
+        };
+    };
 };

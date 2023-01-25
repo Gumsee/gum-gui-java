@@ -7,6 +7,7 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.textures.Texture;
@@ -181,19 +182,21 @@ public class TextBox extends RenderGUI
 	public Box getBox()							  { return this.pBackgroundBox; }
 	public String getString()				      { return this.pText.getString(); }
 
-	public static TextBox createFromXMLNode(XMLNode node)
-	{
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
-
-        int fontsize  = node.getIntAttribute("fontsize", 0);
-        int maxlength = node.getIntAttribute("maxlength", 0);
-        
-		TextBox textboxgui = new TextBox(node.content, font, new ivec2(0,0), new ivec2(0,0));
-        if(fontsize > 0)
-            textboxgui.setTextSize(fontsize);
-        
-        textboxgui.getText().setMaxLength(maxlength);
-		return textboxgui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+			String fontName = node.getAttribute("font");
+			Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+	
+			int fontsize  = node.getIntAttribute("fontsize", 0);
+			int maxlength = node.getIntAttribute("maxlength", 0);
+			
+			TextBox textboxgui = new TextBox(node.content, font, new ivec2(0,0), new ivec2(0,0));
+			if(fontsize > 0)
+				textboxgui.setTextSize(fontsize);
+			
+			textboxgui.getText().setMaxLength(maxlength);
+			return textboxgui;
+        };
+    };
 };

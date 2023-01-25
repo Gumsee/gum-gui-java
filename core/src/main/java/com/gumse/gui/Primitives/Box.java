@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL30;
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.textures.Texture;
 import com.gumse.model.VertexArrayObject;
@@ -141,21 +142,22 @@ public class Box extends RenderGUI
         return iBorderThickness; 
     }
 
-
-	public static Box createFromXMLNode(XMLNode node)
-	{
-		boolean invert = node.hasAttribute("invert");
-		String texture = node.getAttribute("texture");
-		Box boxgui = new Box(new ivec2(0,0), new ivec2(100,100));
-		boxgui.invertTexcoordY(invert);
-		if(!texture.equals(""))
-        {
-            Texture tex = new Texture();
-            tex.load(texture, Box.class);
-		    boxgui.setTexture(tex);
-        }
-		return boxgui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+			boolean invert = node.hasAttribute("invert");
+			String texture = node.getAttribute("texture");
+			Box boxgui = new Box(new ivec2(0,0), new ivec2(100,100));
+			boxgui.invertTexcoordY(invert);
+			if(!texture.equals(""))
+			{
+				Texture tex = new Texture();
+				tex.load(texture, Box.class);
+				boxgui.setTexture(tex);
+			}
+			return boxgui;
+        };
+    };
 
 	static void cleanup()
 	{

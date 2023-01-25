@@ -6,9 +6,11 @@ import java.util.Map;
 
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.maths.vec4;
 import com.gumse.system.Window;
+import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
 import com.gumse.tools.Toolbox;
 
@@ -583,6 +585,13 @@ public class RenderGUI
             bHasClickedSomething = true;
         return isclicked;
     }
+
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+            return new RenderGUI(); 
+        };
+    };
 
     public static boolean somethingHasBeenClicked()                           { return bHasClickedSomething; }
 

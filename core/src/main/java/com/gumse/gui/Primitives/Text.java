@@ -12,6 +12,7 @@ import com.gumse.gui.GUIShader;
 import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.gui.Font.Character;
 import com.gumse.maths.*;
 import com.gumse.model.VertexArrayObject;
@@ -305,16 +306,18 @@ public class Text extends RenderGUI
         return closest;
     }
 
-	public static Text createFromXMLNode(XMLNode node)
-	{
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
-
-        int fontsize  = node.getIntAttribute("fontsize", 12);
-        int maxlength = node.getIntAttribute("maxlength", 0);
-        
-		Text textgui = new Text(node.content, font, new ivec2(0,0), maxlength);
-        textgui.setCharacterHeight(fontsize);
-		return textgui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+            String fontName = node.getAttribute("font");
+            Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+    
+            int fontsize  = node.getIntAttribute("fontsize", 12);
+            int maxlength = node.getIntAttribute("maxlength", 0);
+            
+            Text textgui = new Text(node.content, font, new ivec2(0,0), maxlength);
+            textgui.setCharacterHeight(fontsize);
+            return textgui;
+        };
+    };
 };
