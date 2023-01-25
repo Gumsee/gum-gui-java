@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL30;
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
+import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
@@ -161,14 +162,23 @@ public class Text extends RenderGUI
         }
     }
 
+    @Override
     protected void updateOnPosChange()
     {
         updateVAO();
     }
 
+    @Override
     protected void updateOnSizeChange()
     {
         updateVAO();
+    }
+
+    @Override
+    protected void updateOnThemeChange() 
+    {
+        if(!sLocaleID.isEmpty())
+            setString(Locale.getCurrentLocale().getString(sLocaleID));
     }
 
 

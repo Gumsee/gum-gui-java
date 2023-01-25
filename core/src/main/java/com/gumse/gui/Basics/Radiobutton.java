@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import com.gumse.gui.GUI;
 import com.gumse.gui.Basics.Switch.OnSwitchTicked;
-import com.gumse.gui.Basics.Switch.Shape;
+import com.gumse.gui.Basics.Switch.SwitchShape;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
+import com.gumse.tools.Output;
 
 public class Radiobutton extends RenderGUI
 {
@@ -26,14 +27,14 @@ public class Radiobutton extends RenderGUI
         private int iFontSize;
         private OnSelectCallback pCallback;
 
-        public Option(int index, String str, Font font, int fontsize)
+        public Option(int index, String str, Font font, int fontsize, String localeid)
         {
             this.sType = "RadiobuttonOption";
             this.iFontSize = fontsize;
             this.pCallback = null;
 
             pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), 0);
-            pSwitch.setShape(Shape.CIRCLE);
+            pSwitch.setShape(SwitchShape.CIRCLE);
             pSwitch.tick(false);
             pSwitch.onTick(new OnSwitchTicked() {
                 @Override public void run(boolean ticked) 
@@ -47,6 +48,7 @@ public class Radiobutton extends RenderGUI
 
             int xoffset = iFontSize * 2;
             pTextBox = new TextBox(str, font, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
+            pTextBox.setLocaleID(localeid);
             pTextBox.setTextSize(fontsize);
             pTextBox.setAutoInsertLinebreaks(true);
             pTextBox.setAlignment(Alignment.LEFT);
@@ -107,18 +109,28 @@ public class Radiobutton extends RenderGUI
     private int iGapSize;
     private boolean bSingleSelectMode;
 
-    public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options)
+    public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options, String[] localeids)
     {
         this.sType = "Radiobutton";
         this.vPos.set(pos);
         this.iGapSize = fontsize / 2;
         this.bSingleSelectMode = false;
 
+        if(localeids.length != options.length)
+        {
+            Output.error("Radiobutton: Options length doesnt match localeid list length");
+            return;
+        }
+
         int maxheight = 0;
         for(int i = 0; i < options.length; i++)
         {
             int ypos = maxheight;
-            Option option = new Option(i, options[i], font, fontsize);
+            Option option = new Option(i, 
+                                        options[i] == null ? "" : options[i], 
+                                        font, 
+                                        fontsize, 
+                                        localeids[i] == null ? "" : localeids[i]);
             option.setPosition(new ivec2(0, ypos));
             option.setSize(new ivec2(100, 30));
             option.setSizeInPercent(true, false);
@@ -193,7 +205,7 @@ public class Radiobutton extends RenderGUI
 
     public static Radiobutton createFromXMLNode(XMLNode node)
     {
-        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, 20, FontManager.getInstance().getDefaultFont(), new String[] {});
+        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, 20, FontManager.getInstance().getDefaultFont(), new String[] {}, new String[] {});
         return radiobuttongui;
     }
 };

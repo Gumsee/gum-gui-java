@@ -8,7 +8,6 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.TextBox;
-import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.maths.*;
@@ -63,9 +62,14 @@ public class List <E> extends RenderGUI
             titleBox.setPositionInPercent(true, false);
             titleBox.setColor(GUI.getTheme().primaryColorShade);
             titleBox.onClick(columns[i].onclickcallback);
+            if(columns[i].localeid != null)
+                titleBox.setLocaleID(columns[i].localeid);
             pBackground.addGUI(titleBox);
             currentpos += columns[i].width;
         }
+
+        pBackground.getChild(0).setCornerRadius(new vec4(GUI.getDefaultTheme().cornerRadius.x, 0, 0, 0));
+        pBackground.getChild(pBackground.numChildren() - 1).setCornerRadius(new vec4(0, GUI.getDefaultTheme().cornerRadius.y, 0, 0));
 
         pScroller = new Scroller(new ivec2(0, TITLEBAR_HEIGHT), new ivec2(100, 100));
         pScroller.setSizeInPercent(true, true);
@@ -96,6 +100,7 @@ public class List <E> extends RenderGUI
         GUIShader.getStripesShaderProgram().loadUniform("lineheight", 30.0f);
         GUIShader.getStripesShaderProgram().loadUniform("color1", vec4.sub(GUI.getTheme().primaryColor, new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
         GUIShader.getStripesShaderProgram().loadUniform("color2", GUI.getTheme().primaryColor);
+        GUIShader.getShaderProgram().loadUniform("radius", GUI.getDefaultTheme().cornerRadius);
         Box.renderCustom();
         GUIShader.getStripesShaderProgram().unuse();
     
@@ -167,5 +172,7 @@ public class List <E> extends RenderGUI
         {
             child.setColor(GUI.getTheme().primaryColorShade);
         }
+        pBackground.getChild(0).setCornerRadius(new vec4(GUI.getDefaultTheme().cornerRadius.x, 0, 0, 0));
+        pBackground.getChild(pBackground.numChildren() - 1).setCornerRadius(new vec4(0, GUI.getDefaultTheme().cornerRadius.y, 0, 0));
     }
 };

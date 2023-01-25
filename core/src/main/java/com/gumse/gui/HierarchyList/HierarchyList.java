@@ -1,34 +1,40 @@
 package com.gumse.gui.HierarchyList;
 
+import java.util.List;
+
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.gui.GUI;
 import com.gumse.gui.GUIShader;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.TextBox;
+import com.gumse.gui.Basics.Switch.OnSwitchTicked;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 
-public class HierarchyList extends RenderGUI
+public class HierarchyList <T> extends RenderGUI
 {
     private TextBox pTitleBox;
     private Scroller pScroller;
     private Box pBackground;
-    private HierarchyListEntry pRootEntry;
-    private HierarchyListEntry pSelectedEntry;
+    private HierarchyListEntry<T> pRootEntry;
+    private HierarchyListEntry<T> pSelectedEntry;
     private Box pSelectedEntryIndicator;
-    private boolean bEditable;
+    private boolean bEditable, bSelectable;
+    private OnSwitchTicked pTickCallback;
+    private GUICallback pEntryClickCallback;
 
 
-    public HierarchyList(ivec2 pos, ivec2 size, String title, String rootname, boolean editable)
+    public HierarchyList(ivec2 pos, ivec2 size, String title, String rootname, boolean editable, boolean selectable, String localeid)
     {
         this.vPos.set(pos);
         this.vSize.set(size);
         this.sType = "HierarchyList";
         this.pSelectedEntry = null;
         this.bEditable = editable;
+        this.bSelectable = selectable;
 
         pTitleBox = new TextBox(title, FontManager.getInstance().getDefaultFont(), new ivec2(0,0), new ivec2(100, 30));
         pTitleBox.setAlignment(TextBox.Alignment.LEFT);
@@ -36,6 +42,7 @@ public class HierarchyList extends RenderGUI
         pTitleBox.setTextOffset(new ivec2(-10, 0));
         pTitleBox.setSizeInPercent(true, false);
         pTitleBox.setColor(GUI.getTheme().primaryColorShade);
+        pTitleBox.setLocaleID(localeid);
 
         pBackground = new Box(new ivec2(0, 0), new ivec2(100, 100));
         pBackground.setSizeInPercent(true, true);
@@ -53,9 +60,10 @@ public class HierarchyList extends RenderGUI
         pScroller.addGUI(pSelectedEntryIndicator);
 
 
-        pRootEntry = new HierarchyListEntry(rootname, this, null);
+        pRootEntry = new HierarchyListEntry<T>(rootname, this, null);
         pRootEntry.setPosition(new ivec2(10, 0));
         pRootEntry.shouldKeepTrackOfBoundingbox(true);
+        pRootEntry.setMargin(new ivec2(-30, 0));
         pScroller.addGUI(pRootEntry);
         pScroller.setMainChildContainer(pRootEntry);
 
@@ -104,23 +112,36 @@ public class HierarchyList extends RenderGUI
         pTitleBox.render();
     }
 
-    public void addEntry(HierarchyListEntry entry)
+    public void addEntry(HierarchyListEntry<T> entry)
     {
-        pRootEntry.addEntry(entry);
+        pRootEntry.addGUI(entry);
         pScroller.updateContent();
     }
 
-    public void selectEntry(HierarchyListEntry entry)
+    public void selectEntry(HierarchyListEntry<T> entry)
     {
         this.pSelectedEntry = entry;
         pSelectedEntryIndicator.hide(entry == null);
     }
 
+    public void onTick(OnSwitchTicked callback)
+    {
+        this.pTickCallback = callback;
+    }
+
+    public void onEntryClick(GUICallback callback)
+    {
+        this.pEntryClickCallback = callback;
+    }
 
     //
     // Getter
     //
-    public HierarchyListEntry getRootEntry()     { return this.pRootEntry; }
-    public HierarchyListEntry getSelectedEntry() { return this.pSelectedEntry; }
-    public boolean isEditable()                  { return this.bEditable; }
+    public HierarchyListEntry<T> getRootEntry()            { return this.pRootEntry; }
+    public HierarchyListEntry<T> getSelectedEntry()        { return this.pSelectedEntry; }
+    public boolean isEditable()                            { return this.bEditable; }
+    public boolean isSelectable()                          { return this.bSelectable; }
+    public OnSwitchTicked getTickCallback()                { return this.pTickCallback; }
+    public GUICallback getClickCallback()                  { return this.pEntryClickCallback; }
+    public List<HierarchyListEntry<T> > getTickedEntries() { return this.pRootEntry.getTickedEntries(); }
 };

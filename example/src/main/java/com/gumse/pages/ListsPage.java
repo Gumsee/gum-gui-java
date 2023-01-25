@@ -33,11 +33,11 @@ public class ListsPage extends RenderGUI
             new ivec2(0, 0), 
             new ivec2(100, 100), 
             new ColumnInfo[] {
-                new ColumnInfo("Column1", ColumnType.STRING,  30),
-                new ColumnInfo("Column2", ColumnType.STRING,  30),
-                new ColumnInfo("Bool",    ColumnType.BOOLEAN, 10),
-                new ColumnInfo("Num",     ColumnType.INTEGER, 10),
-                new ColumnInfo("Column5", ColumnType.TIME,    20),
+                new ColumnInfo("Column1", ColumnType.STRING,  30, ""),
+                new ColumnInfo("Column2", ColumnType.STRING,  30, ""),
+                new ColumnInfo("Bool",    ColumnType.BOOLEAN, 10, ""),
+                new ColumnInfo("Num",     ColumnType.INTEGER, 10, ""),
+                new ColumnInfo("Column5", ColumnType.TIME,    20, ""),
             }
         );
         testList.setSizeInPercent(true, true);
@@ -50,24 +50,24 @@ public class ListsPage extends RenderGUI
         testList.setMargin(new ivec2(-50, -50));
         listTabs.addGUIToTab(testList, "List");
 
-        HierarchyList testHierarchyList = new HierarchyList(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false);
+        HierarchyList<String> testHierarchyList = new HierarchyList<>(new ivec2(0, 0), new ivec2(100, 100), "Test HierarchyList", "Root Element", false, true, "");
         testHierarchyList.setSizeInPercent(true, true);
-        HierarchyListEntry childEntry = new HierarchyListEntry("Someee entry", testHierarchyList, null);
-        childEntry.addEntry(new HierarchyListEntry("Child of another Child :O", testHierarchyList, null));
-        childEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        childEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        HierarchyListEntry subChildEntry = new HierarchyListEntry("Sub child", testHierarchyList, null);
-        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        subChildEntry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        HierarchyListEntry<String> childEntry = new HierarchyListEntry<String>("Someee entry", testHierarchyList, "");
+        childEntry.addEntry(new HierarchyListEntry<String>("Child of another Child :O", testHierarchyList, ""));
+        childEntry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        childEntry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        HierarchyListEntry<String> subChildEntry = new HierarchyListEntry<String>("Sub child", testHierarchyList, "");
+        subChildEntry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        subChildEntry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        subChildEntry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
         childEntry.addEntry(subChildEntry);
         testHierarchyList.addEntry(childEntry);
 
-        HierarchyListEntry child2Entry = new HierarchyListEntry("eeh entry", testHierarchyList, null);
-        child2Entry.addEntry(new HierarchyListEntry("Child of another Child :O", testHierarchyList, null));
-        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
-        child2Entry.addEntry(new HierarchyListEntry("We're siblings", testHierarchyList, null));
+        HierarchyListEntry<String> child2Entry = new HierarchyListEntry<String>("eeh entry", testHierarchyList, "");
+        child2Entry.addEntry(new HierarchyListEntry<String>("Child of another Child :O", testHierarchyList, ""));
+        child2Entry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        child2Entry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
+        child2Entry.addEntry(new HierarchyListEntry<String>("We're siblings", testHierarchyList, ""));
         testHierarchyList.addEntry(child2Entry);
         listTabs.addGUIToTab(testHierarchyList, "HierarchyList");
 

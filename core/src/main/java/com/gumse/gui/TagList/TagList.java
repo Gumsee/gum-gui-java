@@ -8,7 +8,6 @@ import com.gumse.gui.Basics.TextField.TextFieldInputCallback;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
-import com.gumse.gui.TagList.TagListEntry.TagRemoveCallback;
 import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -21,15 +20,20 @@ public class TagList <T> extends RenderGUI
         public void removed(String tag);
     }
 
+    public interface TagCreateFunction <T>
+    {
+        T create(String str);
+    }
+
     private TextField pTextField;
     private RenderGUI pTagContainer;
     private Font pFont;
-    private TagRemoveCallback pRemoveCallback;
+    private GUICallback pRemoveCallback;
     private TagCallback pTagCallback;
     private boolean bOnlyWords;
     private static final int TAG_GAP = 5;
 
-    public TagList(ivec2 pos, ivec2 size, Font font)
+    public TagList(ivec2 pos, ivec2 size, Font font, TagCreateFunction<T> createfunc)
     {
         this.vPos.set(pos);
         this.vSize.set(size);
@@ -43,7 +47,7 @@ public class TagList <T> extends RenderGUI
         pTextField.setCallback(new TextFieldInputCallback() {
             @Override public void enter(String str) 
             {
-                addTag(str, null);
+                addTag(str, createfunc.create(str));
                 pTextField.setString("");
             } 
             
@@ -56,7 +60,7 @@ public class TagList <T> extends RenderGUI
                         String[] words = complete.split(" ");
                         for(String word : words)
                         {
-                            addTag(word, null);
+                            addTag(word, createfunc.create(word));
                         }
                         pTextField.setString("");
                     }
@@ -72,9 +76,10 @@ public class TagList <T> extends RenderGUI
         pTagContainer.setSizeInPercent(true, false);
         addElement(pTagContainer);
 
-        pRemoveCallback = new TagRemoveCallback() {
-            @Override public void run(TagListEntry entry) 
+        pRemoveCallback = new GUICallback() {
+            @Override public void run(RenderGUI gui) 
             {
+                TagListEntry<T> entry = (TagListEntry<T>)gui;
                 pTagContainer.removeChild(entry);
                 updateOnSizeChange();
                 if(pTagCallback != null)
@@ -111,13 +116,13 @@ public class TagList <T> extends RenderGUI
         //Skip duplicates
         for(RenderGUI child : pTagContainer.getChildren())
         {
-            TagListEntry<T> entry = (TagListEntry)child;
+            TagListEntry<T> entry = (TagListEntry<T>)child;
             if(entry.getName().equals(str))
                 return;
         }
         
         ivec2 pos = new ivec2(0, 0);
-        TagListEntry<T> entry = new TagListEntry(pos, str, pFont, pRemoveCallback, userptr);
+        TagListEntry<T> entry = new TagListEntry<>(pos, str, pFont, pRemoveCallback, userptr);
         pTagContainer.addGUI(entry);
 
         updateOnSizeChange();
@@ -135,7 +140,7 @@ public class TagList <T> extends RenderGUI
 
         for(RenderGUI child : pTagContainer.getChildren())
         {
-            TagListEntry<T> entry = (TagListEntry)child;
+            TagListEntry<T> entry = (TagListEntry<T>)child;
             retList.add(entry.getName());
         }
 
@@ -148,7 +153,7 @@ public class TagList <T> extends RenderGUI
 
         for(RenderGUI child : pTagContainer.getChildren())
         {
-            TagListEntry<T> entry = (TagListEntry)child;
+            TagListEntry<T> entry = (TagListEntry<T>)child;
             retList.add(entry.getUserptr());
         }
 
@@ -170,7 +175,7 @@ public class TagList <T> extends RenderGUI
             String fontName = node.getAttribute("font");
             Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
     
-            TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font);
+            TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font, (String str) -> { return new Object(); });
             return taglistgui;
         };
     };
