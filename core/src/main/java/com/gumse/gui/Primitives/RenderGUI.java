@@ -101,6 +101,8 @@ public class RenderGUI
         this.vMinSize = new ivec2();
         this.vMaxSize = new ivec2();
         this.bBoundingBox = new bbox2i();
+        this.v4Color = new vec4();
+        this.v4CornerRadius = new vec4();
 
         this.vElements = new ArrayList<>();
         this.vChildren = new ArrayList<>();
