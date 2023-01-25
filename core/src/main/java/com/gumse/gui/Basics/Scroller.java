@@ -44,26 +44,6 @@ public class Scroller extends RenderGUI
 		int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
         int upperlimit = vActualSize.y - indicatorSize - 5;
 		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
-        if(iIndicatorPos == iLastIndicatorPos)
-            return;
-        
-        if(bHasHitBottom && iIndicatorPos < iLastIndicatorPos)
-            bHasHitBottom = false;
-    
-        if(bHasHitTop && iIndicatorPos > iLastIndicatorPos)
-            bHasHitTop = false;
-        
-
-        if(pOnTopHitCallback != null && !bHasHitTop && iIndicatorPos == 0)
-        {
-            pOnTopHitCallback.run(this);
-            bHasHitBottom = true;
-        }
-        else if(pOnBottomHitCallback != null && !bHasHitBottom && iIndicatorPos == upperlimit)
-        {
-            pOnBottomHitCallback.run(this);
-            bHasHitTop = true;
-        }
 
 		pScrollIndicator.setPositionY((int)(iIndicatorPos));
 		pScrollIndicator.setSize(new ivec2(pScrollIndicator.getSize().x, indicatorSize));
@@ -80,6 +60,22 @@ public class Scroller extends RenderGUI
 						ypos > vActualPos.y + vActualSize.y + vOrigin.y); 
 		}
 
+        if(iIndicatorPos == iLastIndicatorPos)
+            return;
+        
+        if(bHasHitBottom && iIndicatorPos < iLastIndicatorPos) bHasHitBottom = false;
+        if(bHasHitTop && iIndicatorPos > iLastIndicatorPos)    bHasHitTop = false;
+        
+        if(pOnTopHitCallback != null && !bHasHitTop && iIndicatorPos == 0)
+        {
+            pOnTopHitCallback.run(this);
+            bHasHitBottom = true;
+        }
+        else if(pOnBottomHitCallback != null && !bHasHitBottom && iIndicatorPos == upperlimit)
+        {
+            pOnBottomHitCallback.run(this);
+            bHasHitTop = true;
+        }
         iLastIndicatorPos = iIndicatorPos;
 	}
 
