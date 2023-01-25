@@ -129,6 +129,10 @@ public class List <E> extends RenderGUI
         pScroller.destroyChildren();
     }
 
+    
+    public void onTopHit(GUICallback callback)       { pScroller.onTopHit(callback); }
+    public void onBottomHit(GUICallback callback)    { pScroller.onBottomHit(callback); }
+
     public int numEntries()
     {
         return vEntries.size();
