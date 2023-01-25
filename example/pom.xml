@@ -9,7 +9,7 @@
 
   <groupId>com.gumse</groupId>
   <artifactId>example</artifactId>
-  <version>${project.parent.version}</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>example</name>

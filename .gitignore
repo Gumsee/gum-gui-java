@@ -24,3 +24,6 @@ hs_err_pid*
 
 */target/
 cp.txt
+
+.idea/
+.DS_Store
