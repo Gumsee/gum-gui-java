@@ -27,6 +27,7 @@ public class Scroller extends RenderGUI
     private boolean bSnapped;
 	private boolean bHasOverflow;
 	private int iSnapOffset;
+    private GUICallback pOnTopHitCallback, pOnBottomHitCallback;
 
 	private void moveContent()
 	{	
@@ -42,6 +43,11 @@ public class Scroller extends RenderGUI
 		int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
         int upperlimit = vActualSize.y - indicatorSize - 5;
 		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
+
+        if(pOnTopHitCallback != null && iIndicatorPos == 0)
+            pOnTopHitCallback.run(this);
+        else if(pOnBottomHitCallback != null && iIndicatorPos == upperlimit)
+            pOnBottomHitCallback.run(this);
 
 		pScrollIndicator.setPositionY((int)(iIndicatorPos));
 		pScrollIndicator.setSize(new ivec2(pScrollIndicator.getSize().x, indicatorSize));
@@ -215,27 +221,25 @@ public class Scroller extends RenderGUI
             pScrollIndicator.render();
 	}
 
-	public void setStepSize(int step)
-	{
-		this.iStepSize = step;
-	}
-
-	public void setMainChildContainer(RenderGUI gui)
-	{
-		this.pMainChildContainer = gui;
-	}
-
-	public RenderGUI getMainChildContainer()
-	{
-		return this.pMainChildContainer;
-	}
+    //
+    // Setter
+    //
+	public void setStepSize(int step)                { this.iStepSize = step; }
+	public void setMainChildContainer(RenderGUI gui) { this.pMainChildContainer = gui; }
+    public void onTopHit(GUICallback callback)       { this.pOnTopHitCallback = callback; }
+    public void onBottomHit(GUICallback callback)    { this.pOnBottomHitCallback = callback; }
 
 
-	public int getOffset()
-	{
-		return this.pContent.getRelativePosition().y;
-	}
+    //
+    // Getter
+    //
+	public RenderGUI getMainChildContainer()         { return this.pMainChildContainer; }
+	public int getOffset()                           { return this.pContent.getRelativePosition().y; }
 
+
+    //
+    // Static
+    //
     public static XMLGUICreator createFromXMLNode() 
     {
         return (XMLNode node) -> { 
