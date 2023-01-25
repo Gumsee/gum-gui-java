@@ -5,6 +5,7 @@ import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
@@ -82,17 +83,20 @@ public class Button extends RenderGUI
     public vec4 getSecondColor()                         { return this.backgroundBox.getBox().getSecondColor(); }
     public TextBox getBox()                              { return this.backgroundBox; }
 
-    public static Button createFromXMLNode(XMLNode node)
+    
+    public static XMLGUICreator createFromXMLNode()
     {
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+        return (XMLNode node) -> { 
+            String fontName = node.getAttribute("font");
+            Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 
-        int fontsize     = node.getIntAttribute("fontsize", 0);
-        Button retbutton = new Button(new ivec2(0,0), new ivec2(1,1), "", font);
-        if(fontsize > 0)
-            retbutton.getBox().setTextSize(fontsize);
-        
+            int fontsize     = node.getIntAttribute("fontsize", 0);
+            Button retbutton = new Button(new ivec2(0,0), new ivec2(1,1), "", font);
+            if(fontsize > 0)
+                retbutton.getBox().setTextSize(fontsize);
+            
 
-        return retbutton;
+            return retbutton;
+        };
     }
 };

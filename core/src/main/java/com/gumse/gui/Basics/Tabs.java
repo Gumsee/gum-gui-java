@@ -8,6 +8,7 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -177,9 +178,12 @@ public class Tabs extends RenderGUI
     public RenderGUI getActiveTabContent() { return pActiveTab; }
     public int numTabs()                   { return vElements.size(); }
 
-    public static Tabs createFromXMLNode(XMLNode node)
+
+    public static XMLGUICreator createFromXMLNode() 
     {
-        ivec2 tabSize = node.getIvec2Attribute("tabsize", new ivec2(100, 30));
-        return new Tabs(new ivec2(0,0), new ivec2(1,1), tabSize);
-    }
+        return (XMLNode node) -> { 
+            ivec2 tabSize = node.getIvec2Attribute("tabsize", new ivec2(100, 30));
+            return new Tabs(new ivec2(0,0), new ivec2(1,1), tabSize);
+        };
+    };
 };

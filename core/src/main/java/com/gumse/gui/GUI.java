@@ -2,7 +2,20 @@ package com.gumse.gui;
 
 import org.lwjgl.opengl.GL30;
 
+import com.gumse.gui.Basics.Button;
+import com.gumse.gui.Basics.Dropdown;
+import com.gumse.gui.Basics.Group;
+import com.gumse.gui.Basics.Scroller;
+import com.gumse.gui.Basics.Slider;
+import com.gumse.gui.Basics.Switch;
+import com.gumse.gui.Basics.Tabs;
+import com.gumse.gui.Basics.TextBox;
+import com.gumse.gui.Basics.TextField;
+import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.TagList.TagList;
+import com.gumse.gui.XML.XMLGUI;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 
@@ -36,6 +49,20 @@ public class GUI
             pDefaultTheme.accentColorShade1   = new vec4(0.73f, 0.74f, 0.96f, 1.0f);
             pDefaultTheme.cornerRadius        = new vec4(7.00f, 7.00f, 7.00f, 7.0f);
             pCurrentTheme = pDefaultTheme;
+
+			
+			XMLGUI.addGUIType("box",       Box.createFromXMLNode());
+			XMLGUI.addGUIType("button",    Button.createFromXMLNode());
+			XMLGUI.addGUIType("tabs",      Tabs.createFromXMLNode());
+			XMLGUI.addGUIType("group",     Group.createFromXMLNode());
+			XMLGUI.addGUIType("dropdown",  Dropdown.createFromXMLNode());
+			XMLGUI.addGUIType("scroller",  Scroller.createFromXMLNode());
+			XMLGUI.addGUIType("slider",    Slider.createFromXMLNode());
+			XMLGUI.addGUIType("switch",    Switch.createFromXMLNode());
+			XMLGUI.addGUIType("text",      Text.createFromXMLNode());
+			XMLGUI.addGUIType("textfield", TextField.createFromXMLNode());
+			XMLGUI.addGUIType("textbox",   TextBox.createFromXMLNode());
+			XMLGUI.addGUIType("tag-list",  TagList.createFromXMLNode());
         }
 
 		/*pToolTipBox = new TextBox("", Gum::GUI::Fonts.getDefaultFont(), ivec2(0,0), ivec2(200, 200));

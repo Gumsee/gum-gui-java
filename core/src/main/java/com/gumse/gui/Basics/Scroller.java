@@ -6,6 +6,7 @@ import com.gumse.basics.SmoothFloat;
 import com.gumse.gui.GUI;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -232,8 +233,10 @@ public class Scroller extends RenderGUI
 		return this.pContent.getRelativePosition().y;
 	}
 
-	public static Scroller createFromXMLNode(XMLNode node)
-	{
-		return new Scroller(new ivec2(0,0), new ivec2(1,1));
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+			return new Scroller(new ivec2(0,0), new ivec2(1,1));
+        };
+    };
 };

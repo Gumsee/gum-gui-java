@@ -4,6 +4,7 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.Primitives.Text;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -69,10 +70,11 @@ public class Group extends RenderGUI
         }
     }
 
-
-    public static Group createFromXMLNode(XMLNode node)
+    public static XMLGUICreator createFromXMLNode() 
     {
-        Group groupgui = new Group(new ivec2(0,0), new ivec2(1,1));
-        return groupgui;
-    }
+        return (XMLNode node) -> { 
+            Group groupgui = new Group(new ivec2(0,0), new ivec2(1,1));
+            return groupgui; 
+        };
+    };
 };

@@ -3,10 +3,8 @@ package com.gumse.gui.XML;
 import java.util.Map;
 
 import com.gumse.gui.Basics.*;
-import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
-import com.gumse.gui.Primitives.Text;
-import com.gumse.gui.TagList.TagList;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.Color;
 import com.gumse.maths.ivec2;
 import com.gumse.maths.vec4;
@@ -49,18 +47,17 @@ public class XMLLoader
                 }
                 else if(type.equals("gui-root")) { gui = pRootGUI; }
                 else if(type.equals("gui"))      { gui = new RenderGUI(); }
-                else if(type.equals("box"))      { gui = Box.createFromXMLNode(node); }
-                else if(type.equals("button"))   { gui = Button.createFromXMLNode(node); }
-                else if(type.equals("tabs"))     { gui = Tabs.createFromXMLNode(node); }
-                else if(type.equals("group"))    { gui = Group.createFromXMLNode(node); }
-                else if(type.equals("dropdown")) { gui = Dropdown.createFromXMLNode(node); }
-                else if(type.equals("scroller")) { gui = Scroller.createFromXMLNode(node); }
-                else if(type.equals("slider"))   { gui = Slider.createFromXMLNode(node); }
-                else if(type.equals("switch"))   { gui = Switch.createFromXMLNode(node); }
-                else if(type.equals("text"))     { gui = Text.createFromXMLNode(node); }
-                else if(type.equals("textfield")){ gui = TextField.createFromXMLNode(node); }
-                else if(type.equals("textbox"))  { gui = TextBox.createFromXMLNode(node); }
-                else if(type.equals("tag-list")) { gui = TagList.createFromXMLNode(node); }
+                else
+                {
+                    for(Map.Entry<String, XMLGUICreator> entry : XMLGUI.getTypes().entrySet())
+                    {
+                        if(type.equals(entry.getKey()))
+                        {
+                            gui = entry.getValue().create(node);
+                            break;
+                        }
+                    }
+                }
 
                 if(gui != null)
                 {

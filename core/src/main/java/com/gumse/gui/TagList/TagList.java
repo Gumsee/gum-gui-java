@@ -9,6 +9,7 @@ import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.TagList.TagListEntry.TagRemoveCallback;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
 
@@ -163,12 +164,14 @@ public class TagList <T> extends RenderGUI
     public void onlyAllowWords(boolean allow)        { this.bOnlyWords = allow; }
 
 
-	public static TagList<Object> createFromXMLNode(XMLNode node)
-	{
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
-
-		TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font);
-		return taglistgui;
-	}
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+            String fontName = node.getAttribute("font");
+            Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+    
+            TagList<Object> taglistgui = new TagList<>(new ivec2(0,0), new ivec2(100,30), font);
+            return taglistgui;
+        };
+    };
 }

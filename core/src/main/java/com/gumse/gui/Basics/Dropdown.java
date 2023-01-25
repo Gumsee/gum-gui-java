@@ -5,6 +5,7 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
+import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
@@ -211,12 +212,14 @@ public class Dropdown extends RenderGUI
             pPreviewTextbox.setCornerRadius(GUI.getTheme().cornerRadius);
         }
     }
-	
-	public static Dropdown createFromXMLNode(XMLNode node)
-	{
-        String fontName = node.getAttribute("font");
-        Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
-		int fontsize     = node.getIntAttribute("fontsize", 12);
-		return new Dropdown("", font, new ivec2(0,0), new ivec2(0,0), fontsize);
-	}
+
+    public static XMLGUICreator createFromXMLNode() 
+    {
+        return (XMLNode node) -> { 
+            String fontName = node.getAttribute("font");
+            Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
+            int fontsize     = node.getIntAttribute("fontsize", 12);
+            return new Dropdown("", font, new ivec2(0,0), new ivec2(0,0), fontsize);
+        };
+    };
 };
