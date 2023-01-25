@@ -101,8 +101,6 @@ public class RenderGUI
         this.vMinSize = new ivec2();
         this.vMaxSize = new ivec2();
         this.bBoundingBox = new bbox2i();
-        this.v4Color = new vec4();
-        this.v4CornerRadius = new vec4();
 
         this.vElements = new ArrayList<>();
         this.vChildren = new ArrayList<>();
@@ -500,11 +498,11 @@ public class RenderGUI
     public void setLocaleID(String id)                          { this.sLocaleID = id; }
     public void setTitle(String title)                          { this.sTitle = title; updateOnTitleChange(); }
     public void setValuePtr(String value)                       { this.value = value; }
-    public void setColor(vec4 col)                              { this.v4Color.set(col); updateOnColorChange(); }
+    public void setColor(vec4 col)                              { if(v4Color == null) {v4Color = new vec4();} this.v4Color.set(col); updateOnColorChange(); }
     public void hide(boolean hidden)                            { this.bIsHidden = hidden; }
     public void hideChildren(boolean hidden)                    { this.bChildrenHidden = hidden; }
     public void setToolTip(String tooltip)                      { this.sToolTip = tooltip; }
-    public void setCornerRadius(vec4 radius)                    { this.v4CornerRadius.set(radius); updateOnCornerRadiusChange(); }
+    public void setCornerRadius(vec4 radius)                    { if(v4CornerRadius == null) {v4CornerRadius = new vec4();} this.v4CornerRadius.set(radius); updateOnCornerRadiusChange(); }
     public void shouldKeepTrackOfBoundingbox(boolean keeptrack) { this.bKeepTrackOfBoundingBox = keeptrack; }
     public void shouldUpdateFromFirstToLast(boolean f2l)        { this.bUpdateFromFirstToLast = f2l; }
     public static void clickedSomething(boolean hasclicked)     { bHasClickedSomething = hasclicked; }
