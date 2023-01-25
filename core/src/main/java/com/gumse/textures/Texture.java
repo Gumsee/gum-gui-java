@@ -1,20 +1,15 @@
 package com.gumse.textures;
 
 import java.nio.*;
-import java.io.*;
-import java.util.*;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryUtil;
-import java.lang.Exception;
 
 import com.gumse.maths.ivec2;
-import com.gumse.maths.vec2;
 import com.gumse.tools.Output;
 import com.gumse.tools.Toolbox;
-import org.apache.commons.io.IOUtils;
 
 import static org.lwjgl.stb.STBImage.*;
 
@@ -23,11 +18,27 @@ public class Texture {
     private ivec2 vTextureSize;
     private ByteBuffer bImageData;
     private int iComponents;
-    private String sName = "unnamed";
+    private String sName;
     private boolean bCreateOpenGLTexture = true;
 
-    private void create()
+    public Texture(String name)
     {
+        this();
+        sName = name;
+    }
+
+    public Texture(String name, int comps, ivec2 res)
+    {
+        this();
+        iComponents = comps;
+        vTextureSize = res;
+        sName = name;
+    }
+
+    public Texture()
+    {
+        vTextureSize = new ivec2();
+        sName = "unnamed";
         iTextureID = GL20.glGenTextures();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, iTextureID);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -35,25 +46,6 @@ public class Texture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-    }
-
-    public Texture(String name)
-    {
-        sName = name;
-        create();
-    }
-
-    public Texture(String name, int comps, ivec2 res)
-    {
-        iComponents = comps;
-        vTextureSize = res;
-        sName = name;
-        create();
-    }
-
-    public Texture()
-    {
-        create();
     }
 
     public boolean load(String resname, Class<?> classtouse)

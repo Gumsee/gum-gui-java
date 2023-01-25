@@ -132,6 +132,11 @@ public class TagList <T> extends RenderGUI
             pTagCallback.added(str);
     }
 
+    public void reset()
+    {
+        pTagContainer.destroyChildren();
+    }
+
     //
     // Getter
     //
