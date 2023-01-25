@@ -196,8 +196,7 @@ public class TextBox extends RenderGUI
 				textboxgui.setTextSize(fontsize);
 			
 			textboxgui.getText().setMaxLength(maxlength);
-			//return textboxgui;
-			return new RenderGUI();
+			return textboxgui;
         };
     };
 };
