@@ -33,7 +33,7 @@ public class HierarchyListEntry <T> extends RenderGUI
         1.0f,  0.5f, 0.0f,
     };
 
-    private void repositionEntries() { repositionEntries(0, false); }
+    protected void repositionEntries() { repositionEntries(0, false); }
     private void repositionEntries(int offset, boolean untick)
     {
         setPosition(new ivec2(INDENT_SIZE, offset));

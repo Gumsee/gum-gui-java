@@ -134,6 +134,12 @@ public class HierarchyList <T> extends RenderGUI
         this.pEntryClickCallback = callback;
     }
 
+    public void repositionEntries()
+    {
+        pRootEntry.repositionEntries();
+    }
+
+
     //
     // Getter
     //
