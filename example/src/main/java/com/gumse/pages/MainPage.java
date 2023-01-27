@@ -8,6 +8,7 @@ import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Radiobutton;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
 import com.gumse.gui.Basics.Speechbubble.Side;
+import com.gumse.gui.Basics.Switch.SwitchShape;
 import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Basics.Scroller;
 import com.gumse.gui.Basics.Slider;
@@ -138,9 +139,14 @@ public class MainPage extends RenderGUI
         textBox.setAlignment(Alignment.LEFT);
         mainScroller.addGUI(textBox);
 
-        Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 20, 90, fonts.getDefaultFont(), new String[] {"Option 1", "Option 2" + lipsum, "Option 3"}, new String[] {"", "", ""});
+        Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 90, fonts.getDefaultFont(), 20);
+        radiobutton.setShape(SwitchShape.CHAR);
+        radiobutton.setSymbol('a');
         radiobutton.setSizeInPercent(true, false);
         radiobutton.singleSelect(true);
+        radiobutton.addOption("Option 1");
+        radiobutton.addOption("Option 2" + lipsum);
+        radiobutton.addOption("Option 3");
         mainScroller.addGUI(radiobutton);
 
         Dropdown testDropdown = new Dropdown("Dropdown", fonts.getDefaultFont(), new ivec2(30, 400), new ivec2(200, 30), 20);

@@ -11,7 +11,6 @@ import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
 import com.gumse.system.filesystem.XML.XMLNode;
-import com.gumse.tools.Output;
 
 public class Radiobutton extends RenderGUI
 {
@@ -20,22 +19,28 @@ public class Radiobutton extends RenderGUI
         public void run(int index, String content);
     }
 
+    private int iGapSize, iFontSize;
+    private boolean bSingleSelectMode;
+    private Font pFont, pSymbolFont;
+    private SwitchShape iShape;
+    private char cSymbol;
+
     class Option extends RenderGUI
     {
         private Switch pSwitch;
         private TextBox pTextBox;
-        private int iFontSize;
         private OnSelectCallback pCallback;
 
-        public Option(int index, String str, Font font, int fontsize, String localeid)
+        public Option(int index, String str, String localeid)
         {
             this.sType = "RadiobuttonOption";
-            this.iFontSize = fontsize;
             this.pCallback = null;
 
-            pSwitch = new Switch(new ivec2(0, 0), new ivec2(fontsize), 0);
-            pSwitch.setShape(SwitchShape.CIRCLE);
+            pSwitch = new Switch(new ivec2(0, 0), new ivec2(iFontSize), 0);
+            pSwitch.setShape(iShape);
+            pSwitch.setChar(cSymbol);
             pSwitch.tick(false);
+            pSwitch.setCharFont(pSymbolFont);
             pSwitch.onTick(new OnSwitchTicked() {
                 @Override public void run(boolean ticked) 
                 {
@@ -47,9 +52,9 @@ public class Radiobutton extends RenderGUI
             addElement(pSwitch);
 
             int xoffset = iFontSize * 2;
-            pTextBox = new TextBox(str, font, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
+            pTextBox = new TextBox(str, pFont, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
             pTextBox.setLocaleID(localeid);
-            pTextBox.setTextSize(fontsize);
+            pTextBox.setTextSize(iFontSize);
             pTextBox.setAutoInsertLinebreaks(true);
             pTextBox.setAlignment(Alignment.LEFT);
             pTextBox.setSize(new ivec2(vActualSize.x - xoffset, pTextBox.getText().getSize().y));
@@ -106,40 +111,17 @@ public class Radiobutton extends RenderGUI
         }
     }
 
-    private int iGapSize;
-    private boolean bSingleSelectMode;
-
-    public Radiobutton(ivec2 pos, int fontsize, int width, Font font, String[] options, String[] localeids)
+    public Radiobutton(ivec2 pos, int width, Font font, int fontsize)
     {
-        this.sType = "Radiobutton";
         this.vPos.set(pos);
-        this.iGapSize = fontsize / 2;
+        this.vSize.set(new ivec2(width, 0));
+        this.sType             = "Radiobutton";
+        this.pFont             = this.pSymbolFont = font;
+        this.iShape            = SwitchShape.CIRCLE;
+        this.iGapSize          = fontsize / 2;
+        this.iFontSize         = fontsize;
         this.bSingleSelectMode = false;
-
-        if(localeids.length != options.length)
-        {
-            Output.error("Radiobutton: Options length doesnt match localeid list length");
-            return;
-        }
-
-        int maxheight = 0;
-        for(int i = 0; i < options.length; i++)
-        {
-            int ypos = maxheight;
-            Option option = new Option(i, 
-                                        options[i] == null ? "" : options[i], 
-                                        font, 
-                                        fontsize, 
-                                        localeids[i] == null ? "" : localeids[i]);
-            option.setPosition(new ivec2(0, ypos));
-            option.setSize(new ivec2(100, 30));
-            option.setSizeInPercent(true, false);
-            addGUI(option);
-
-            maxheight += option.getSize().y + iGapSize;
-        }
-
-        this.vSize.set(new ivec2(width, maxheight));
+        this.cSymbol           = '0';
 
         resize();
         reposition();
@@ -203,9 +185,35 @@ public class Radiobutton extends RenderGUI
             ((Option)child).setCallback(callback);
     }
 
+    public void setShape(SwitchShape shape)
+    {
+        iShape = shape;
+    }
+
+    public void setSymbol(char sym)
+    {
+        cSymbol = sym;
+    }
+
+    public void addOption(String name) { addOption(name, "", ""); }
+    public void addOption(String name, String localeid, String icon)
+    {
+        Option option = new Option(numChildren(), name, localeid);
+        option.setPosition(new ivec2(0, 0));
+        option.setSize(new ivec2(100, 30));
+        option.setSizeInPercent(true, false);
+        addGUI(option);
+        updateOnSizeChange();
+    }
+
+    public void setSymbolFont(Font font)
+    {
+        this.pSymbolFont = font;
+    }
+
     public static Radiobutton createFromXMLNode(XMLNode node)
     {
-        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, 20, FontManager.getInstance().getDefaultFont(), new String[] {}, new String[] {});
+        Radiobutton radiobuttongui = new Radiobutton(new ivec2(0,0), 1, FontManager.getInstance().getDefaultFont(), 20);
         return radiobuttongui;
     }
 };

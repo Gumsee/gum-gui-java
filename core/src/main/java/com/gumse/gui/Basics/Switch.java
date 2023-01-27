@@ -3,10 +3,13 @@ package com.gumse.gui.Basics;
 import java.util.Arrays;
 
 import com.gumse.gui.GUI;
+import com.gumse.gui.Font.Font;
+import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.gui.Primitives.Shape;
+import com.gumse.gui.Primitives.Text;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
@@ -17,7 +20,8 @@ public class Switch extends RenderGUI
     {
         SQUARE,
         CIRCLE,
-        CHECK
+        CHECK,
+        CHAR
     };
 
     public interface OnSwitchTicked { public void run(boolean ticked); }
@@ -26,6 +30,7 @@ public class Switch extends RenderGUI
     private Box pBackground;
     private Box pTickbox;
     private SwitchShape iShape;
+    private Text pCharBox;
     private Shape pTickShape;
     private boolean bIsTicked;
     private OnSwitchTicked pOnTickedCallback;
@@ -78,6 +83,14 @@ public class Switch extends RenderGUI
         //pTickbox.setColor(vec4(Gum::Maths::HSVToRGB(vec3(rand() % 360, 100, 70)),1.0));
         addElement(pTickbox);
 
+        pCharBox = new Text("", FontManager.getInstance().getDefaultFont(), new ivec2(30, 0), 0);
+        pCharBox.setCharacterHeight(size.y);
+        pCharBox.setOrigin(new ivec2(50, 0));
+        pCharBox.setOriginInPercent(true, false);
+        pCharBox.setPositionInPercent(true, false);
+        pCharBox.setColor(GUI.getTheme().accentColor);
+        addElement(pCharBox);
+
         pTickShape = new Shape("switchtick", new ivec2(0, 5), new ivec2(75, 75), Arrays.asList(afTickVertices));
         pTickShape.setSizeInPercent(true, true);
         pTickShape.setOriginInPercent(true, true);
@@ -106,6 +119,7 @@ public class Switch extends RenderGUI
     {
         pBackground.setColor(getColor(GUI.getTheme().secondaryColor));
         pTickbox.setColor(GUI.getTheme().accentColor);
+        pCharBox.setColor(GUI.getTheme().accentColor);
     }
 
     @Override
@@ -117,6 +131,7 @@ public class Switch extends RenderGUI
             switch(iShape)
             {
                 case CHECK: pTickShape.render(); break;
+                case CHAR:  pCharBox.render(); break;
                 default:    pTickbox.render();   break;
             }
         }
@@ -140,6 +155,14 @@ public class Switch extends RenderGUI
     public void onTick(OnSwitchTicked callback)
     {
         this.pOnTickedCallback = callback;
+    }
+    public void setCharFont(Font font)
+    {
+        this.pCharBox.setFont(font);
+    }
+    public void setChar(char ch)
+    {
+        this.pCharBox.setString(Character.toString(ch));
     }
 
 
