@@ -139,8 +139,16 @@ public class Texture {
         Output.debug(msg);
     }
 
-    public ByteBuffer getData()
+    public ByteBuffer getData() { return getData(false); }
+    public ByteBuffer getData(boolean recalculate)
     {
+        if(bImageData == null || recalculate)
+        {
+            bImageData = BufferUtils.createByteBuffer(vTextureSize.x * vTextureSize.y * 3);
+            bind(0);
+            GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, bImageData);
+            unbind();
+        }
         return bImageData;
     }
 

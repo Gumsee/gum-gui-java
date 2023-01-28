@@ -68,7 +68,7 @@ public class Framebuffer
 
     public void addTextureAttachment()
     {  
-        pTexture = new Texture();
+        pTexture = new Texture("FramebufferTex", 4, vSize);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
         pTexture.bind(0);
         GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGBA, vSize.x, vSize.y, 0, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, 0);
@@ -81,7 +81,7 @@ public class Framebuffer
 
     public void addDepthTextureAttachment()
     {  
-        pDepthTexture = new Texture();
+        pDepthTexture = new Texture("FramebufferDepthTex", 3, vSize);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, iFBO);
         pDepthTexture.bind(0);
         GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_DEPTH_COMPONENT24, vSize.x, vSize.y, 0, GL30.GL_DEPTH_COMPONENT, GL30.GL_UNSIGNED_BYTE, 0);
