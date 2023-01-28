@@ -33,23 +33,26 @@ public class Scroller extends RenderGUI
 	private void moveContent()
 	{	
 		float contentOverlap = pContent.getBoundingBox().size.y - vActualSize.y;
+        int upperlimit = 0;
 		if(contentOverlap == 0.0f)
 		{
 			bHasOverflow = false;
 			pContent.setPosition(new ivec2(0, 0));
-			return;
 		}
-		bHasOverflow = true;
-		iMaxValue = Math.max((int)contentOverlap, 0);
-		int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
-        int upperlimit = vActualSize.y - indicatorSize - 5;
-		iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
+        else
+        {
+            bHasOverflow = true;
+            iMaxValue = Math.max((int)contentOverlap, 0);
+            int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
+            upperlimit = vActualSize.y - indicatorSize - 5;
+            iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
 
-		pScrollIndicator.setPositionY((int)(iIndicatorPos));
-		pScrollIndicator.setSize(new ivec2(pScrollIndicator.getSize().x, indicatorSize));
+            pScrollIndicator.setPositionY((int)(iIndicatorPos));
+            pScrollIndicator.setSize(new ivec2(pScrollIndicator.getSize().x, indicatorSize));
 
-		float scrollPercentage = (float)iIndicatorPos / (float)upperlimit;
-		pContent.setPosition(new ivec2(0, (int)(-(scrollPercentage * contentOverlap))));
+            float scrollPercentage = (float)iIndicatorPos / (float)upperlimit;
+            pContent.setPosition(new ivec2(0, (int)(-(scrollPercentage * contentOverlap))));
+        }
         
 		for(int i = 0; i < pMainChildContainer.numChildren(); i++)
 		{   

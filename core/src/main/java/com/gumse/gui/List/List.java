@@ -118,9 +118,9 @@ public class List <E> extends RenderGUI
         ListEntry<E> entry = new ListEntry<>(cells, this, usrptr);
         entry.setSize(new ivec2(100, 40));
         entry.setPosition(new ivec2(0, vEntries.size() * 30));
+        entry.setSizeInPercent(true, false);  
         vEntries.add(entry);
         pScroller.addGUI(entry);
-        entry.setSizeInPercent(true, false);  
     }
 
     public void reset()

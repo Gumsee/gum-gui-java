@@ -23,8 +23,8 @@ public class ListsPage extends RenderGUI
         //Add Hierarchylist and normal list
         Tabs listTabs = new Tabs(new ivec2(0, 30), new ivec2(100, 100), new ivec2(100, 20));
         listTabs.setSizeInPercent(true, true);
-        listTabs.addTab("List", false);
-        listTabs.addTab("HierarchyList", true);
+        listTabs.addTab("List", true);
+        listTabs.addTab("HierarchyList", false);
         listTabs.addTab("Some other tab", false);
         listTabs.addTab("Scroll here", false);
         listTabs.addTab("Reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeally long tab", false);
@@ -46,8 +46,8 @@ public class ListsPage extends RenderGUI
         testList.addEntry(new ListCell[] { new ListCell("kek2"), new ListCell("eeehh"), new ListCell(false), new ListCell(420), new ListCell(4)    }, "userdata");
         testList.addEntry(new ListCell[] { new ListCell("kek3"), new ListCell("bleb"),  new ListCell(true),  new ListCell(666), new ListCell(3600) }, "userdata");
         testList.addEntry(new ListCell[] { new ListCell("kek4"), new ListCell("hehe"),  new ListCell(true),  new ListCell(776), new ListCell(42)   }, "userdata");
-        for(int i = 0; i < 200; i++)
-            testList.addEntry(new ListCell[] { new ListCell("kek" + i), new ListCell("eegg"),  new ListCell(false), new ListCell(42),  new ListCell(123)  }, "userdata");
+        //for(int i = 0; i < 200; i++)
+        //    testList.addEntry(new ListCell[] { new ListCell("kek" + i), new ListCell("eegg"),  new ListCell(false), new ListCell(42),  new ListCell(123)  }, "userdata");
         testList.setMargin(new ivec2(-50, -50));
         testList.onBottomHit((RenderGUI gui) -> {
             Output.info("Hit Bottom");
