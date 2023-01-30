@@ -140,7 +140,7 @@ public class MainPage extends RenderGUI
         mainScroller.addGUI(textBox);
 
         Radiobutton radiobutton = new Radiobutton(new ivec2(30, 800), 90, fonts.getDefaultFont(), 20);
-        radiobutton.setShape(SwitchShape.CHAR);
+        radiobutton.setShape(SwitchShape.CIRCLE);
         radiobutton.setSymbol('a');
         radiobutton.setSizeInPercent(true, false);
         radiobutton.singleSelect(true);

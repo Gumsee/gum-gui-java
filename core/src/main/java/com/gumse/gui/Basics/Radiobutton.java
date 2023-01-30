@@ -3,9 +3,7 @@ package com.gumse.gui.Basics;
 import java.util.ArrayList;
 
 import com.gumse.gui.GUI;
-import com.gumse.gui.Basics.Switch.OnSwitchTicked;
 import com.gumse.gui.Basics.Switch.SwitchShape;
-import com.gumse.gui.Basics.TextBox.Alignment;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -25,91 +23,6 @@ public class Radiobutton extends RenderGUI
     private SwitchShape iShape;
     private char cSymbol;
 
-    class Option extends RenderGUI
-    {
-        private Switch pSwitch;
-        private TextBox pTextBox;
-        private OnSelectCallback pCallback;
-
-        public Option(int index, String str, String localeid)
-        {
-            this.sType = "RadiobuttonOption";
-            this.pCallback = null;
-
-            pSwitch = new Switch(new ivec2(0, 0), new ivec2(iFontSize), 0);
-            pSwitch.setShape(iShape);
-            pSwitch.setChar(cSymbol);
-            pSwitch.tick(false);
-            pSwitch.setCharFont(pSymbolFont);
-            pSwitch.onTick(new OnSwitchTicked() {
-                @Override public void run(boolean ticked) 
-                {
-                    select();
-                    if(pCallback != null)
-                        pCallback.run(index, str);
-                }
-            });
-            addElement(pSwitch);
-
-            int xoffset = iFontSize * 2;
-            pTextBox = new TextBox(str, pFont, new ivec2(xoffset, 0), new ivec2(vActualSize.x - xoffset, 30));
-            pTextBox.setLocaleID(localeid);
-            pTextBox.setTextSize(iFontSize);
-            pTextBox.setAutoInsertLinebreaks(true);
-            pTextBox.setAlignment(Alignment.LEFT);
-            pTextBox.setSize(new ivec2(vActualSize.x - xoffset, pTextBox.getText().getSize().y));
-            pTextBox.getBox().hide(true);
-            pTextBox.onClick(new GUICallback() {
-                @Override public void run(RenderGUI gui) 
-                {
-                    select();
-                    if(pCallback != null)
-                        pCallback.run(index, str);
-                }
-            });
-            addElement(pTextBox);
-
-            vSize.y = pTextBox.getText().getSize().y;
-        }
-
-        @Override
-        protected void updateOnSizeChange()
-        {
-            int xoffset = iFontSize * 2;
-            pTextBox.setSize(new ivec2(vActualSize.x - xoffset, pTextBox.getText().getSize().y));
-            vSize.y = pTextBox.getText().getSize().y;
-        }
-
-        public boolean isSelected()
-        {
-            return pSwitch.isTicked();
-        }
-
-        public void select()
-        {
-            if(((Radiobutton)pParent).bSingleSelectMode)
-            {
-                for(RenderGUI option : pParent.getChildren())
-                {
-                    if(option.getType().equals("RadiobuttonOption"))
-                    {
-                        ((Option)option).unselect();
-                    }
-                }
-            }
-            pSwitch.tick(true);
-        }
-
-        public void unselect()
-        {
-            pSwitch.tick(false);
-        }
-
-        public void setCallback(OnSelectCallback callback)
-        {
-            this.pCallback = callback;
-        }
-    }
 
     public Radiobutton(ivec2 pos, int width, Font font, int fontsize)
     {
@@ -163,7 +76,7 @@ public class Radiobutton extends RenderGUI
     {
         ArrayList<Integer> retArr = new ArrayList<>();
         for(int i = 0; i < vChildren.size(); i++)
-            if(((Option)vChildren.get(i)).isSelected())
+            if(((RadiobuttonOption)vChildren.get(i)).isSelected())
                 retArr.add(i);
 
         return retArr;
@@ -174,15 +87,20 @@ public class Radiobutton extends RenderGUI
         this.bSingleSelectMode = singleselect;
     }
 
+    public boolean inSingleSelectMode()
+    {
+        return bSingleSelectMode;
+    }
+
     public void select(int index)
     {
-        ((Option)vChildren.get(index)).select();
+        ((RadiobuttonOption)vChildren.get(index)).select();
     }
 
     public void onSelect(OnSelectCallback callback)
     {
         for(RenderGUI child : vChildren)
-            ((Option)child).setCallback(callback);
+            ((RadiobuttonOption)child).setCallback(callback);
     }
 
     public void setShape(SwitchShape shape)
@@ -195,15 +113,17 @@ public class Radiobutton extends RenderGUI
         cSymbol = sym;
     }
 
-    public void addOption(String name) { addOption(name, "", ""); }
-    public void addOption(String name, String localeid, String icon)
+    public RadiobuttonOption addOption(String name) { return addOption(name, "", ""); }
+    public RadiobuttonOption addOption(String name, String localeid, String icon)
     {
-        Option option = new Option(numChildren(), name, localeid);
+        RadiobuttonOption option = new RadiobuttonOption(numChildren(), name, localeid, iShape, cSymbol, pFont, pSymbolFont, iFontSize);
         option.setPosition(new ivec2(0, 0));
         option.setSize(new ivec2(100, 30));
         option.setSizeInPercent(true, false);
         addGUI(option);
         updateOnSizeChange();
+
+        return option;
     }
 
     public void setSymbolFont(Font font)
