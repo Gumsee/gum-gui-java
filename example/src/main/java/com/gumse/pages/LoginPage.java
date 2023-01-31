@@ -16,7 +16,6 @@ public class LoginPage extends RenderGUI
         this.vSize = new ivec2(100,100);
 
         FontManager fonts = FontManager.getInstance();
-        float cornerradius = 7.0f;
 
         TextField usernameField = new TextField("Username", fonts.getDefaultFont(), new ivec2(50, 100), new ivec2(400, 60));
         //usernameField.setCornerRadius(new vec4(cornerradius));

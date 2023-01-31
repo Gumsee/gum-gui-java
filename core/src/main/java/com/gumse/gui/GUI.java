@@ -22,8 +22,6 @@ import com.gumse.system.Window;
 public class GUI
 {
 	private RenderGUI WindowCanvas;
-	//private TextBox pToolTipBox;
-	private float fToolTipHideTimer, fToolTipShowTimer;
     private static Theme pCurrentTheme, pDefaultTheme = null;
 
 	

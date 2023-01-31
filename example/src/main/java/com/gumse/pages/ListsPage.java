@@ -1,7 +1,6 @@
 package com.gumse.pages;
 
 import com.gumse.gui.Basics.Tabs;
-import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.HierarchyList.HierarchyList;
 import com.gumse.gui.HierarchyList.HierarchyListEntry;
 import com.gumse.gui.List.ColumnInfo;
@@ -18,7 +17,6 @@ public class ListsPage extends RenderGUI
     public ListsPage()
     {
         this.vSize = new ivec2(100,100);
-        FontManager fonts = FontManager.getInstance();
         
         //Add Hierarchylist and normal list
         Tabs listTabs = new Tabs(new ivec2(0, 30), new ivec2(100, 100), new ivec2(100, 20));

@@ -20,7 +20,6 @@ import com.gumse.model.VertexArrayObject;
 import com.gumse.model.VertexBufferObject;
 import com.gumse.shader.Shader;
 import com.gumse.shader.ShaderProgram;
-import com.gumse.system.Window;
 
 public class Graph extends RenderGUI
 {
@@ -150,7 +149,7 @@ public class Graph extends RenderGUI
         GraphShader.unuse();
     }
 
-    private vec3 getPosValue(int index)
+    public vec3 getPosValue(int index)
     {
         return new vec3(vPositionsData.get(index * 3 + 0), 
                         vPositionsData.get(index * 3 + 1), 

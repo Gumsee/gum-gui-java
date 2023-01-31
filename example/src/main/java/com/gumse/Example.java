@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import com.gumse.basics.Globals;
 import com.gumse.gui.GUI;
-import com.gumse.gui.Theme;
 import com.gumse.gui.AltMenu.AltMenu;
 import com.gumse.gui.AltMenu.AltMenuEntry;
 import com.gumse.gui.AltMenu.AltMenuEntry.AltMenuEntryCallback;

@@ -184,7 +184,7 @@ public class Text extends RenderGUI
 
     public void renderextra()
     {
-        vec4 col = getColor(GUI.getTheme().textColor);
+        vec4 col = new vec4(getColor(GUI.getTheme().textColor));
         if(fAlphaOverride < 1.0f)
             col.w = fAlphaOverride;
         
@@ -255,7 +255,21 @@ public class Text extends RenderGUI
     public ivec2 getSize()                        { return getStringSize(sRenderText); }
     public ivec2 getFullTextSize()                { return getStringSize(sText); }
     public String getString()                     { return this.sText; }
+    public Font getFont()                         { return this.pFont; }
     public bbox2i getRenderBox()                  { return this.bRenderBox; }
+    public ivec2 getCharSize(char ch) 
+    {
+        ivec2 retSize = new ivec2(0, 0);
+        Character cha = pFont.getCharacter(String.valueOf(ch).codePointAt(0));
+        if(cha == null || cha.texture == null) 
+            return retSize;
+        
+        retSize.x = (int)(cha.texture.getSize().x * fScale);
+        retSize.y = (int)(pFont.getHighestGlyphSize() * fScale);
+
+        return retSize;
+
+    }
     public ivec2 getTextSize(String str, int begin, int end)
     {
         if(begin < 0 || end > str.length())
@@ -266,14 +280,13 @@ public class Text extends RenderGUI
         float biggestX = 0;
         for(int i = begin; i < end; i++)
         {
-            Character ch = pFont.getCharacter(str.codePointAt(i));
-            if(ch == null || ch.texture == null) continue;
-            vTextSize.x += ch.texture.getSize().x * fScale;
+            ivec2 charSize = getCharSize(str.charAt(i));
+            vTextSize.x += charSize.x;
 
             if(str.charAt(i) == '\n') 
             {
                 vTextSize.x = 0;
-                vTextSize.y += this.pFont.getHighestGlyphSize() * fScale * 1.1f;
+                vTextSize.y += charSize.y * 1.1f;
             }
 
             if(vTextSize.x > biggestX) 

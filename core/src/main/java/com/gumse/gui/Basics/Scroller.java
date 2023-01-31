@@ -11,7 +11,6 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Output;
 
 public class Scroller extends RenderGUI
 {
@@ -21,7 +20,6 @@ public class Scroller extends RenderGUI
 	private RenderGUI pMainChildContainer;
 
 	private SmoothFloat pIndicatorWidthFloat;
-	private int iMaxValue;
 	private int iStepSize;
 	private int iIndicatorPos, iLastIndicatorPos;
     private boolean bSnapped;
@@ -42,7 +40,6 @@ public class Scroller extends RenderGUI
         else
         {
             bHasOverflow = true;
-            iMaxValue = Math.max((int)contentOverlap, 0);
             int indicatorSize = (int)(((float)vActualSize.y / (float)pContent.getBoundingBox().size.y) * pScrollBar.getSize().y);
             upperlimit = vActualSize.y - indicatorSize - 5;
             iIndicatorPos = GumMath.clamp(iIndicatorPos, 0, upperlimit);
@@ -93,7 +90,6 @@ public class Scroller extends RenderGUI
 		this.bSnapped = false;
 		this.iIndicatorPos = 0;
 		this.iStepSize = 30;
-		this.iMaxValue = 0;
 		this.bHasOverflow = false;
 		this.pIndicatorWidthFloat = new SmoothFloat(0, 10, 0);
         this.hideChildren(true);

@@ -13,7 +13,6 @@ import com.gumse.maths.*;
 import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Mouse;
-import com.gumse.tools.Output;
 
 public class Tabs extends RenderGUI
 {

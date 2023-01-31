@@ -35,9 +35,8 @@ public class Window
     private Window pParentWindow;
     private ivec2 v2Size, v2Pos;
     private vec2 v2PixelSize;
-    private boolean bHasBorder, bHasVerticalSync, bHasScalingSnapped, bIsFloating, bIsMaximized, bIsMinimized, bIsResizable, bIsFullscreen, bIsHidden, bShouldClose, bKeepInsideParent;
+    private boolean bHasBorder, bHasScalingSnapped, bIsMaximized, bIsResizable, bIsFullscreen, bShouldClose;
     private String sTitle;
-    private String sWindowClass = "Gumball";
     private final Framebuffer pFramebuffer;
     
     
@@ -64,14 +63,11 @@ public class Window
 	public Window(String title, ivec2 windowsize, int properties, Window parentWindow)
 	{
 		this.pParentWindow = parentWindow;
-		this.bKeepInsideParent = (properties & GUM_WINDOW_TRAP_IN_PARENT) > 0;
 		this.v2Size = windowsize;
 		this.sTitle = title;
-		this.bIsHidden = false;
 		this.bHasScalingSnapped = false;
 		this.bIsMaximized = false;
 		this.bShouldClose = false;
-		this.bIsMinimized = false;
         this.pFramebuffer = new Framebuffer(windowsize, true);
 
 		if((properties & GUM_WINDOW_SIZE_IN_PERCENT) > 0)
@@ -290,7 +286,6 @@ public class Window
             glfwIconifyWindow(lWindowID);
         else
             restore();
-        bIsMinimized = dominimize;
     }
 
 	public void hide(boolean hiddenstat)
@@ -298,9 +293,7 @@ public class Window
         if(hiddenstat)
             glfwHideWindow(lWindowID);
         else
-            glfwShowWindow(lWindowID);
-		bIsHidden = hiddenstat;
-        
+            glfwShowWindow(lWindowID);        
 	}
 
 	public void finishRender()                     { glfwSwapBuffers(lWindowID); }  
@@ -309,7 +302,7 @@ public class Window
     public void destroyNativeWindow()              { glfwDestroyWindow(lWindowID); }
     public void makeResizable(boolean isresizable) { glfwSetWindowAttrib(lWindowID, GLFW_RESIZABLE, isresizable ? 1 : 0); bIsResizable = isresizable; }
     public void makeFullscreen(boolean fullscreen) { bIsFullscreen = fullscreen; }
-    public void makeFloating(boolean isfloating)   { glfwSetWindowAttrib(lWindowID, GLFW_FLOATING, isfloating ? 1 : 0); this.bIsFloating = isfloating; }
+    public void makeFloating(boolean isfloating)   { glfwSetWindowAttrib(lWindowID, GLFW_FLOATING, isfloating ? 1 : 0); }
     public void showBorder(boolean show)           { glfwSetWindowAttrib(lWindowID, GLFW_DECORATED, show ? 1 : 0); bHasBorder = show; }
     public void setMinimumSize(ivec2 size)         { glfwSetWindowSizeLimits(lWindowID, size.x, size.y, GLFW_DONT_CARE, GLFW_DONT_CARE); }
 
@@ -364,7 +357,7 @@ public class Window
 
 
     //Setter
-	public void setVerticalSync(boolean vsync)  { glfwSwapInterval(vsync ? 1 : 0); bHasVerticalSync = vsync; }
+	public void setVerticalSync(boolean vsync)  { glfwSwapInterval(vsync ? 1 : 0); }
     public void setSize(ivec2 size)             { glfwSetWindowSize(lWindowID, size.x, size.y); }
     public void setPosition(ivec2 pos)          { glfwSetWindowPos(lWindowID, pos.x, pos.y); }
 	public void setTitle(String title)          { glfwSetWindowTitle(lWindowID, title); this.sTitle = title; }

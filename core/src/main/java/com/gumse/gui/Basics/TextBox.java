@@ -1,6 +1,5 @@
 package com.gumse.gui.Basics;
 
-import com.gumse.gui.GUI;
 import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -25,10 +24,10 @@ public class TextBox extends RenderGUI
     private Box	pBackgroundBox;
 	private Text pText;
     private String sActualText, sFinalText;
-	
 	private Alignment iAlignment;
 	private ivec2 v2TextOffset;
     private boolean bAutoInsertLinebreaks;
+    private int iNewlineInsertOffset;
 
 
 	public TextBox(String str, Font font, ivec2 pos, ivec2 size)
@@ -40,6 +39,7 @@ public class TextBox extends RenderGUI
 		this.iAlignment = Alignment.CENTER;
 		this.v2TextOffset = new ivec2(0,0);
         this.bAutoInsertLinebreaks = false;
+        this.iNewlineInsertOffset = 0;
 
 		pBackgroundBox = new Box(new ivec2(0,0), new ivec2(100,100));
 		pBackgroundBox.setSizeInPercent(true, true);
@@ -134,36 +134,55 @@ public class TextBox extends RenderGUI
 
     private void insertLinebreaks()
     {
-        //ArrayList<String> words
-        int wordStart = 0, wordEnd = 0;
-        int currentOffset = 0;
+        int maxwidth = (int)(vActualSize.x * 0.85);
+        int halfwidth = maxwidth / 2;
+        int spacewidth = pText.getStringSize(" ").x * 3;
+        String retString = "";
+        this.iNewlineInsertOffset = 0;
 
-        char[] chars = sActualText.toCharArray();
-        for(int i = 0; i < sActualText.length(); i++)
+        String[] words = sActualText.split(" ");
+        for(int i = 0; i < words.length; i++)
         {
-            if(sActualText.charAt(i) == ' ')
+            String word = words[i];
+            int wordwidth = pText.getStringSize(word).x + spacewidth;
+            iNewlineInsertOffset += wordwidth;
+
+            //Output.info(word + " " + wordwidth + " " + iNewlineInsertOffset + " " + maxwidth);
+            if(wordwidth >= halfwidth)
             {
-                wordStart = wordEnd;
-                wordEnd = i;
-                
-
-                int wordWidth = pText.getTextSize(sActualText, wordStart, wordEnd).x;
-                if(currentOffset + wordWidth > vActualSize.x * 0.95f)
-                {
-                    chars[wordStart] = '\n';
-                    currentOffset = 0;
-                }
-
-                currentOffset += wordWidth;
+                retString += splitWord(word, maxwidth) + " ";
+                continue;
             }
-            else if(sActualText.charAt(i) == '\n')
+            else if(iNewlineInsertOffset >= maxwidth)
             {
-                wordStart = wordEnd;
-                wordEnd = i;
-                currentOffset = 0;
+                retString += "\n";
+                iNewlineInsertOffset = 0;
+            }
+
+            retString += word + " ";
+        }
+        sFinalText = retString.toString();
+    }
+
+    private String splitWord(String word, int maxwidth)
+    {
+        StringBuilder retStr = new StringBuilder(word);
+        //int offset = startoffset;
+        for(int i = 0; i < word.length(); i++)
+        {
+            char currentChar = word.charAt(i);
+            iNewlineInsertOffset += pText.getCharSize(currentChar).x;
+
+            if(iNewlineInsertOffset >= maxwidth)
+            {
+                retStr.setCharAt(i, '\n');
+                retStr.insert(i, currentChar);
+                    
+                iNewlineInsertOffset = 0;
             }
         }
-        sFinalText = String.valueOf(chars);
+
+        return retStr.toString();
     }
 
 	public void setAlignment(Alignment alignment)    { this.iAlignment = alignment; updateOnSizeChange(); }

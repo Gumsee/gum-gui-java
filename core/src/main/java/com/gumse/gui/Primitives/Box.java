@@ -69,9 +69,9 @@ public class Box extends RenderGUI
 
     private void renderInternal()
     {
-        vec4 col1 = getColor(GUI.getTheme().primaryColor);
-        vec4 col2 = color2;
-        vec4 col3 = bordercolor;
+        vec4 col1 = new vec4(getColor(GUI.getTheme().primaryColor));
+        vec4 col2 = new vec4(color2);
+        vec4 col3 = new vec4(bordercolor);
         if(fAlphaOverride < 1.0f)
         {
             col1.w = fAlphaOverride;

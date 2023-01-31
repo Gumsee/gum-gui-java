@@ -24,6 +24,14 @@ public class vec4 {
         this.w = w;
     }
 
+    public vec4(vec4 vec)
+    {
+        this.x = vec.x;
+        this.y = vec.y;
+        this.z = vec.z;
+        this.w = vec.w;
+    }
+
     public vec4(vec3 vec, float w)
     {
         this.x = vec.x;

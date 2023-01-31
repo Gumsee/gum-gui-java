@@ -11,7 +11,6 @@ public class VertexArrayObject
     private int ivaoID;
     private int iIndexBuffer;
     private int iVertexCount;
-    private ArrayList<Integer> vBufferIDs;
 	private ArrayList<Integer> vAttributes;
 
 
@@ -22,7 +21,6 @@ public class VertexArrayObject
         iVertexCount = 0;
 
         vAttributes = new ArrayList<>();
-        vBufferIDs = new ArrayList<>();
     }
 
     public void cleanup() 

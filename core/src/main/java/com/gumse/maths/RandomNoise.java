@@ -45,7 +45,7 @@ public class RandomNoise
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, 
         GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bImageData);
-        retTex.unbind();
+        Texture.unbind();
 
         return retTex;
     }

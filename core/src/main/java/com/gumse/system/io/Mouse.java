@@ -28,7 +28,6 @@ public class Mouse
     private static boolean bActiveHovering = false;
     private ivec2 v2Position, v2PreviousPosition, v2LeftClickPosition, v2PositionDelta;
     private int iMouseWheelState;
-    private int frameSize;
     private int CursorType;
     private vec3 rayDir;
     private int mouseOnID;
@@ -47,11 +46,6 @@ public class Mouse
     private boolean RightReleased = false;
     private boolean LeftDoubleClick = false;
     private boolean RightDoubleClick = false;
-
-    private boolean defaulHideState;
-    private boolean defaulTrapState;
-    private boolean bHidden;
-    private boolean bIsTrapped;
 
     public interface MouseButtonCallback {
         void run(int button, int mods);
@@ -84,14 +78,10 @@ public class Mouse
         this.pContextWindow = context;
         this.v2LeftClickPosition = new ivec2(-1, -1);
 
-        bIsTrapped = false;
-        bHidden = false;
 
         iMouseWheelState = 0;
         CursorType = 0;
-        frameSize = 0;
         rayDir = new vec3(0);
-        //DragAndDropInfo = "";
         mouseOnID = -1;
 
         lDefaultCursor            = GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR);
@@ -152,31 +142,6 @@ public class Mouse
 		return vec2.distance(normPos, normOldPos); 
 	}
 
-
-	public void calcRay()
-	{
-		/*float frameX = (float)renderFrame.x;
-        float frameY = (float)renderFrame.y;
-        vec4 screen_space;
-
-        //screen space to normalized device space
-		screen_space.x = (2 * (getPosition().x / frameX)) - 1;
-		screen_space.y = -((2 * (getPosition().y / frameY)) - 1);
-        screen_space.z = -1.0f;
-		screen_space.z = 1.0f;
-
-		mat4 invertedProjection = mat4::inverse(GumEngine::ActiveCamera.getProjectionMatrix());
-		vec4 eye_space = mat4::transpose(invertedProjection) * screen_space;
-		eye_space.z = -1.0f;
-		eye_space.w = 0.0f;
-
-        //eye space to world space
-		vec4 worldspace = GumEngine::ActiveCamera.getViewMatrix() * eye_space;
-
-		rayDir = worldspace;
-        rayDir = vec3::normalize(rayDir);*/
-	}
-
     public void reset()
     {
         //Replace with chrono
@@ -192,7 +157,6 @@ public class Mouse
 
 		iMouseWheelState = 0;
         CursorType = 0;
-        frameSize = 0;
 
         if(!bActiveHovering)
             setCursor(GUM_CURSOR_DEFAULT);
@@ -208,7 +172,6 @@ public class Mouse
 
     //Setter
     public void setContextWindow(Window context) { this.pContextWindow = context; }
-	public void trap(boolean doTrap) 			 { this.bIsTrapped = doTrap; }
 	public void hide(boolean hide) 			     { GLFW.glfwSetInputMode(pContextWindow.getNativeWindow(), GLFW.GLFW_CURSOR, hide ? GLFW.GLFW_CURSOR_HIDDEN : GLFW.GLFW_CURSOR_NORMAL); }
     public void setInstanceIDUnderMouse(int id)  { this.mouseOnID = id; }
     static public void setActiveHovering(boolean hover) { bActiveHovering = hover; }
@@ -326,7 +289,6 @@ public class Mouse
         v2Position = pos;
 
         v2PositionDelta = ivec2.sub(v2Position, v2PreviousPosition);
-        calcRay();
 
         if(movedCallback != null)
             movedCallback.run(pos);

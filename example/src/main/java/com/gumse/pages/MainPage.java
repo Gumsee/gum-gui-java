@@ -4,7 +4,6 @@ import com.gumse.gui.GUI;
 import com.gumse.gui.Theme;
 import com.gumse.gui.Basics.Button;
 import com.gumse.gui.Basics.Dropdown;
-import com.gumse.gui.Basics.Graph;
 import com.gumse.gui.Basics.Radiobutton;
 import com.gumse.gui.Basics.Dropdown.DropdownEntryCallback;
 import com.gumse.gui.Basics.Speechbubble.Side;
@@ -36,7 +35,6 @@ import com.gumse.tools.FPS;
 public class MainPage extends RenderGUI
 {
     private TextBox fpsBox;
-    private Graph testGraph;
 
     public MainPage()
     {
