@@ -27,6 +27,7 @@ public class RadiobuttonOption extends RenderGUI
         pSwitch.tick(false);
         pSwitch.setCharFont(symbolfont);
         pSwitch.onTick((boolean ticked) -> {
+            pSwitch.tick(!pSwitch.isTicked());
             select();
             if(pCallback != null)
                 pCallback.run(index, str);

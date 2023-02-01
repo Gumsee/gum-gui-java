@@ -2,7 +2,6 @@ package com.gumse.tools;
 
 import java.nio.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -155,7 +154,9 @@ public class Toolbox
     {
         String retstr = "";
         try {
-            retstr = new Scanner(classtouse.getClassLoader().getResourceAsStream(resource), "UTF-8").useDelimiter("\\A").next();
+            Scanner scanner = new Scanner(classtouse.getClassLoader().getResourceAsStream(resource), "UTF-8");
+            retstr = scanner.useDelimiter("\\A").next();
+            scanner.close();
         }
         //catch(IOException e) { Debug.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }
         catch(Exception e) { Output.error("Failed to read resource \"" + resource + "\": " + e.getMessage()); }

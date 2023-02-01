@@ -24,7 +24,6 @@ public class Output
     public static void init()
     {
         lStartTime = System.currentTimeMillis();
-        formatter = new DecimalFormat("#0.00000");
         pCallback = null;
     }
 
@@ -85,5 +84,10 @@ public class Output
 
     public static void setCallback(OutputCallback callback) { pCallback = callback; }
 
-    private static String getCurrentTime()               { return "[" + formatter.format((System.currentTimeMillis() - lStartTime) / 1000d) + "]"; }
+    private static String getCurrentTime() 
+    {  
+        if(formatter == null)
+            formatter = new DecimalFormat("#0.00000");
+        return "[" + formatter.format((System.currentTimeMillis() - lStartTime) / 1000d) + "]"; 
+    }
 }

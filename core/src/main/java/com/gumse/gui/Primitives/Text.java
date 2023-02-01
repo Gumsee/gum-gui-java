@@ -257,15 +257,15 @@ public class Text extends RenderGUI
     public String getString()                     { return this.sText; }
     public Font getFont()                         { return this.pFont; }
     public bbox2i getRenderBox()                  { return this.bRenderBox; }
-    public ivec2 getCharSize(char ch) 
+    public vec2 getCharSize(char ch) 
     {
-        ivec2 retSize = new ivec2(0, 0);
+        vec2 retSize = new vec2(0, 0);
         Character cha = pFont.getCharacter(String.valueOf(ch).codePointAt(0));
         if(cha == null || cha.texture == null) 
             return retSize;
         
-        retSize.x = (int)(cha.texture.getSize().x * fScale);
-        retSize.y = (int)(pFont.getHighestGlyphSize() * fScale);
+        retSize.x = cha.texture.getSize().x * fScale;
+        retSize.y = pFont.getHighestGlyphSize() * fScale;
 
         return retSize;
 
@@ -280,7 +280,7 @@ public class Text extends RenderGUI
         float biggestX = 0;
         for(int i = begin; i < end; i++)
         {
-            ivec2 charSize = getCharSize(str.charAt(i));
+            vec2 charSize = getCharSize(str.charAt(i));
             vTextSize.x += charSize.x;
 
             if(str.charAt(i) == '\n') 

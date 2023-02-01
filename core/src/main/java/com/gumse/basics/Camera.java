@@ -3,7 +3,6 @@ package com.gumse.basics;
 import com.gumse.PostProcessing.Framebuffer;
 import com.gumse.maths.mat4;
 import com.gumse.maths.vec3;
-import com.gumse.system.Window;
 
 public class Camera {
     private vec3 vPosition;

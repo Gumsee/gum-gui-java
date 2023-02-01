@@ -168,10 +168,11 @@ public class TagList <T> extends RenderGUI
     //
     // Setter
     //
-    public void setHint(String hint)                 { this.pTextField.setHint(hint); }
-    public void setMaximumWordLength(int len)        { this.pTextField.getBox().setMaxTextlength(len); }
-    public void setTagCallback(TagCallback callback) { this.pTagCallback = callback; }
-    public void onlyAllowWords(boolean allow)        { this.bOnlyWords = allow; }
+    public void setHint(String hint)                   { this.pTextField.setHint(hint); }
+    public void setMaximumWordLength(int len)          { this.pTextField.getBox().setMaxTextlength(len); }
+    public void setTagCallback(TagCallback callback)   { this.pTagCallback = callback; }
+    public void onlyAllowWords(boolean allow)          { this.bOnlyWords = allow; }
+    @Override public void setLocaleID(String localeid) { this.pTextField.setLocaleID(localeid); }
 
 
     public static XMLGUICreator createFromXMLNode() 

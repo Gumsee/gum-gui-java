@@ -63,4 +63,9 @@ public class Shape extends RenderGUI
         pShapeVAO.unbind();
         GUIShader.getShaderProgram().unuse();
     }
+
+    public String getShapeName()
+    {
+        return sShapeName;
+    }
 }

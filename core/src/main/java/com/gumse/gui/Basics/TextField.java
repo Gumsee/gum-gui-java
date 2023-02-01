@@ -329,6 +329,9 @@ public class TextField extends RenderGUI
 		sCurrentText = sb.toString();
 		updateText();
 		setIndicator(startingpoint - backspaces);
+        
+        if(pCallback != null)
+            pCallback.input("", sCurrentText);
 	}
 	
 	public void setSelection(int from, int to)

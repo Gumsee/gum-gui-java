@@ -10,7 +10,6 @@ import com.gumse.gui.XML.XMLGUI.XMLGUICreator;
 import com.gumse.maths.*;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.textures.Texture;
-import com.gumse.tools.Output;
 
 public class TextBox extends RenderGUI
 {
@@ -175,8 +174,8 @@ public class TextBox extends RenderGUI
 
             if(iNewlineInsertOffset >= maxwidth)
             {
-                retStr.setCharAt(i, '\n');
-                retStr.insert(i, currentChar);
+                retStr.insert(i, "-\n");
+                retStr.setCharAt(i + 2, currentChar);
                     
                 iNewlineInsertOffset = 0;
             }

@@ -7,7 +7,6 @@ import com.gumse.gui.Basics.TextBox;
 import com.gumse.gui.Primitives.Box;
 import com.gumse.gui.Primitives.RenderGUI;
 import com.gumse.maths.ivec2;
-import com.gumse.maths.vec4;
 
 public class AltMenu extends RenderGUI
 {

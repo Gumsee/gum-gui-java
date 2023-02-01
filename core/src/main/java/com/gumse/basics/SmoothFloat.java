@@ -1,6 +1,5 @@
 package com.gumse.basics;
 
-import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
 public class SmoothFloat
