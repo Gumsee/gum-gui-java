@@ -46,6 +46,7 @@ public class Mouse
     private boolean RightReleased = false;
     private boolean LeftDoubleClick = false;
     private boolean RightDoubleClick = false;
+    private boolean bMouseLock = false;
 
     public interface MouseButtonCallback {
         void run(int button, int mods);
@@ -163,6 +164,7 @@ public class Mouse
 
         bActiveHovering = false;
         this.v2PositionDelta = new ivec2(0,0);
+        bMouseLock = false;
     }
 
     public void lock(boolean dolock)
@@ -216,63 +218,71 @@ public class Mouse
     
     void mouseButtonPressCallback(int button, int mods)
     {
-        if(button == GUM_MOUSE_BUTTON_LEFT)
+        if(!bMouseLock)
         {
-            LeftClickOnce = true;
-            LeftDownStart = true;
-            LeftDown = true;
-            v2LeftClickPosition = getPosition();
-        }
+            bMouseLock = true;
+            if(button == GUM_MOUSE_BUTTON_LEFT)
+            {
+                LeftClickOnce = true;
+                LeftDownStart = true;
+                LeftDown = true;
+                v2LeftClickPosition = getPosition();
+            }
 
-        if(button == GUM_MOUSE_BUTTON_RIGHT)
-        {
-            RightClickOnce = true;
-            RightDownStart = true;
-            RightDown = true;
-        }
+            if(button == GUM_MOUSE_BUTTON_RIGHT)
+            {
+                RightClickOnce = true;
+                RightDownStart = true;
+                RightDown = true;
+            }
 
-        if(pressCallback != null)
-            pressCallback.run(button, mods);
+            if(pressCallback != null)
+                pressCallback.run(button, mods);
+        }
     }
 
     void mouseButtonReleaseCallback(int button, int mods)
     {
-        if(button == GUM_MOUSE_BUTTON_LEFT)
+        if(!bMouseLock)
         {
-            if(LeftClickOnce)
-            { 
-                if(lastClickTimeLeft < 0.2f)
-                {
-                    LeftDoubleClick = true;
-                    lastClickTimeLeft = 0.2f;
-                }
-                else
-                    lastClickTimeLeft = 0;
-
-                LeftClickOnce = false;
-            }
-            LeftReleased = true; 
-            LeftDown = false;
-        }
-
-        if(button == GUM_MOUSE_BUTTON_RIGHT)
-        {
-            if(RightClickOnce)
+            bMouseLock = true;
+            if(button == GUM_MOUSE_BUTTON_LEFT)
             {
-                if(lastClickTimeRight < 0.2f)
-                {
-                    RightDoubleClick = true;
-                    lastClickTimeRight = 0.2f;
-                }
-                else
-                    lastClickTimeRight = 0;
-            }
-            RightReleased = true; 
-            RightDown = false;
-        }
+                if(LeftClickOnce)
+                { 
+                    if(lastClickTimeLeft < 0.2f)
+                    {
+                        LeftDoubleClick = true;
+                        lastClickTimeLeft = 0.2f;
+                    }
+                    else
+                        lastClickTimeLeft = 0;
 
-        if(releaseCallback != null)
-            releaseCallback.run(button, mods);
+                    LeftClickOnce = false;
+                }
+                LeftReleased = true; 
+                LeftDown = false;
+            }
+
+            if(button == GUM_MOUSE_BUTTON_RIGHT)
+            {
+                if(RightClickOnce)
+                {
+                    if(lastClickTimeRight < 0.2f)
+                    {
+                        RightDoubleClick = true;
+                        lastClickTimeRight = 0.2f;
+                    }
+                    else
+                        lastClickTimeRight = 0;
+                }
+                RightReleased = true; 
+                RightDown = false;
+            }
+
+            if(releaseCallback != null)
+                releaseCallback.run(button, mods);
+        }
     }
     
     void mouseScrollCallback(ivec2 dir)

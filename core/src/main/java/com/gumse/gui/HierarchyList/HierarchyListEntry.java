@@ -68,7 +68,7 @@ public class HierarchyListEntry <T> extends RenderGUI
             titlefield.shouldActivateOnDoubleclick(true);
             titlefield.getBox().getBox().hide(true);
             titlefield.getBox().getText().setCharacterHeight(20);
-            titlefield.setCursorShapeOnHover(Mouse.GUM_CURSOR_DEFAULT);
+            //titlefield.setCursorShapeOnHover(Mouse.GUM_CURSOR_DEFAULT);
             pTitleBox = titlefield;
         }
         else

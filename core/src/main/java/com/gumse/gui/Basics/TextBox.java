@@ -1,5 +1,7 @@
 package com.gumse.gui.Basics;
 
+import org.lwjgl.openal.AL;
+
 import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
@@ -206,14 +208,24 @@ public class TextBox extends RenderGUI
 			String fontName = node.getAttribute("font");
 			Font font = (!fontName.equals("") ? FontManager.getInstance().getFont(fontName) : FontManager.getInstance().getDefaultFont());
 	
-			int fontsize  = node.getIntAttribute("fontsize", 0);
-			int maxlength = node.getIntAttribute("maxlength", 0);
+			int fontsize          = node.getIntAttribute("fontsize", 0);
+			int maxlength         = node.getIntAttribute("maxlength", 0);
+			boolean autolinebreak = node.getAttribute("linebreaks").toLowerCase().equals("true");
+            Alignment alignment   = Alignment.CENTER;
+            switch(node.getAttribute("align").toLowerCase())
+            {
+                case "left":   alignment = Alignment.LEFT;   break;
+                case "center": alignment = Alignment.CENTER; break;
+                case "right":  alignment = Alignment.RIGHT;  break;
+            }
 			
 			TextBox textboxgui = new TextBox(node.content, font, new ivec2(0,0), new ivec2(0,0));
 			if(fontsize > 0)
 				textboxgui.setTextSize(fontsize);
 			
 			textboxgui.getText().setMaxLength(maxlength);
+            textboxgui.setAutoInsertLinebreaks(autolinebreak);
+            textboxgui.setAlignment(alignment);
 			return textboxgui;
         };
     };

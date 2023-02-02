@@ -2,6 +2,7 @@ package com.gumse.gui.Basics;
 
 import com.gumse.basics.SmoothFloat;
 import com.gumse.gui.GUI;
+import com.gumse.gui.Locale;
 import com.gumse.gui.Font.Font;
 import com.gumse.gui.Font.FontManager;
 import com.gumse.gui.Primitives.RenderGUI;
@@ -53,13 +54,13 @@ public class Dropdown extends RenderGUI
 
                 if(isClicked())
                 {
-                    pParent.setTitle(getTitle());
+                    pParent.setTitle(getString());
                     pParent.close();
 
                     if(pCallback != null)
-                        pCallback.run(getTitle());
+                        pCallback.run(getString());
                     if(pGlobalCallback != null)
-                        pGlobalCallback.run(getTitle());
+                        pGlobalCallback.run(getString());
                 }
             }
             else
@@ -71,6 +72,8 @@ public class Dropdown extends RenderGUI
         @Override
         protected void updateOnThemeChange() 
         {
+            if(!sLocaleID.isEmpty())
+               setString(Locale.getCurrentLocale().getString(sLocaleID));
             getBox().setBorderThickness(GUI.getTheme().borderThickness);
         }
 
@@ -104,28 +107,14 @@ public class Dropdown extends RenderGUI
 		pPreviewTextbox.setSizeInPercent(true, true);
 		this.addElement(pPreviewTextbox);
 
-        onHover(new GUICallback() {
-            @Override public void run(RenderGUI gui) 
-            { 
+        onHover((RenderGUI gui) -> { 
                 pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.02f, 0.02f, 0.02f, 0.0f)));
                 if(isHoldingLeftClick())
                     pPreviewTextbox.setColor(vec4.sub(getColor(GUI.getTheme().primaryColor), new vec4(0.05f, 0.05f, 0.05f, 0.0f)));
-            }
         }, Mouse.GUM_CURSOR_HAND);
 
-        onClick(new GUICallback() {
-            @Override public void run(RenderGUI gui) 
-            { 
-                Switch();
-            }
-        });
-
-        onLeave(new GUICallback() {
-            @Override public void run(RenderGUI gui) 
-            { 
-                pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor));
-            }
-        });
+        onClick((RenderGUI gui) -> { Switch(); });
+        onLeave((RenderGUI gui) -> { pPreviewTextbox.setColor(getColor(GUI.getTheme().primaryColor)); });
 	
 		resize();
 		reposition();
@@ -149,6 +138,9 @@ public class Dropdown extends RenderGUI
 	
 	public void updateextra()
 	{	
+        if(Window.CurrentlyBoundWindow.getMouse().hasLeftRelease() && !isMouseInside())
+            close();
+        
 		if(pSmoothFloat.update())
 			moveEntries();
 	}
@@ -158,7 +150,7 @@ public class Dropdown extends RenderGUI
         for(int i = numElements(); i --> 0;) { vElements.get(i).render();  }
 	}
 	
-	public void addEntry(String title, DropdownEntryCallback OnCLickFunction, boolean active)
+	public TextBox addEntry(String title, DropdownEntryCallback OnCLickFunction, boolean active)
 	{
 		MenuEntry entry = new MenuEntry(title, pFont, vElements.size() * vActualSize.y, OnCLickFunction, this);
         entry.setSelectCallback(pGlobalCallback);
@@ -168,6 +160,8 @@ public class Dropdown extends RenderGUI
 			setTitle(title);
 
 		moveEntries();
+
+        return entry;
 	}
 
     public void onSelection(DropdownSelectionCallback callback)

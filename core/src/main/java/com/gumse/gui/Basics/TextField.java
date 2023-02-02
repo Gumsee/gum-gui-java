@@ -15,9 +15,11 @@ import com.gumse.system.Window;
 import com.gumse.system.filesystem.XML.XMLNode;
 import com.gumse.system.io.Keyboard;
 import com.gumse.system.io.Mouse;
+import com.gumse.tools.Output;
 
 public class TextField extends RenderGUI
 {
+    private static TextField pCurrentActiveTextField;
 	private TextBox pBackgroundBox;
 	private Box pIndicatorBox;
 	private Box pSelectionBox;
@@ -27,7 +29,6 @@ public class TextField extends RenderGUI
 	private boolean bActivateOnDoubleclick;
 	//private Clock pClock;
 	private int iTextScrollRightOffset;
-	private int uiCursorShape;
 	
 	private String sOrigString;
     private String sHint;
@@ -50,7 +51,6 @@ public class TextField extends RenderGUI
 		this.bActivateOnDoubleclick = false;
 		this.iIndicatorCharIndex = 0;
 		this.pCallback = null;
-		this.uiCursorShape = Mouse.GUM_CURSOR_IBEAM;
         this.sCurrentText = str;
 	
 		iTextScrollRightOffset = 30;
@@ -80,6 +80,20 @@ public class TextField extends RenderGUI
 			if(bIsEditing && iSelectorStartCharIndex == iSelectorEndCharIndex)
 				pIndicatorBox.hide(!pIndicatorBox.isHidden());
 		}, 1000);*/
+
+        onClick((RenderGUI gui) -> {
+            if(!bIsEditing && !bActivateOnDoubleclick)
+                startEdit();
+        });
+
+        onDoubleClick((RenderGUI gui) -> {
+            if(bIsEditing)
+                selectAll();
+            else if(!bIsEditing || bActivateOnDoubleclick)
+                startEdit();
+        });
+
+        onHover(null, Mouse.GUM_CURSOR_IBEAM);
 	
 		resize();
 		reposition();
@@ -154,75 +168,36 @@ public class TextField extends RenderGUI
 	
 		Mouse mouse = Window.CurrentlyBoundWindow.getMouse();
 		Keyboard keyboard = Window.CurrentlyBoundWindow.getKeyboard();
-		
-		if(isMouseInside())
-		{
-			if(bIsEditing)
-			{
-				Mouse.setActiveHovering(true);
-				mouse.setCursor(uiCursorShape);
-				if(mouse.hasLeftDoubleClick())
-				{
-					selectAll();
-				}
-				else if(mouse.hasLeftClickStart())
-				{
-					Mouse.setBusiness(true);
-					int point = pBackgroundBox.getText().getClosestCharacterIndex(mouse.getPosition());
-					setSelection(point, point);
-				}
-				else if(mouse.hasLeftClick())
-				{
-					int point = pBackgroundBox.getText().getClosestCharacterIndex(mouse.getPosition());
-					setSelection(iSelectorStartCharIndex, point);
-				}
-				else if(mouse.hasLeftRelease())
-				{
-					Mouse.setBusiness(false);
-				}
-			}
-			
-			if(!Mouse.isBusy())
-			{
-				Mouse.setActiveHovering(true);
-				mouse.setCursor(uiCursorShape);
-				if((!bActivateOnDoubleclick && isClicked()) || 
-				   ( bActivateOnDoubleclick && mouse.hasLeftDoubleClick()))
-				{
-					if(!bIsEditing)
-					{
-						bIsEditing = true;
-						sOrigString = sCurrentText;
-						selectAll();
-					}
-				}
-			}
-		}
-		else
-		{
-			if(bIsEditing && Mouse.isBusy() && mouse.hasLeftClick())
-			{
-				Mouse.setActiveHovering(true);
-				mouse.setCursor(uiCursorShape);
-				int dir = 0;
-				if(mouse.getPosition().x < pBackgroundBox.getPosition().x)
-					dir = -1;
-				else if(mouse.getPosition().x > pBackgroundBox.getPosition().x + pBackgroundBox.getSize().x)
-					dir = 1;
-				
-				setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex + dir);
-			}
-			else
-			{
-				if(mouse.hasLeftClick())
-				{
-					finishEditing();
-				}
-			}
-		}
-	
-		if(bIsEditing)
-		{
+        if(bIsEditing)
+        {
+            if(mouse.hasLeftClick())
+            {
+                int point = pBackgroundBox.getText().getClosestCharacterIndex(mouse.getPosition());
+                if(!isMouseInside())
+                {                    
+                    int dir = 0;
+                    if(mouse.getPosition().x < pBackgroundBox.getPosition().x)
+                        dir = -1;
+                    else if(mouse.getPosition().x > pBackgroundBox.getPosition().x + pBackgroundBox.getSize().x)
+                        dir = 1;
+                    
+                    setSelection(iSelectorStartCharIndex, iSelectorEndCharIndex + dir);
+                }
+                else if(mouse.hasLeftClickStart())
+                {
+                    setSelection(point, point);
+                }
+                else if(mouse.hasLeftClick())
+                {
+                    setSelection(iSelectorStartCharIndex, point);
+                }
+            }
+        
+            if(mouse.hasLeftClickStart() && !isMouseInside())
+            {
+                finishEditing();
+            }
+            
 			//pClock.update();
 			if     (keyboard.checkLastPressedKey(Keyboard.GUM_KEY_BACKSPACE))            { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : 1); }
 			else if(keyboard.checkLastPressedKey(Keyboard.GUM_KEY_DELETE))               { int spaces = Math.abs(iSelectorEndCharIndex - iSelectorStartCharIndex); backspaceString(spaces > 0 ? spaces : -1); }
@@ -239,6 +214,17 @@ public class TextField extends RenderGUI
 			else if(keyboard.getTextInput() != "") 				   		                 { appendString(keyboard.getTextInput()); }
 		}
 	}
+
+    private void startEdit()
+    {
+        if(pCurrentActiveTextField != null)
+            pCurrentActiveTextField.finishEditing();
+        sOrigString = sCurrentText;
+        bIsEditing = true;
+        selectAll();
+
+        pCurrentActiveTextField = this;
+    }
 	
 	private void updateText()
 	{
@@ -376,9 +362,9 @@ public class TextField extends RenderGUI
 		sCurrentText = utf8;
 		updateText();
         setIndicator(utf8.length());
+        //finishEditing();
 	}
 	
-	public void setCursorShapeOnHover(int shape) 				   	   { this.uiCursorShape = shape; }
 	public void shouldActivateOnDoubleclick(boolean activate)  		   { this.bActivateOnDoubleclick = activate; }
 	public void setSelectionColor(vec4 color) 						   { this.pSelectionBox.setColor(color); }
 	public void setIndicatorColor(vec4 color) 						   { this.pIndicatorBox.setColor(color); }

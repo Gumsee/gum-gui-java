@@ -38,7 +38,7 @@ public class XMLLoader
                     if(parentGUI.getType() == "Dropdown")
                     {
                         boolean active = node.getAttribute("active") == "true";
-                        ((Dropdown)parentGUI).addEntry(node.content, null, active);
+                        gui = ((Dropdown)parentGUI).addEntry(node.content, null, active);
                     }
                     else
                     {

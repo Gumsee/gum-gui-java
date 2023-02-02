@@ -63,19 +63,18 @@ public class Scroller extends RenderGUI
         if(iIndicatorPos == iLastIndicatorPos)
             return;
         
-        if(bHasHitBottom && iIndicatorPos < iLastIndicatorPos) bHasHitBottom = false;
-        if(bHasHitTop && iIndicatorPos > iLastIndicatorPos)    bHasHitTop = false;
-        
         if(pOnTopHitCallback != null && !bHasHitTop && iIndicatorPos == 0)
         {
             pOnTopHitCallback.run(this);
             bHasHitBottom = true;
         }
-        else if(pOnBottomHitCallback != null && !bHasHitBottom && iIndicatorPos == upperlimit)
+        else if(pOnBottomHitCallback != null && contentOverlap > 0.0f && !bHasHitBottom && iIndicatorPos == upperlimit)
         {
             pOnBottomHitCallback.run(this);
             bHasHitTop = true;
         }
+        if(bHasHitBottom && iIndicatorPos < iLastIndicatorPos) bHasHitBottom = false;
+        if(bHasHitTop && iIndicatorPos > iLastIndicatorPos)    bHasHitTop = false;
         iLastIndicatorPos = iIndicatorPos;
 	}
 

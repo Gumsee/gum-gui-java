@@ -59,6 +59,7 @@ public class RenderGUI
     protected String sToolTip;
     protected int iHoverCursorShape;
     protected GUICallback pClickCallback;
+    protected GUICallback pDoubleClickCallback;
     protected GUICallback pHoverCallback;
     protected GUICallback pEnterCallback;
     protected GUICallback pLeaveCallback;
@@ -75,6 +76,7 @@ public class RenderGUI
         this.pHoverCallback = null;
         this.pEnterCallback = null;
         this.pLeaveCallback = null;
+        this.pDoubleClickCallback = null;
         this.iHoverCursorShape = Mouse.GUM_CURSOR_DEFAULT;
         this.sTitle = "";
         this.sID = "";
@@ -297,7 +299,9 @@ public class RenderGUI
                     bIsHovering = false;
                 }
             }
-            if(pClickCallback != null && isClicked())
+            if(pDoubleClickCallback != null && Window.CurrentlyBoundWindow.getMouse().hasLeftDoubleClick())
+                pDoubleClickCallback.run(this);
+            else if(pClickCallback != null && isClicked())
                 pClickCallback.run(this);
         }
         updateextra();
@@ -476,6 +480,7 @@ public class RenderGUI
     public void onEnter(GUICallback callback)                   { this.pEnterCallback = callback; }
     public void onLeave(GUICallback callback)                   { this.pLeaveCallback = callback; }
     public void onClick(GUICallback callback)                   { this.pClickCallback = callback; }
+    public void onDoubleClick(GUICallback callback)             { this.pDoubleClickCallback = callback; }
     public void onHover(GUICallback callback, int shape)        { this.pHoverCallback = callback; this.iHoverCursorShape = shape; }
     public void setOrigin(ivec2 orig)                           { this.vOrigin.set(orig); reposition(); }
     public void setRotationOrigin(ivec2 orig)                   { this.vRotationOrigin.set(orig); }

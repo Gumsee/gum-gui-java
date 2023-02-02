@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui-root pos="0, 0" size="100%, 100%">
-    <box pos="25%, 25%" size="50%, 50%" border-radius="0" color="#00000000">
+    <box pos="25%, 25%" size="50%, 50%" color="#00000000">
         <scroller size="100%, 100%" tooltip="you're not supposed to see this\n">
             <!-- size is 1-Dimensional for sliders-->
             <slider pos="5%, 50" length="90%" title="pos" />
@@ -9,7 +9,7 @@
             <switch pos="10, -10" size="20, 20" border-radius="10" />
             <switch pos="10, 1000" size="20, 20" border-radius="10" />
 
-            <box pos="25%, 350" size="50%, 50%" border-radius="0" texture="textures/hehe.jpg" id="stupid">
+            <box pos="25%, 350" size="50%, 50%" texture="textures/hehe.jpg" id="stupid">
                 <gui id="testID" />
             </box>
         </scroller>
