@@ -77,6 +77,17 @@ public class Texture {
         return result;
     }
 
+    public boolean loadMemory(byte[] bytes)
+    {
+        ByteBuffer buffer = MemoryUtil.memAlloc(bytes.length);
+        for(int i = 0; i < bytes.length; i++)
+            buffer.put(i, bytes[i]);
+        boolean result = loadMemory(buffer);
+        MemoryUtil.memFree(buffer);
+        
+        return result;
+    }
+
     public boolean loadMemory(ByteBuffer imageBuffer)
     {
         IntBuffer x = BufferUtils.createIntBuffer(1);
