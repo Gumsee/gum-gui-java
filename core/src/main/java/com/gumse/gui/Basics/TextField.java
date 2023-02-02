@@ -362,6 +362,7 @@ public class TextField extends RenderGUI
 		sCurrentText = utf8;
 		updateText();
         setIndicator(utf8.length());
+        pIndicatorBox.hide(true);
         //finishEditing();
 	}
 	
