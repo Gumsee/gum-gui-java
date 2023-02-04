@@ -240,6 +240,16 @@ public class RenderGUI
         for(int i = 0; i < numChildren(); i++) { vChildren.get(i).resize(); }
     }
 
+    public void fitWidth(float aspectratio)
+    {
+        setSize(new ivec2(vSize.x, (int)((float)vActualSize.x * aspectratio)));
+    }
+
+    public void fitHeight(float aspectratio)
+    {
+        setSize(new ivec2((int)((float)vActualSize.y * aspectratio), vSize.y));
+    }
+
 
     public void destroyChildren()
     {
