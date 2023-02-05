@@ -34,10 +34,8 @@ public class Font
 		try {
 			someFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, FontManager.class.getClassLoader().getResourceAsStream(name));
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

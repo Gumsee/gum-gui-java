@@ -25,13 +25,6 @@ import com.gumse.textures.Texture;
 import com.gumse.tools.Output;
 import com.gumse.tools.FPS;
 
-
-/**
- * TODO:
- * 
- * RenderGUI Colortheme override checker (v4Color > theme)
- */
-
 public class MainPage extends RenderGUI
 {
     private TextBox fpsBox;
