@@ -63,7 +63,7 @@ public class GUI
 			XMLGUI.addGUIType("tag-list",  TagList.createFromXMLNode());
         }
 
-		/*pToolTipBox = new TextBox("", Gum::GUI::Fonts.getDefaultFont(), ivec2(0,0), ivec2(200, 200));
+		/*pToolTipBox = new TextBox("", Gum::Fonts.getDefaultFont(), ivec2(0,0), ivec2(200, 200));
 		pToolTipBox.setTextSize(12);
 		fToolTipHideTimer = 0.0f;
 		fToolTipShowTimer = 0.0f;*/
