@@ -82,7 +82,7 @@ public class Box extends RenderGUI
         GUIShader.getShaderProgram().loadUniform("hasTexture", pTexture != null);
         if(pTexture != null)
         {
-            //GUIShader.getShaderProgram().LoadUniform("isTextureGrayscale", pTexture.isGrayscale());
+            //GUIShader.getShaderProgram().loadUniform("isTextureGrayscale", pTexture.isGrayscale());
             pTexture.bind(0);
         }
 

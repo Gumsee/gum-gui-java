@@ -174,13 +174,13 @@ public class ShaderProgram
 	public void loadUniform(String uniformname, vec2 var) 				{ GL30.glUniform2f(Locations.get(uniformname), var.x, var.y); }
 	public void loadUniform(String uniformname, ivec2 var) 				{ GL30.glUniform2i(Locations.get(uniformname), var.x, var.y); }
 	public void loadUniform(String uniformname, vec3 var) 				{ GL30.glUniform3f(Locations.get(uniformname), var.x, var.y, var.z); }
-	//public void LoadUniform(String uniformName, ivec3 var) 		    	{ GL30.glUniform3i(Locations.get(uniformName), var.x, var.y, var.z); }
+	//public void loadUniform(String uniformName, ivec3 var) 		    	{ GL30.glUniform3i(Locations.get(uniformName), var.x, var.y, var.z); }
 	public void loadUniform(String uniformname, vec4 var) 				{ GL30.glUniform4f(Locations.get(uniformname), var.x, var.y, var.z, var.w); }
 	public void loadUniform(String uniformname, mat4 var) 			    { FloatBuffer mat = Toolbox.array2D2FloatBuffer(var.getData()); GL30.glUniformMatrix4fv(Locations.get(uniformname), false, mat); }
 	public void loadUniform(String uniformname, float var) 				{ GL30.glUniform1f(Locations.get(uniformname), var); }
 	public void loadUniform(String uniformname, int var) 				{ GL30.glUniform1i(Locations.get(uniformname), var); }
     //public void loadUniform(String uniformName, mat4 value)             { FloatBuffer mat = Toolbox.array2D2FloatBuffer(value.getData()); GL30.glUniformMatrix4fv(Locations.get(uniformName), false, mat); }
-	//public void LoadUniform(String uniformName, ArrayList<mat4> var) 	{ for (int i = 0; i < var.size(); i++) { LoadUniform(uniformName + "[" + i + "]", var.get(i)); } }
+	//public void loadUniform(String uniformName, ArrayList<mat4> var) 	{ for (int i = 0; i < var.size(); i++) { loadUniform(uniformName + "[" + i + "]", var.get(i)); } }
 
 
 	//
